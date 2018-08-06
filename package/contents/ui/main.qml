@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Window 2.2
 import Qt.labs.folderlistmodel 2.11
 
 import "./utils.js" as Utils
@@ -6,12 +7,13 @@ import "./utils.js" as Utils
 Item {
     id: root
 
-    property int updateInterval: wallpaper.configuration.UpdateInterval * 1000
-    property double latitude: wallpaper.configuration.Latitude
-    property double longitude: wallpaper.configuration.Longitude
-    property string dayPhotosFolder: wallpaper.configuration.DayPhotosFolder
-    property string nightPhotosFolder: wallpaper.configuration.NightPhotosFolder
-    property int fillMode: wallpaper.configuration.FillMode
+    readonly property int updateInterval: wallpaper.configuration.UpdateInterval * 1000
+    readonly property double latitude: wallpaper.configuration.Latitude
+    readonly property double longitude: wallpaper.configuration.Longitude
+    readonly property string dayPhotosFolder: wallpaper.configuration.DayPhotosFolder
+    readonly property string nightPhotosFolder: wallpaper.configuration.NightPhotosFolder
+    readonly property int fillMode: wallpaper.configuration.FillMode
+    readonly property size sourceSize: Qt.size(root.width * Screen.devicePixelRatio, root.height * Screen.devicePixelRatio)
 
     onLatitudeChanged: update();
     onLongitudeChanged: update();
@@ -19,6 +21,11 @@ Item {
     onFillModeChanged: {
         fromImage.fillMode = fillMode;
         toImage.fillMode = fillMode;
+    }
+
+    onSourceSizeChanged: {
+        fromImage.sourceSize = sourceSize;
+        toImage.sourceSize = sourceSize;
     }
 
     FolderListModel {
@@ -43,8 +50,6 @@ Item {
         id: fromImage
         anchors.fill: parent
         fillMode: fillMode
-        mipmap: true
-        smooth: true
         z: 0
     }
 
@@ -52,8 +57,6 @@ Item {
         id: toImage
         anchors.fill: parent
         fillMode: fillMode
-        mipmap: true
-        smooth: true
         opacity: 0
         z: 1
     }
