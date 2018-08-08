@@ -71,7 +71,7 @@ Item {
 
     function updateDay(now, timeInfo) {
         var progress = (now.getTime() - timeInfo.sunrise.getTime()) /
-            (timeInfo.sunset.getTime() - timeInfo.sunrise.getTime());
+            (timeInfo.dusk.getTime() - timeInfo.sunrise.getTime());
         var idx = progress * dayPhotos.count;
 
         var fromIdx = Math.floor(idx);
@@ -98,7 +98,7 @@ Item {
             progress = 1.0;
         }
 
-        // Dawn - sunset transition.
+        // Dawn - sunrise transition.
         else if (now.getTime() < timeInfo.sunrise.getTime()) {
             fromSource = nightPhotos.get(nightPhotos.count - 1, "fileURL");
             toSource = dayPhotos.get(0, "fileURL");
@@ -106,11 +106,11 @@ Item {
                 (timeInfo.sunrise.getTime() - timeInfo.dawn.getTime());
         }
 
-        else if (timeInfo.sunset.getTime() <= now.getTime()) {
-            var startOfDay = new Date(timeInfo.sunset);
+        else if (timeInfo.dusk.getTime() <= now.getTime()) {
+            var startOfDay = new Date(timeInfo.dusk);
             startOfDay.setHours(0, 0, 0, 0);
-            var nightLength = 86400000 - (timeInfo.sunset.getTime() - startOfDay.getTime());
-            var idx = nightPhotos.count * (now.getTime() - timeInfo.sunset.getTime()) / nightLength;
+            var nightLength = 86400000 - (timeInfo.dusk.getTime() - startOfDay.getTime());
+            var idx = nightPhotos.count * (now.getTime() - timeInfo.dusk.getTime()) / nightLength;
 
             var fromIdx = Math.floor(idx);
             fromSource = nightPhotos.get(fromIdx, "fileURL");
@@ -158,7 +158,7 @@ Item {
         var timeInfo = Utils.calcSunriseSunset(now, latitude, longitude);
 
         if (timeInfo.sunrise.getTime() <= now.getTime()
-                && now.getTime() < timeInfo.sunset.getTime()) {
+                && now.getTime() < timeInfo.dusk.getTime()) {
             updateDay(now, timeInfo);
         } else {
             updateNight(now, timeInfo);
