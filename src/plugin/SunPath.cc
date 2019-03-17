@@ -36,9 +36,8 @@ SunPath::SunPath(const QDateTime& now, qreal latitude, qreal longitude)
     const int numSamples = 24;
     QVector<QVector3D> samples;
     samples.reserve(numSamples);
-    for (int i = 0; i < numSamples; ++i) {
+    for (int i = 0; i < numSamples; ++i)
         samples << at(QTime(i, 0)).toVector();
-    }
 
     for (const QVector3D& sample : samples)
         m_center += sample;

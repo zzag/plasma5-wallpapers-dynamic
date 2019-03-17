@@ -31,9 +31,8 @@ qreal computeAngle(const QVector3D& normal, const QVector3D& v1, const QVector3D
     const float det = QVector3D::dotProduct(normal, QVector3D::crossProduct(v1, v2));
 
     float angle = qRadiansToDegrees(std::atan2(det, dot));
-    if (angle < 0) {
+    if (angle < 0)
         angle += 360;
-    }
 
     return static_cast<qreal>(angle);
 }
