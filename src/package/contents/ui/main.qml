@@ -64,6 +64,7 @@ Item {
         asynchronous: true
         fillMode: fillMode
         source: dynamicWallpaper.bottomLayer
+        sourceSize: sourceSize
     }
 
     Image {
@@ -73,6 +74,7 @@ Item {
         fillMode: fillMode
         opacity: dynamicWallpaper.blendFactor
         source: dynamicWallpaper.topLayer
+        sourceSize: sourceSize
     }
 
     Rectangle {
