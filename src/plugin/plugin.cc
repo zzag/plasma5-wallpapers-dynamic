@@ -22,8 +22,6 @@
 #include "WallpapersModel.h"
 
 // Qt
-#include <QJSEngine>
-#include <QQmlContext>
 #include <QQmlEngine>
 
 void Plugin::registerTypes(const char* uri)

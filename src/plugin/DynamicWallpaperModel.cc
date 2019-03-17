@@ -60,6 +60,7 @@ DynamicWallpaperModel::~DynamicWallpaperModel()
 
 bool DynamicWallpaperModel::isExpired() const
 {
+    // Rebuild the model each hour.
     const QDateTime now = QDateTime::currentDateTime();
     return qAbs(now.secsTo(m_dateTime)) > 3600;
 }
