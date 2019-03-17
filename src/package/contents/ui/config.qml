@@ -1,20 +1,36 @@
+/*
+ * Copyright (C) 2019 Vlad Zagorodniy <vladzzag@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 import QtQuick 2.1
-import QtQuick.Dialogs 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
 
-// for "units"
+import org.kde.kcm 1.1 as KCM
 import org.kde.plasma.core 2.0 as PlasmaCore
 
+import com.github.zzag.private.wallpaper 1.0
 
 ColumnLayout {
     id: root
     property int cfg_FillMode
     property alias cfg_Latitude: latitudeSpinbox.value
     property alias cfg_Longitude: longitudeSpinbox.value
-    property alias cfg_UpdateInterval: updateIntervalSpinbox.value
-    property alias cfg_DayPhotosFolder: dayPhotosFolderTextField.text
-    property alias cfg_NightPhotosFolder: nightPhotosFolderTextField.text
+    property string cfg_WallpaperId
 
     Row {
         spacing: units.largeSpacing / 2
@@ -107,92 +123,32 @@ ColumnLayout {
         }
     }
 
-    Row {
-        spacing: units.largeSpacing / 2
+    KCM.GridView {
+        id: wallpapersGrid
 
-        QtControls.Label {
-            anchors.verticalCenter: updateIntervalSpinbox.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: "Update Interval:"
-        }
-
-        QtControls.SpinBox {
-            id: updateIntervalSpinbox
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
-            minimumValue: 1
-            maximumValue: 3600
-            stepSize: 5
-            suffix: " seconds"
-        }
-    }
-
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: dayPhotosFolderTextField.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: "Day Photos Folder:"
-        }
-
-        QtControls.TextField {
-            id: dayPhotosFolderTextField
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
-        }
-
-        QtControls.Button {
-            text: "Browse"
-            anchors.verticalCenter: dayPhotosFolderTextField.verticalCenter
-            onClicked: dayPhotosFileDialog.open()
-        }
-
-        FileDialog {
-            id: dayPhotosFileDialog
-            title: "Choose a folder"
-            selectExisting: true
-            selectMultiple: false
-            selectFolder: true
-            onAccepted: dayPhotosFolderTextField.text = dayPhotosFileDialog.fileUrl;
-        }
-    }
-
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: nightPhotosFolderTextField.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: "Night Photos Folder:"
-        }
-
-        QtControls.TextField {
-            id: nightPhotosFolderTextField
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
-        }
-
-        QtControls.Button {
-            text: "Browse"
-            anchors.verticalCenter: nightPhotosFolderTextField.verticalCenter
-            onClicked: nightPhotosFileDialog.open()
-        }
-
-        FileDialog {
-            id: nightPhotosFileDialog
-            title: "Choose a folder"
-            selectExisting: true
-            selectMultiple: false
-            selectFolder: true
-            onAccepted: nightPhotosFolderTextField.text = nightPhotosFileDialog.fileUrl;
-        }
-    }
-
-    Item { // tighten layout
+        Layout.fillWidth: true
         Layout.fillHeight: true
+
+        view.currentIndex: wallpapersModel.indexOf(cfg_WallpaperId)
+        view.model: wallpapersModel
+        view.delegate: KCM.GridDelegate {
+            hoverEnabled: true
+            text: model.name
+            toolTip: model.name
+
+            thumbnail: Image {
+                anchors.fill: parent
+                source: model.previewUrl
+            }
+
+            onClicked: {
+                cfg_WallpaperId = model.id;
+                wallpapersGrid.forceActiveFocus();
+            }
+        }
+    }
+
+    WallpapersModel {
+        id: wallpapersModel
     }
 }

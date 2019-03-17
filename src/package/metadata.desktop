@@ -1,14 +1,15 @@
 [Desktop Entry]
-Encoding=UTF-8
-Icon=preferences-desktop-wallpaper
-Name=Dynamic Wallpaper
+Name=Dynamic
+Comment=
 
 Type=Service
-
+Icon=plasma
 X-KDE-ServiceTypes=Plasma/Wallpaper
+
 X-KDE-PluginInfo-Author=Vlad Zagorodniy
 X-KDE-PluginInfo-Email=vladzzag@gmail.com
-X-KDE-PluginInfo-Name=com.github.zzag.dynamicwallpaper
+X-KDE-PluginInfo-Name=com.github.zzag.wallpaper
+X-KDE-PluginInfo-License=LGPLv2+
 X-KDE-PluginInfo-Version=1
-X-KDE-PluginInfo-Website=https://github.com/zzag/dynamic-wallpaper
+X-KDE-PluginInfo-Website=https://github.com/zzag/dynamic-wallpaper/
 X-Plasma-MainScript=ui/main.qml

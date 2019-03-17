@@ -6,6 +6,9 @@
   <kcfgfile name=""/>
 
   <group name="General">
+    <entry name="WallpaperId" type="String">
+      <default>default</default>
+    </entry>
     <entry name="FillMode" type="UInt">
       <default>0</default>
     </entry>
@@ -16,13 +19,7 @@
       <default>0</default>
     </entry>
     <entry name="UpdateInterval" type="UInt">
-      <default>60</default>
-    </entry>
-    <entry name="DayPhotosFolder" type="String">
-      <default></default>
-    </entry>
-    <entry name="NightPhotosFolder" type="String">
-      <default></default>
+      <default>60000</default>
     </entry>
   </group>
 

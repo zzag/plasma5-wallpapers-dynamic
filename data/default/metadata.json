@@ -1,0 +1,46 @@
+{
+    "name": "Default",
+    "preview": "north.png",
+    "images": [
+        {
+            "azimuth": 2.73,
+            "elevation": -45.17,
+            "filename": "north.png"
+        },
+        {
+            "azimuth": 56.83,
+            "elevation": -24.75,
+            "filename": "north-east.png"
+        },
+        {
+            "azimuth": 92.15,
+            "elevation": 0.98,
+            "filename": "east.png"
+        },
+        {
+            "azimuth": 128.26,
+            "elevation": 29.67,
+            "filename": "south-east.png"
+        },
+        {
+            "azimuth": 182.68,
+            "elevation": 43.0,
+            "filename": "south.png"
+        },
+        {
+            "azimuth": 235.51,
+            "elevation": 27.56,
+            "filename": "south-west.png"
+        },
+        {
+            "azimuth": 270.81,
+            "elevation": -1.41,
+            "filename": "west.png"
+        },
+        {
+            "azimuth": 307.09,
+            "elevation": -31.25,
+            "filename": "north-west.png"
+        }
+    ]
+}
