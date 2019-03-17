@@ -14,16 +14,6 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(KF5 REQUIRED COMPONENTS
-    Plasma
-)
-
-find_package(Qt5 CONFIG REQUIRED COMPONENTS
-    Qml
-    Gui
-    Core
-)
-
 add_subdirectory(data)
 add_subdirectory(src)
 
