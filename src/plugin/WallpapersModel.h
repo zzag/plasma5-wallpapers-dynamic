@@ -28,8 +28,17 @@ class WallpapersModel : public QAbstractListModel {
 
 public:
     enum AdditionalRoles {
+        /**
+         * Human readable name of the wallpaper.
+         */
         Name = Qt::UserRole + 1,
+        /**
+         * The id of the wallpaper.
+         */
         Id,
+        /**
+         * Path to the preview of the wallpaper. Optional.
+         */
         PreviewUrl
     };
 
