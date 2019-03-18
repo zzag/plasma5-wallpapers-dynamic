@@ -27,10 +27,17 @@ import com.github.zzag.private.wallpaper 1.0
 
 ColumnLayout {
     id: root
+
     property int cfg_FillMode
+    property string cfg_WallpaperId
+
     property alias cfg_Latitude: latitudeSpinbox.value
     property alias cfg_Longitude: longitudeSpinbox.value
-    property string cfg_WallpaperId
+
+    // This is a very ugly hack to make width of our input fields same as width
+    // of the Wallpaper Type combo box. A better way to align input elements has
+    // to be found.
+    readonly property int inputFieldWidth: wallpaperComboBox.width
 
     Row {
         spacing: units.largeSpacing / 2
@@ -39,13 +46,12 @@ ColumnLayout {
             anchors.verticalCenter: positioningComboBox.verticalCenter
             width: formAlignment - units.largeSpacing
             horizontalAlignment: Text.AlignRight
-            text: "Positioning:"
+            text: "Fill Mode:"
         }
 
         QtControls.ComboBox {
             id: positioningComboBox
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
+            width: inputFieldWidth
             model: [
                 {
                     "label": "Scaled and Cropped",
@@ -71,12 +77,12 @@ ColumnLayout {
 
             textRole: "label"
             onCurrentIndexChanged: cfg_FillMode = model[currentIndex]["fillMode"]
-            Component.onCompleted: setMethod();
 
-            function setMethod() {
+            Component.onCompleted: {
                 for (var i = 0; i < model.length; i++) {
                     if (model[i]["fillMode"] == wallpaper.configuration.FillMode) {
                         positioningComboBox.currentIndex = i;
+                        break;
                     }
                 }
             }
@@ -95,8 +101,7 @@ ColumnLayout {
 
         QtControls.SpinBox {
             id: latitudeSpinbox
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
+            width: inputFieldWidth
             decimals: 2
             minimumValue: -360
             maximumValue: 360
@@ -115,8 +120,7 @@ ColumnLayout {
 
         QtControls.SpinBox {
             id: longitudeSpinbox
-            property int textLength: 24
-            width: theme.mSize(theme.defaultFont).width * textLength
+            width: inputFieldWidth
             decimals: 2
             minimumValue: -360
             maximumValue: 360
