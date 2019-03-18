@@ -38,50 +38,50 @@ something like this
 
 ```json
 {
-    "name": "Eyecandy Wallpaper",
-    "preview": "preview.png",
-    "images": [
-        {
-            "azimuth": 2.73,
-            "elevation": -45.17,
-            "filename": "image_1.png"
-        },
-        {
-            "azimuth": 56.83,
-            "elevation": -24.75,
-            "filename": "image_2.png"
-        },
-        {
-            "azimuth": 92.15,
-            "elevation": 0.98,
-            "filename": "image_3.png"
-        },
-        {
-            "azimuth": 128.26,
-            "elevation": 29.67,
-            "filename": "image_4.png"
-        },
-        {
-            "azimuth": 182.68,
-            "elevation": 43.0,
-            "filename": "image_5.png"
-        },
-        {
-            "azimuth": 235.51,
-            "elevation": 27.56,
-            "filename": "image_6.png"
-        },
-        {
-            "azimuth": 270.81,
-            "elevation": -1.41,
-            "filename": "image_7.png"
-        },
-        {
-            "azimuth": 307.09,
-            "elevation": -31.25,
-            "filename": "image_8.png"
-        }
-    ]
+  "name": "Eyecandy Wallpaper",
+  "preview": "preview.png",
+  "images": [
+    {
+      "azimuth": 2.73,
+      "elevation": -45.17,
+      "filename": "image_1.png"
+    },
+    {
+      "azimuth": 56.83,
+      "elevation": -24.75,
+      "filename": "image_2.png"
+    },
+    {
+      "azimuth": 92.15,
+      "elevation": 0.98,
+      "filename": "image_3.png"
+    },
+    {
+      "azimuth": 128.26,
+      "elevation": 29.67,
+      "filename": "image_4.png"
+    },
+    {
+      "azimuth": 182.68,
+      "elevation": 43.0,
+      "filename": "image_5.png"
+    },
+    {
+      "azimuth": 235.51,
+      "elevation": 27.56,
+      "filename": "image_6.png"
+    },
+    {
+      "azimuth": 270.81,
+      "elevation": -1.41,
+      "filename": "image_7.png"
+    },
+    {
+      "azimuth": 307.09,
+      "elevation": -31.25,
+      "filename": "image_8.png"
+    }
+  ]
 }
 ```
 
