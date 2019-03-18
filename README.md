@@ -3,10 +3,26 @@
 This is a simple dynamic wallpaper plugin for KDE Plasma.
 
 
+## Build prerequisites
+
+Arch Linux:
+
+```sh
+sudo pacman -S cmake extra-cmake-modules git plasma-framework qt5-base \
+    qt5-declarative
+```
+
+Ubuntu:
+
+```sh
+sudo apt install cmake extra-cmake-modules git libkf5plasma-dev qtbase5-dev \
+    qtdeclarative5-dev
+```
+
+
 ## Build and install
 
-First of all, you have to get the source code. Open the terminal and run the following
-command
+Open the terminal and run the following command
 
 ```sh
 git clone https://github.com/zzag/dynamic-wallpaper.git
@@ -25,9 +41,6 @@ sudo make install
 ## How to use it
 
 Open desktop configuration dialog and select "Dynamic" wallpaper type.
-
-Please notice that you have to specify your location(latitude and longitude) in
-order to use this plugin.
 
 
 ## How to create custom dynamic wallpaper
