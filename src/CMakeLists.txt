@@ -9,5 +9,6 @@ find_package(Qt5 CONFIG REQUIRED COMPONENTS
 )
 
 add_subdirectory(plugin)
+add_subdirectory(translations)
 
 plasma_install_package(package com.github.zzag.wallpaper wallpapers wallpaper)

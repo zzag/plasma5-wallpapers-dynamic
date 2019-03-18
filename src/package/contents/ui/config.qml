@@ -46,7 +46,7 @@ ColumnLayout {
             anchors.verticalCenter: positioningComboBox.verticalCenter
             width: formAlignment - units.largeSpacing
             horizontalAlignment: Text.AlignRight
-            text: "Fill Mode:"
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Fill Mode:")
         }
 
         QtControls.ComboBox {
@@ -54,23 +54,23 @@ ColumnLayout {
             width: inputFieldWidth
             model: [
                 {
-                    "label": "Scaled and Cropped",
+                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled and Cropped"),
                     "fillMode": Image.PreserveAspectCrop
                 },
                 {
-                    "label": "Scaled",
+                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled"),
                     "fillMode": Image.Stretch
                 },
                 {
-                    "label": "Scaled, Keep Proportions",
+                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled, Keep Proportions"),
                     "fillMode": Image.PreserveAspectFit
                 },
                 {
-                    "label": "Centered",
+                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Centered"),
                     "fillMode": Image.Pad
                 },
                 {
-                    "label": "Tiled",
+                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Tiled"),
                     "fillMode": Image.Tile
                 }
             ]
@@ -96,7 +96,7 @@ ColumnLayout {
             anchors.verticalCenter: latitudeSpinbox.verticalCenter
             width: formAlignment - units.largeSpacing
             horizontalAlignment: Text.AlignRight
-            text: "Latitude:"
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
         }
 
         QtControls.SpinBox {
@@ -115,7 +115,7 @@ ColumnLayout {
             anchors.verticalCenter: longitudeSpinbox.verticalCenter
             width: formAlignment - units.largeSpacing
             horizontalAlignment: Text.AlignRight
-            text: "Longitude:"
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
         }
 
         QtControls.SpinBox {
