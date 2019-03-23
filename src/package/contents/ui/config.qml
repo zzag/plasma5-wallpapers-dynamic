@@ -29,6 +29,7 @@ ColumnLayout {
     id: root
 
     property int cfg_FillMode
+    property int cfg_UpdateInterval
     property string cfg_WallpaperId
 
     property alias cfg_Latitude: latitudeSpinbox.value
@@ -124,6 +125,27 @@ ColumnLayout {
             decimals: 2
             minimumValue: -360
             maximumValue: 360
+        }
+    }
+
+    Row {
+        spacing: units.largeSpacing / 2
+
+        QtControls.Label {
+            anchors.verticalCenter: updateIntervalSpinbox.verticalCenter
+            width: formAlignment - units.largeSpacing
+            horizontalAlignment: Text.AlignRight
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
+        }
+
+        QtControls.SpinBox {
+            id: updateIntervalSpinbox
+            width: inputFieldWidth
+            maximumValue: 59
+            minimumValue: 1
+            suffix: i18ndp("plasma_wallpaper_com.github.zzag.wallpaper", " min", " min", value)
+            onValueChanged: cfg_UpdateInterval = value * 60000
+            Component.onCompleted: value = wallpaper.configuration.UpdateInterval / 60000
         }
     }
 
