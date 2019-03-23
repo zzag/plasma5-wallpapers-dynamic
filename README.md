@@ -3,7 +3,18 @@
 This is a simple dynamic wallpaper plugin for KDE Plasma.
 
 
-## Build prerequisites
+## How to install
+
+Arch Linux:
+
+```sh
+yay -S plasma5-wallpapers-dynamic
+```
+
+
+## Build from source code
+
+## Prerequisites
 
 Arch Linux:
 
