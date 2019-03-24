@@ -182,19 +182,22 @@ void DynamicWallpaper::reloadModel()
 
 void DynamicWallpaper::reloadWallpaper()
 {
-    m_wallpaper = DynamicWallpaperData::load(m_wallpaperId);
-    if (!m_wallpaper) {
+    m_wallpaper.reset();
+
+    std::unique_ptr<DynamicWallpaperData> wallpaper = DynamicWallpaperData::load(m_wallpaperId);
+    if (!wallpaper) {
         setError(QStringLiteral("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
         setStatus(Status::Error);
         return;
     }
 
-    if (m_wallpaper->images().count() < 2) {
+    if (wallpaper->images().count() < 2) {
         setError(QStringLiteral("The dynamic wallpaper doesn't have enough pictures."));
         setStatus(Status::Error);
         return;
     }
 
+    m_wallpaper = std::move(wallpaper);
     setStatus(Status::Ok);
 }
 
