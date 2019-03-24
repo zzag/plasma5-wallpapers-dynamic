@@ -37,3 +37,9 @@ for subdir in $dirs; do
         podir=$podir srcdir=. XGETTEXT="xgettext_wrapper" bash Messages.sh
     fi
 done
+
+pofiles=`find $podir -name \*.po`
+for po in $pofiles; do
+    msgmerge -o $po.new $po $podir/template.pot
+    mv $po.new $po
+done

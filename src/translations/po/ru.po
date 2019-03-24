@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dynamic-wallpaper\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
-"POT-Creation-Date: 2019-03-18 23:10+0200\n"
-"PO-Revision-Date: 2019-03-18 21:54+0200\n"
+"POT-Creation-Date: 2019-03-24 13:41+0200\n"
+"PO-Revision-Date: 2019-03-24 13:45+0200\n"
 "Last-Translator: Vlad Zagorodniy <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zagorodniy <vladzzag@gmail.com>\n"
 "Language: ru\n"
@@ -16,42 +16,54 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 18.12.3\n"
 
-#: package/contents/ui/config.qml:49
+#: package/contents/ui/config.qml:50
 #, kde-format
 msgid "Fill Mode:"
 msgstr "Расположение:"
 
-#: package/contents/ui/config.qml:57
+#: package/contents/ui/config.qml:58
 #, kde-format
 msgid "Scaled and Cropped"
 msgstr "Масштабирование с кадрированием"
 
-#: package/contents/ui/config.qml:61
+#: package/contents/ui/config.qml:62
 #, kde-format
 msgid "Scaled"
 msgstr "На весь рабочий стол"
 
-#: package/contents/ui/config.qml:65
+#: package/contents/ui/config.qml:66
 #, kde-format
 msgid "Scaled, Keep Proportions"
 msgstr "По центру пропорционально"
 
-#: package/contents/ui/config.qml:69
+#: package/contents/ui/config.qml:70
 #, kde-format
 msgid "Centered"
 msgstr "По центру"
 
-#: package/contents/ui/config.qml:73
+#: package/contents/ui/config.qml:74
 #, kde-format
 msgid "Tiled"
 msgstr "Черепицей"
 
-#: package/contents/ui/config.qml:99
+#: package/contents/ui/config.qml:100
 #, kde-format
 msgid "Latitude:"
 msgstr "Широта:"
 
-#: package/contents/ui/config.qml:118
+#: package/contents/ui/config.qml:119
 #, kde-format
 msgid "Longitude:"
 msgstr "Долгота:"
+
+#: package/contents/ui/config.qml:138
+#, kde-format
+msgid "Update Every:"
+msgstr "Обновлять каждые:"
+
+#: package/contents/ui/config.qml:146
+#, kde-format
+msgid " min"
+msgid_plural " min"
+msgstr[0] " мин"
+msgstr[1] " мин"
