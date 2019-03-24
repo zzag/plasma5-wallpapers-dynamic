@@ -37,44 +37,22 @@ Item {
     readonly property int updateInterval: wallpaper.configuration.UpdateInterval
     readonly property string wallpaperId: wallpaper.configuration.WallpaperId
 
-    onFillModeChanged: {
-        bottomLayer.fillMode = fillMode;
-        topLayer.fillMode = fillMode;
-    }
-    onLatitudeChanged: {
-        dynamicWallpaper.latitude = latitude;
-    }
-    onLongitudeChanged: {
-        dynamicWallpaper.longitude = longitude;
-    }
-    onSourceSizeChanged: {
-        bottomLayer.sourceSize = sourceSize;
-        topLayer.sourceSize = sourceSize;
-    }
-    onUpdateIntervalChanged: {
-        timer.interval = updateInterval;
-    }
-    onWallpaperIdChanged: {
-        dynamicWallpaper.wallpaperId = wallpaperId;
-    }
+    onFillModeChanged: wallpaperView.fillMode = fillMode
+    onLatitudeChanged: dynamicWallpaper.latitude = latitude
+    onLongitudeChanged: dynamicWallpaper.longitude = longitude
+    onSourceSizeChanged: wallpaperView.sourceSize = sourceSize
+    onUpdateIntervalChanged: timer.interval = updateInterval
+    onWallpaperIdChanged: dynamicWallpaper.wallpaperId = wallpaperId
 
-    Image {
-        id: bottomLayer
+    WallpaperView {
+        id: wallpaperView
         anchors.fill: parent
-        asynchronous: true
-        fillMode: fillMode
-        source: dynamicWallpaper.bottomLayer
-        sourceSize: sourceSize
-    }
-
-    Image {
-        id: topLayer
-        anchors.fill: parent
-        asynchronous: true
-        fillMode: fillMode
-        opacity: dynamicWallpaper.blendFactor
-        source: dynamicWallpaper.topLayer
-        sourceSize: sourceSize
+        blendFactor: dynamicWallpaper.blendFactor
+        bottomLayer: dynamicWallpaper.bottomLayer
+        fillMode: root.fillMode
+        sourceSize: root.sourceSize
+        topLayer: dynamicWallpaper.topLayer
+        visible: dynamicWallpaper.status == DynamicWallpaper.Ok
     }
 
     Rectangle {
