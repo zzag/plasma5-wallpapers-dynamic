@@ -104,8 +104,8 @@ ColumnLayout {
             id: latitudeSpinbox
             width: inputFieldWidth
             decimals: 2
-            minimumValue: -360
-            maximumValue: 360
+            minimumValue: -90
+            maximumValue: 90
         }
     }
 
@@ -123,8 +123,8 @@ ColumnLayout {
             id: longitudeSpinbox
             width: inputFieldWidth
             decimals: 2
-            minimumValue: -360
-            maximumValue: 360
+            minimumValue: -180
+            maximumValue: 180
         }
     }
 

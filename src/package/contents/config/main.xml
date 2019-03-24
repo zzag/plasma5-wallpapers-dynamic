@@ -14,9 +14,13 @@
     </entry>
     <entry name="Latitude" type="Double">
       <default>0</default>
+      <min>-90</min>
+      <max>90</max>
     </entry>
     <entry name="Longitude" type="Double">
       <default>0</default>
+      <min>-180</min>
+      <max>180</max>
     </entry>
     <entry name="UpdateInterval" type="UInt">
       <default>60000</default>
