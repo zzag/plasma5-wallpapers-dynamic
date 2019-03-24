@@ -192,6 +192,7 @@ void DynamicWallpaper::reloadWallpaper()
     if (m_wallpaper->images().count() < 2) {
         setError(QStringLiteral("The dynamic wallpaper doesn't have enough pictures."));
         setStatus(Status::Error);
+        return;
     }
 
     setStatus(Status::Ok);
