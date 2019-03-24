@@ -157,10 +157,10 @@ void DynamicWallpaper::setError(const QString& error)
 
 void DynamicWallpaper::reloadModel()
 {
-    if (!m_wallpaper) {
-        m_model.reset();
+    m_model.reset();
+
+    if (!m_wallpaper)
         return;
-    }
 
     if (qAbs(m_latitude) > 86.5) {
         const QString pole = m_latitude > 0 ? QStringLiteral("North") : QStringLiteral("South");
@@ -169,14 +169,14 @@ void DynamicWallpaper::reloadModel()
         return;
     }
 
-    m_model = std::make_unique<DynamicWallpaperModel>(m_wallpaper.get(), m_latitude, m_longitude);
-    if (!m_model->isValid()) {
-        m_model.reset();
+    auto model = std::make_unique<DynamicWallpaperModel>(m_wallpaper.get(), m_latitude, m_longitude);
+    if (!model->isValid()) {
         setError(QStringLiteral("Couldn't construct path of the Sun."));
         setStatus(Status::Error);
         return;
     }
 
+    m_model = std::move(model);
     setStatus(Status::Ok);
 }
 
