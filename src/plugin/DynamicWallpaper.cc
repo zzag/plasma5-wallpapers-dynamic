@@ -162,10 +162,17 @@ void DynamicWallpaper::reloadModel()
         return;
     }
 
+    if (qAbs(m_latitude) > 86.5) {
+        const QString pole = m_latitude > 0 ? QStringLiteral("North") : QStringLiteral("South");
+        setError(QStringLiteral("Argh, darn it... It looks like you are located near the %1 pole.").arg(pole));
+        setStatus(Status::Error);
+        return;
+    }
+
     m_model = std::make_unique<DynamicWallpaperModel>(m_wallpaper.get(), m_latitude, m_longitude);
     if (!m_model->isValid()) {
         m_model.reset();
-        setError(QStringLiteral("Couldn't construct path of the Sun"));
+        setError(QStringLiteral("Couldn't construct path of the Sun."));
         setStatus(Status::Error);
         return;
     }
@@ -177,15 +184,13 @@ void DynamicWallpaper::reloadWallpaper()
 {
     m_wallpaper = DynamicWallpaperData::load(m_wallpaperId);
     if (!m_wallpaper) {
-        setError(QStringLiteral("Couldn't load wallpaper with id '%1'").arg(m_wallpaperId));
+        setError(QStringLiteral("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
         setStatus(Status::Error);
         return;
     }
 
     if (m_wallpaper->images().count() < 2) {
-        setError(QStringLiteral(
-            "The provided dynamic wallpaper doesn't have enought images. "
-            "At least two images are required."));
+        setError(QStringLiteral("The dynamic wallpaper doesn't have enough pictures."));
         setStatus(Status::Error);
     }
 

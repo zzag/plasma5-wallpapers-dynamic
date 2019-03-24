@@ -1,5 +1,0 @@
-# TODO
-
-* Properly handle north pole case: currently it's implicitly handled,
-  the wallpaper plugin should either display only day/night picture or
-  display an error message
