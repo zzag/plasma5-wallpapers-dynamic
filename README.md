@@ -1,6 +1,7 @@
 # dynamic-wallpaper
 
 This is a simple dynamic wallpaper plugin for KDE Plasma.
+[Demo](https://www.youtube.com/watch?v=UIMM6DpEpqA)
 
 
 ## How to install
