@@ -4,6 +4,13 @@ This is a simple dynamic wallpaper plugin for KDE Plasma.
 [Demo](https://www.youtube.com/watch?v=UIMM6DpEpqA)
 
 
+## Additional wallpapers
+
+By default this plugin ships with only one dynamic wallpaper. If you'd like
+to install more, please visit [Additional Wallpapers](https://github.com/zzag/dynamic-wallpaper/wiki/Additional-Wallpapers)
+page on our wiki.
+
+
 ## How to install
 
 Arch Linux:
