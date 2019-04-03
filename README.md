@@ -6,9 +6,9 @@ This is a simple dynamic wallpaper plugin for KDE Plasma.
 
 ## Additional wallpapers
 
-By default this plugin ships with only one dynamic wallpaper. If you'd like
-to install more, please visit [Additional Wallpapers](https://github.com/zzag/dynamic-wallpaper/wiki/Additional-Wallpapers)
-page on our wiki.
+This plugin ships with only one dynamic wallpaper. If you'd like to install more,
+please visit [Additional Wallpapers](https://github.com/zzag/dynamic-wallpaper/wiki/Additional-Wallpapers)
+page.
 
 
 ## How to install
