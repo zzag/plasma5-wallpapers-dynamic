@@ -52,7 +52,8 @@ Once you have the source code, you can build the plugin
 ```sh
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
 make
 sudo make install
 ```
