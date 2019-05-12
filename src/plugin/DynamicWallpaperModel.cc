@@ -23,12 +23,28 @@
 #include "SunPosition.h"
 #include "utils.h"
 
+// Qt
+#include <QtMath>
+
 // std
 #include <algorithm>
 
+static qreal ARC_LENGTH = 2 * M_PI;
+
 static qreal computeTime(const SunPath* path, const QVector3D& position)
 {
-    return computeAngle(path->normal(), path->center(), position) / 360;
+    const QVector3D v1 = path->midnight() - path->center();
+    const QVector3D v2 = position - path->center();
+
+    const QVector3D cross = QVector3D::crossProduct(v1, v2);
+    const float dot = QVector3D::dotProduct(v1, v2);
+    const float det = QVector3D::dotProduct(path->normal(), cross);
+
+    qreal angle = std::atan2(det, dot);
+    if (angle < 0)
+        angle += ARC_LENGTH;
+
+    return angle / ARC_LENGTH;
 }
 
 DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperData* wallpaper, qreal latitude, qreal longitude)

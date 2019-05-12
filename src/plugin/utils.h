@@ -22,15 +22,6 @@
 #include <QVector3D>
 
 /**
- * @brief computeAngle
- * @param normal
- * @param v1
- * @param v2
- * @return
- */
-qreal computeAngle(const QVector3D& normal, const QVector3D& v1, const QVector3D& v2);
-
-/**
  * @brief computeNormal
  * @param center
  * @param v1

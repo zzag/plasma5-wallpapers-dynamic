@@ -25,18 +25,6 @@
 // std
 #include <cmath>
 
-qreal computeAngle(const QVector3D& normal, const QVector3D& v1, const QVector3D& v2)
-{
-    const float dot = QVector3D::dotProduct(v1, v2);
-    const float det = QVector3D::dotProduct(normal, QVector3D::crossProduct(v1, v2));
-
-    float angle = qRadiansToDegrees(std::atan2(det, dot));
-    if (angle < 0)
-        angle += 360;
-
-    return static_cast<qreal>(angle);
-}
-
 QVector3D computeNormal(const QVector3D& center, const QVector3D& v1, const QVector3D& v2)
 {
     const QVector3D cross = QVector3D::crossProduct(v1 - center, v2 - center);
