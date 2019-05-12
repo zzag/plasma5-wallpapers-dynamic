@@ -28,7 +28,7 @@
 // std
 #include <algorithm>
 
-static qreal ARC_LENGTH = 2 * M_PI;
+const static qreal ARC_LENGTH = 2 * M_PI;
 
 static qreal computeTime(const SunPath* path, const QVector3D& position)
 {
