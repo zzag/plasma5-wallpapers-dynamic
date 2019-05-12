@@ -6,7 +6,6 @@ set(wallpaperplugin_SRCS
     SunPosition.cc
     WallpapersModel.cc
     plugin.cc
-    utils.cc
 )
 
 add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})

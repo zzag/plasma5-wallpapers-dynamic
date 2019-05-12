@@ -19,13 +19,18 @@
 // Own
 #include "SunPath.h"
 #include "SunPosition.h"
-#include "utils.h"
 
 // Qt
 #include <QVector>
 
 // std
 #include <cmath>
+
+static QVector3D computeNormal(const QVector3D& center, const QVector3D& v1, const QVector3D& v2)
+{
+    const QVector3D cross = QVector3D::crossProduct(v1 - center, v2 - center);
+    return cross.normalized();
+}
 
 SunPath::SunPath(const QDateTime& now, qreal latitude, qreal longitude)
 {

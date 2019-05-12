@@ -21,7 +21,6 @@
 #include "DynamicWallpaperData.h"
 #include "SunPath.h"
 #include "SunPosition.h"
-#include "utils.h"
 
 // Qt
 #include <QtMath>
