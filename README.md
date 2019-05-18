@@ -19,10 +19,13 @@ Arch Linux:
 yay -S plasma5-wallpapers-dynamic
 ```
 
+openSUSE Tumbleweed:
+
+The dynamic-wallpaper plugin is available from [home:KAMiKAZOW:KDE](https://software.opensuse.org//download.html?project=home%3AKAMiKAZOW%3AKDE&package=plasma5-dynamic-wallpaper) of openSUSE Build Service.
 
 ## Build from source code
 
-## Prerequisites
+### Prerequisites
 
 Arch Linux:
 
@@ -39,7 +42,7 @@ sudo apt install cmake extra-cmake-modules git libkf5plasma-dev qtbase5-dev \
 ```
 
 
-## Build and install
+### Build and install
 
 Open the terminal and run the following command
 
