@@ -18,7 +18,7 @@
 
 // Own
 #include "DynamicWallpaperModel.h"
-#include "DynamicWallpaperData.h"
+#include "DynamicWallpaperPackage.h"
 #include "SunPath.h"
 #include "SunPosition.h"
 
@@ -46,7 +46,7 @@ static qreal computeTime(const SunPath* path, const QVector3D& position)
     return angle / ARC_LENGTH;
 }
 
-DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperData* wallpaper, qreal latitude, qreal longitude)
+DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude)
     : m_dateTime(QDateTime::currentDateTime())
     , m_latitude(latitude)
     , m_longitude(longitude)

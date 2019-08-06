@@ -26,12 +26,12 @@
 // std
 #include <memory>
 
-class DynamicWallpaperData;
+class DynamicWallpaperPackage;
 class SunPath;
 
 class DynamicWallpaperModel {
 public:
-    explicit DynamicWallpaperModel(const DynamicWallpaperData* wallpaper,
+    explicit DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper,
         qreal latitude, qreal longitude);
     ~DynamicWallpaperModel();
 

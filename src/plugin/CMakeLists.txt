@@ -1,7 +1,7 @@
 set(wallpaperplugin_SRCS
     DynamicWallpaper.cc
-    DynamicWallpaperData.cc
     DynamicWallpaperModel.cc
+    DynamicWallpaperPackage.cc
     SunPath.cc
     SunPosition.cc
     WallpapersModel.cc

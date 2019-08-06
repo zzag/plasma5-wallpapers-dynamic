@@ -25,8 +25,8 @@
 // std
 #include <memory>
 
-class DynamicWallpaperData;
 class DynamicWallpaperModel;
+class DynamicWallpaperPackage;
 
 class DynamicWallpaper : public QObject {
     Q_OBJECT
@@ -90,7 +90,7 @@ private:
     Status m_status = Status::Ok;
     QString m_error;
     QString m_wallpaperId;
-    std::unique_ptr<DynamicWallpaperData> m_wallpaper;
+    std::unique_ptr<DynamicWallpaperPackage> m_wallpaper;
     std::unique_ptr<DynamicWallpaperModel> m_model;
     QUrl m_bottomLayer;
     QUrl m_topLayer;

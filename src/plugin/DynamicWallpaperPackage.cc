@@ -17,7 +17,7 @@
  */
 
 // Own
-#include "DynamicWallpaperData.h"
+#include "DynamicWallpaperPackage.h"
 
 // Qt
 #include <QFile>
@@ -27,12 +27,12 @@
 #include <QJsonObject>
 #include <QStandardPaths>
 
-QString DynamicWallpaperData::name() const
+QString DynamicWallpaperPackage::name() const
 {
     return m_name;
 }
 
-QVector<Image> DynamicWallpaperData::images() const
+QVector<Image> DynamicWallpaperPackage::images() const
 {
     return m_images;
 }
@@ -159,7 +159,7 @@ static QVector<Image> parseImages(const Context& context, const QJsonValue& valu
     return images;
 }
 
-std::unique_ptr<DynamicWallpaperData> DynamicWallpaperData::load(const QString& id)
+std::unique_ptr<DynamicWallpaperPackage> DynamicWallpaperPackage::load(const QString& id)
 {
     const QString fileName = QStandardPaths::locate(
         QStandardPaths::GenericDataLocation,
@@ -183,7 +183,7 @@ std::unique_ptr<DynamicWallpaperData> DynamicWallpaperData::load(const QString& 
 
     const QJsonObject& rootObject = metadata.object();
 
-    std::unique_ptr<DynamicWallpaperData> wallpaper = std::make_unique<DynamicWallpaperData>();
+    std::unique_ptr<DynamicWallpaperPackage> wallpaper = std::make_unique<DynamicWallpaperPackage>();
     wallpaper->m_images = parseImages(context, rootObject.value(QLatin1String("images")));
     wallpaper->m_name = rootObject.value(QLatin1String("name")).toString();
 

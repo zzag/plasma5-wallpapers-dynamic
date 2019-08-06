@@ -39,7 +39,7 @@ struct Image {
     QUrl url;
 };
 
-class DynamicWallpaperData {
+class DynamicWallpaperPackage {
 public:
     /**
      * Returns the name of the dynamic wallpaper.
@@ -56,7 +56,7 @@ public:
      *
      * If there is no such wallpaper, @c null is returned.
      */
-    static std::unique_ptr<DynamicWallpaperData> load(const QString& id);
+    static std::unique_ptr<DynamicWallpaperPackage> load(const QString& id);
 
 private:
     QString m_name;

@@ -18,8 +18,8 @@
 
 // Own
 #include "DynamicWallpaper.h"
-#include "DynamicWallpaperData.h"
 #include "DynamicWallpaperModel.h"
+#include "DynamicWallpaperPackage.h"
 
 DynamicWallpaper::DynamicWallpaper(QObject* parent)
     : QObject(parent)
@@ -184,7 +184,7 @@ void DynamicWallpaper::reloadWallpaper()
 {
     m_wallpaper.reset();
 
-    std::unique_ptr<DynamicWallpaperData> wallpaper = DynamicWallpaperData::load(m_wallpaperId);
+    std::unique_ptr<DynamicWallpaperPackage> wallpaper = DynamicWallpaperPackage::load(m_wallpaperId);
     if (!wallpaper) {
         setError(QStringLiteral("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
         setStatus(Status::Error);
