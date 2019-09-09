@@ -30,8 +30,7 @@ class DynamicWallpaperPackage;
 
 class DynamicWallpaperModel {
 public:
-    explicit DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper,
-        qreal latitude, qreal longitude);
+    DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude);
     ~DynamicWallpaperModel();
 
     /**
