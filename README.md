@@ -76,6 +76,7 @@ something like this
 {
   "name": "Eyecandy Wallpaper",
   "preview": "preview.png",
+  "type": "solar",
   "images": [
     {
       "azimuth": 2.73,
