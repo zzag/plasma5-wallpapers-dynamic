@@ -19,7 +19,6 @@
 // Own
 #include "DynamicWallpaperModel.h"
 #include "DynamicWallpaperPackage.h"
-#include "SunPath.h"
 #include "SunPosition.h"
 
 // Qt
@@ -30,14 +29,16 @@
 
 const static qreal ARC_LENGTH = 2 * M_PI;
 
-static qreal computeTime(const SunPath* path, const QVector3D& position)
+static qreal computeTime(const SunPath& path, const SunPosition& position)
 {
-    const QVector3D v1 = path->midnight() - path->center();
-    const QVector3D v2 = position - path->center();
+    const QVector3D projected = path.project(position);
+
+    const QVector3D v1 = path.midnight() - path.center();
+    const QVector3D v2 = projected - path.center();
 
     const QVector3D cross = QVector3D::crossProduct(v1, v2);
     const float dot = QVector3D::dotProduct(v1, v2);
-    const float det = QVector3D::dotProduct(path->normal(), cross);
+    const float det = QVector3D::dotProduct(path.normal(), cross);
 
     qreal angle = std::atan2(det, dot);
     if (angle < 0)
@@ -52,18 +53,26 @@ DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperPackage* wall
     , m_longitude(longitude)
     , m_time(0)
 {
-    m_sunPath = std::make_unique<SunPath>(m_dateTime, latitude, longitude);
-    if (!m_sunPath->isValid())
+    m_sunPath = SunPath(m_dateTime, latitude, longitude);
+    if (!m_sunPath.isValid())
         return;
 
-    const QVector<Image> images = wallpaper->images();
-    for (const Image& image : images) {
-        const QVector3D projection = m_sunPath->project(image.position);
-        if (projection.isNull())
-            continue;
-        Knot knot { computeTime(m_sunPath.get(), projection), image.url };
-        m_knots << knot;
+    const QVector<WallpaperImage> images = wallpaper->images();
+    for (const WallpaperImage& image : images) {
+        qreal time;
+
+        switch (wallpaper->type()) {
+        case WallpaperType::Solar:
+            time = computeTime(m_sunPath, image.position);
+            break;
+        case WallpaperType::Timed:
+            time = image.time;
+            break;
+        }
+
+        m_knots << Knot { time, image.url };
     }
+
     std::sort(m_knots.begin(), m_knots.end());
 
     update();
@@ -82,7 +91,7 @@ bool DynamicWallpaperModel::isExpired() const
 
 bool DynamicWallpaperModel::isValid() const
 {
-    return m_sunPath->isValid();
+    return m_sunPath.isValid();
 }
 
 QUrl DynamicWallpaperModel::bottomLayer() const
@@ -149,7 +158,5 @@ void DynamicWallpaperModel::update()
 {
     const QDateTime now(QDateTime::currentDateTime());
     const SunPosition position(now, m_latitude, m_longitude);
-    const QVector3D projection(m_sunPath->project(position));
-    if (!projection.isNull())
-        m_time = computeTime(m_sunPath.get(), projection);
+    m_time = computeTime(m_sunPath, position);
 }

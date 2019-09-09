@@ -18,16 +18,15 @@
 
 #pragma once
 
+// Own
+#include "SunPath.h"
+
 // Qt
 #include <QDateTime>
 #include <QUrl>
 #include <QVector>
 
-// std
-#include <memory>
-
 class DynamicWallpaperPackage;
-class SunPath;
 
 class DynamicWallpaperModel {
 public:
@@ -84,7 +83,7 @@ private:
     QDateTime m_dateTime;
     qreal m_latitude;
     qreal m_longitude;
-    std::unique_ptr<SunPath> m_sunPath;
+    SunPath m_sunPath;
     QVector<Knot> m_knots;
     qreal m_time;
 };

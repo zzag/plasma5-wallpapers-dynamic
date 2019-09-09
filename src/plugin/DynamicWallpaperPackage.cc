@@ -25,6 +25,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSet>
 #include <QStandardPaths>
 
 QString DynamicWallpaperPackage::name() const
@@ -32,13 +33,19 @@ QString DynamicWallpaperPackage::name() const
     return m_name;
 }
 
-QVector<Image> DynamicWallpaperPackage::images() const
+WallpaperType DynamicWallpaperPackage::type() const
+{
+    return m_type;
+}
+
+QVector<WallpaperImage> DynamicWallpaperPackage::images() const
 {
     return m_images;
 }
 
 struct Context {
     QString packagePath;
+    WallpaperType type;
 };
 
 static QString imagePath(const Context& context, const QString& fileName)
@@ -46,7 +53,7 @@ static QString imagePath(const Context& context, const QString& fileName)
     return context.packagePath + QLatin1String("/images/") + fileName;
 }
 
-static bool validateImage(const Context& context, const QJsonObject& object)
+static bool validateSolarImage(const Context& context, const QJsonObject& object)
 {
     if (object.isEmpty())
         return false;
@@ -76,6 +83,21 @@ static bool validateImage(const Context& context, const QJsonObject& object)
     return true;
 }
 
+static bool validateTimedImage(const Context& context, const QJsonObject& object)
+{
+    if (object.isEmpty())
+        return false;
+
+    if (!object.contains(QLatin1String("time")))
+        return false;
+
+    const QString fileName = object.value(QLatin1String("filename")).toString();
+    if (!QFileInfo(imagePath(context, fileName)).exists())
+        return false;
+
+    return true;
+}
+
 static bool validateImages(const Context& context, const QJsonArray& array)
 {
     if (array.isEmpty())
@@ -86,8 +108,16 @@ static bool validateImages(const Context& context, const QJsonArray& array)
             return false;
 
         const QJsonObject& image = value.toObject();
-        if (!validateImage(context, image))
-            return false;
+        switch (context.type) {
+        case WallpaperType::Solar:
+            if (!validateSolarImage(context, image))
+                return false;
+            break;
+        case WallpaperType::Timed:
+            if (!validateTimedImage(context, image))
+                return false;
+            break;
+        }
     }
 
     return true;
@@ -132,7 +162,7 @@ static bool validate(const Context& context, const QJsonDocument& document)
     return true;
 }
 
-static Image parseImage(const Context& context, const QJsonValue& value)
+static WallpaperImage parseSolarImage(const Context& context, const QJsonValue& value)
 {
     const QJsonObject& object = value.toObject();
 
@@ -143,20 +173,69 @@ static Image parseImage(const Context& context, const QJsonValue& value)
     const QString fileName = object.value(QLatin1String("filename")).toString();
     const QUrl url = QUrl::fromLocalFile(imagePath(context, fileName));
 
-    return { position, url };
+    return { .position = position, .url = url };
 }
 
-static QVector<Image> parseImages(const Context& context, const QJsonValue& value)
+static WallpaperImage parseTimedImage(const Context& context, const QJsonValue& value)
+{
+    const QJsonObject& object = value.toObject();
+
+    const qreal time = object.value(QLatin1String("time")).toDouble();
+    const QString fileName = object.value(QLatin1String("filename")).toString();
+    const QUrl url = QUrl::fromLocalFile(imagePath(context, fileName));
+
+    return { .time = time, .url = url };
+}
+
+static QVector<WallpaperImage> parseImages(const Context& context, const QJsonValue& value)
 {
     const QJsonArray& array = value.toArray();
 
-    QVector<Image> images;
+    QVector<WallpaperImage> images;
     images.reserve(array.count());
 
-    for (const QJsonValue& image : array)
-        images << parseImage(context, image);
+    for (const QJsonValue& image : array) {
+        switch (context.type) {
+        case WallpaperType::Solar:
+            images << parseSolarImage(context, image);
+            break;
+        case WallpaperType::Timed:
+            images << parseTimedImage(context, image);
+            break;
+        }
+    }
 
     return images;
+}
+
+static bool validateWallpaperType(const QJsonDocument& document)
+{
+    if (!document.isObject())
+        return false;
+
+    const QJsonValue value = document.object().value(QLatin1String("type"));
+    if (value.isUndefined())
+        return true;
+
+    const QSet<QString> knownWallpaperTypes {
+        QStringLiteral("solar"),
+        QStringLiteral("timed"),
+    };
+
+    if (!knownWallpaperTypes.contains(value.toString()))
+        return false;
+
+    return true;
+}
+
+static WallpaperType parseWallpaperType(const QJsonDocument& document)
+{
+    const QJsonValue value = document.object().value(QLatin1String("type"));
+    if (value == QStringLiteral("solar"))
+        return WallpaperType::Solar;
+    if (value == QStringLiteral("timed"))
+        return WallpaperType::Timed;
+    return WallpaperType::Solar;
 }
 
 std::unique_ptr<DynamicWallpaperPackage> DynamicWallpaperPackage::load(const QString& id)
@@ -174,9 +253,12 @@ std::unique_ptr<DynamicWallpaperPackage> DynamicWallpaperPackage::load(const QSt
     const QJsonDocument metadata = QJsonDocument::fromJson(file.readAll());
     if (metadata.isNull())
         return nullptr;
+    if (!validateWallpaperType(metadata))
+        return nullptr;
 
     Context context;
     context.packagePath = QFileInfo(fileName).absolutePath();
+    context.type = parseWallpaperType(metadata);
 
     if (!validate(context, metadata))
         return nullptr;
@@ -186,6 +268,7 @@ std::unique_ptr<DynamicWallpaperPackage> DynamicWallpaperPackage::load(const QSt
     std::unique_ptr<DynamicWallpaperPackage> wallpaper = std::make_unique<DynamicWallpaperPackage>();
     wallpaper->m_images = parseImages(context, rootObject.value(QLatin1String("images")));
     wallpaper->m_name = rootObject.value(QLatin1String("name")).toString();
+    wallpaper->m_type = context.type;
 
     return wallpaper;
 }

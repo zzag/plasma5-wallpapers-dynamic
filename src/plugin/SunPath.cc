@@ -32,6 +32,10 @@ static QVector3D computeNormal(const QVector3D& center, const QVector3D& v1, con
     return cross.normalized();
 }
 
+SunPath::SunPath()
+{
+}
+
 SunPath::SunPath(const QDateTime& now, qreal latitude, qreal longitude)
 {
     auto at = [&](const QTime& time) {

@@ -28,11 +28,31 @@
 // std
 #include <memory>
 
-struct Image {
+/**
+ * This enum type is used to specify type of the dynamic wallpaper.
+ */
+enum class WallpaperType {
+    /**
+     * The Sun's position is provided along each image in the wallpaper.
+     */
+    Solar,
+    /**
+     * A number between 0 and 1 is provided along each image.
+     */
+    Timed,
+};
+
+struct WallpaperImage {
     /**
      * Position of the Sun when the picture was taken.
      */
-    SunPosition position;
+    SunPosition position = SunPosition();
+    /**
+     * A number between 0 and 1 that specifies how much the day has advanced.
+     *
+     * 0 and 1 correspond to midnight, 0.5 corresponds to noon.
+     */
+    qreal time = 0;
     /**
      * Path to the picture.
      */
@@ -47,9 +67,14 @@ public:
     QString name() const;
 
     /**
+     * Returns the type of the dynamic wallpaper.
+     */
+    WallpaperType type() const;
+
+    /**
      * Returns all images stored in the dynamic wallpaper.
      */
-    QVector<Image> images() const;
+    QVector<WallpaperImage> images() const;
 
     /**
      * Loads dynamic wallpaper with the given id.
@@ -60,5 +85,6 @@ public:
 
 private:
     QString m_name;
-    QVector<Image> m_images;
+    QVector<WallpaperImage> m_images;
+    WallpaperType m_type;
 };
