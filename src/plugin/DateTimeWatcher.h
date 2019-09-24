@@ -16,19 +16,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-// Own
-#include "plugin.h"
-#include "DateTimeWatcher.h"
-#include "DynamicWallpaper.h"
-#include "WallpapersModel.h"
+#pragma once
 
-// Qt
-#include <QQmlEngine>
+#include <QObject>
 
-void Plugin::registerTypes(const char* uri)
-{
-    Q_ASSERT(uri == QLatin1String("com.github.zzag.private.wallpaper"));
-    qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");
-    qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
-    qmlRegisterType<DateTimeWatcher>(uri, 1, 1, "DateTimeWatcher");
-}
+class DateTimeWatcherPrivate;
+
+class DateTimeWatcher : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
+
+public:
+    explicit DateTimeWatcher(QObject* parent = nullptr);
+    ~DateTimeWatcher() override;
+
+    bool isActive() const;
+    void setActive(bool set);
+
+signals:
+    void activeChanged();
+    void dateTimeChanged();
+
+private:
+    QScopedPointer<DateTimeWatcherPrivate> d;
+
+    Q_DISABLE_COPY(DateTimeWatcher)
+};

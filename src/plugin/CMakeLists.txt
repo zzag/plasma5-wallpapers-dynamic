@@ -1,12 +1,21 @@
 set(wallpaperplugin_SRCS
+    DateTimeWatcher.cc
     DynamicWallpaper.cc
     DynamicWallpaperModel.cc
     DynamicWallpaperPackage.cc
+    PlatformDateTimeWatcher.cc
     SunPath.cc
     SunPosition.cc
     WallpapersModel.cc
     plugin.cc
 )
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(wallpaperplugin_SRCS
+        DateTimeWatcher_linux.cc
+        ${wallpaperplugin_SRCS}
+    )
+endif()
 
 add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})
 

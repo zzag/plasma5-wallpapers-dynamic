@@ -25,7 +25,7 @@ import org.kde.plasma.core 2.0
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-import com.github.zzag.private.wallpaper 1.0
+import com.github.zzag.private.wallpaper 1.1
 
 Item {
     id: root
@@ -77,6 +77,11 @@ Item {
         latitude: latitude
         longitude: longitude
         wallpaperId: wallpaperId
+    }
+
+    DateTimeWatcher {
+        active: dynamicWallpaper.status == DynamicWallpaper.Ok
+        onDateTimeChanged: dynamicWallpaper.update()
     }
 
     Timer {
