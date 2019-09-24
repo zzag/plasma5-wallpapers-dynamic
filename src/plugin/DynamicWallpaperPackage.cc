@@ -173,7 +173,11 @@ static WallpaperImage parseSolarImage(const Context& context, const QJsonValue& 
     const QString fileName = object.value(QLatin1String("filename")).toString();
     const QUrl url = QUrl::fromLocalFile(imagePath(context, fileName));
 
-    return { .position = position, .url = url };
+    WallpaperImage image = {};
+    image.position = position;
+    image.url = url;
+
+    return image;
 }
 
 static WallpaperImage parseTimedImage(const Context& context, const QJsonValue& value)
@@ -184,7 +188,11 @@ static WallpaperImage parseTimedImage(const Context& context, const QJsonValue& 
     const QString fileName = object.value(QLatin1String("filename")).toString();
     const QUrl url = QUrl::fromLocalFile(imagePath(context, fileName));
 
-    return { .time = time, .url = url };
+    WallpaperImage image = {};
+    image.time = time;
+    image.url = url;
+
+    return image;
 }
 
 static QVector<WallpaperImage> parseImages(const Context& context, const QJsonValue& value)
