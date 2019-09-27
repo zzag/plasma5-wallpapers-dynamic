@@ -10,7 +10,7 @@ Type=Service
 Icon=plasma
 X-KDE-ServiceTypes=Plasma/Wallpaper
 
-X-KDE-PluginInfo-Author=Vlad Zagorodniy
+X-KDE-PluginInfo-Author=Vlad Zahorodnii
 X-KDE-PluginInfo-Email=vladzzag@gmail.com
 X-KDE-PluginInfo-Name=com.github.zzag.wallpaper
 X-KDE-PluginInfo-License=GPLv2+
