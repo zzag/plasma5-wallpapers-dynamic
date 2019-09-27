@@ -62,11 +62,6 @@ struct WallpaperImage {
 class DynamicWallpaperPackage {
 public:
     /**
-     * Returns the name of the dynamic wallpaper.
-     */
-    QString name() const;
-
-    /**
      * Returns the type of the dynamic wallpaper.
      */
     WallpaperType type() const;
@@ -84,7 +79,6 @@ public:
     static std::unique_ptr<DynamicWallpaperPackage> load(const QString& id);
 
 private:
-    QString m_name;
     QVector<WallpaperImage> m_images;
     WallpaperType m_type;
 };

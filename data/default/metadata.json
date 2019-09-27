@@ -1,46 +1,52 @@
 {
-  "name": "Default",
-  "preview": "north.png",
-  "images": [
-    {
-      "azimuth": 2.73,
-      "elevation": -45.17,
-      "filename": "north.png"
+    "KPlugin": {
+        "Id": "default",
+        "Name": "Default"
     },
-    {
-      "azimuth": 56.83,
-      "elevation": -24.75,
-      "filename": "north-east.png"
-    },
-    {
-      "azimuth": 92.15,
-      "elevation": 0.98,
-      "filename": "east.png"
-    },
-    {
-      "azimuth": 128.26,
-      "elevation": 29.67,
-      "filename": "south-east.png"
-    },
-    {
-      "azimuth": 182.68,
-      "elevation": 43.0,
-      "filename": "south.png"
-    },
-    {
-      "azimuth": 235.51,
-      "elevation": 27.56,
-      "filename": "south-west.png"
-    },
-    {
-      "azimuth": 270.81,
-      "elevation": -1.41,
-      "filename": "west.png"
-    },
-    {
-      "azimuth": 307.09,
-      "elevation": -31.25,
-      "filename": "north-west.png"
+    "Wallpaper": {
+        "Preview": "north.png",
+        "Type": "solar",
+        "MetaData": [
+            {
+                "Azimuth": 2.73,
+                "Elevation": -45.17,
+                "FileName": "north.png"
+            },
+            {
+                "Azimuth": 56.83,
+                "Elevation": -24.75,
+                "FileName": "north-east.png"
+            },
+            {
+                "Azimuth": 92.15,
+                "Elevation": 0.98,
+                "FileName": "east.png"
+            },
+            {
+                "Azimuth": 128.26,
+                "Elevation": 29.67,
+                "FileName": "south-east.png"
+            },
+            {
+                "Azimuth": 182.68,
+                "Elevation": 43.0,
+                "FileName": "south.png"
+            },
+            {
+                "Azimuth": 235.51,
+                "Elevation": 27.56,
+                "FileName": "south-west.png"
+            },
+            {
+                "Azimuth": 270.81,
+                "Elevation": -1.41,
+                "FileName": "west.png"
+            },
+            {
+                "Azimuth": 307.09,
+                "Elevation": -31.25,
+                "FileName": "north-west.png"
+            }
+        ]
     }
-  ]
 }

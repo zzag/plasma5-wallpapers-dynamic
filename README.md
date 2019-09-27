@@ -74,51 +74,56 @@ something like this
 
 ```json
 {
-  "name": "Eyecandy Wallpaper",
-  "preview": "preview.png",
-  "type": "solar",
-  "images": [
-    {
-      "azimuth": 2.73,
-      "elevation": -45.17,
-      "filename": "image_1.png"
+    "KPlugin": {
+        "Id": "fancy-wallpaper",
+        "Name": "My Fancy Wallpaper"
     },
-    {
-      "azimuth": 56.83,
-      "elevation": -24.75,
-      "filename": "image_2.png"
-    },
-    {
-      "azimuth": 92.15,
-      "elevation": 0.98,
-      "filename": "image_3.png"
-    },
-    {
-      "azimuth": 128.26,
-      "elevation": 29.67,
-      "filename": "image_4.png"
-    },
-    {
-      "azimuth": 182.68,
-      "elevation": 43.0,
-      "filename": "image_5.png"
-    },
-    {
-      "azimuth": 235.51,
-      "elevation": 27.56,
-      "filename": "image_6.png"
-    },
-    {
-      "azimuth": 270.81,
-      "elevation": -1.41,
-      "filename": "image_7.png"
-    },
-    {
-      "azimuth": 307.09,
-      "elevation": -31.25,
-      "filename": "image_8.png"
+    "Wallpaper": {
+        "Preview": "preview.png",
+        "Type": "solar",
+        "MetaData": [
+            {
+                "Azimuth": 2.73,
+                "Elevation": -45.17,
+                "FileName": "image_1.png"
+            },
+            {
+                "Azimuth": 56.83,
+                "Elevation": -24.75,
+                "FileName": "image_2.png"
+            },
+            {
+                "Azimuth": 92.15,
+                "Elevation": 0.98,
+                "FileName": "image_3.png"
+            },
+            {
+                "Azimuth": 128.26,
+                "Elevation": 29.67,
+                "FileName": "image_4.png"
+            },
+            {
+                "Azimuth": 182.68,
+                "Elevation": 43.0,
+                "FileName": "image_5.png"
+            },
+            {
+                "Azimuth": 235.51,
+                "Elevation": 27.56,
+                "FileName": "image_6.png"
+            },
+            {
+                "Azimuth": 270.81,
+                "Elevation": -1.41,
+                "FileName": "image_7.png"
+            },
+            {
+                "Azimuth": 307.09,
+                "Elevation": -31.25,
+                "FileName": "image_8.png"
+            }
+        ]
     }
-  ]
 }
 ```
 
@@ -127,18 +132,19 @@ All images(including the preview image) have to be stored in a folder called
 configuration dialog.
 
 ```
-└── foobar
-    ├── images
-    │   ├── image_1.png
-    │   ├── image_2.png
-    │   ├── image_3.png
-    │   ├── image_4.png
-    │   ├── image_5.png
-    │   ├── image_6.png
-    │   ├── image_7.png
-    │   ├── image_8.png
-    │   └── preview.png
-    └── metadata.json
+foobar
+├── contents
+│   └── images
+│       ├── image_1.png
+│       ├── image_2.png
+│       ├── image_3.png
+│       ├── image_4.png
+│       ├── image_5.png
+│       ├── image_6.png
+│       ├── image_7.png
+│       ├── image_8.png
+│       └── preview.png
+└── metadata.json
 ```
 
 Once you have all images and the metadata prepared, you can install the wallpaper

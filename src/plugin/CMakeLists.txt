@@ -22,6 +22,8 @@ add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})
 target_link_libraries(wallpaperplugin
     Qt5::Gui
     Qt5::Qml
+
+    KF5::Package
 )
 
 install(TARGETS wallpaperplugin DESTINATION ${KDE_INSTALL_QMLDIR}/com/github/zzag/private/wallpaper)

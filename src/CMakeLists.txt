@@ -1,4 +1,6 @@
 find_package(KF5 REQUIRED COMPONENTS
+    I18n
+    Package
     Plasma
 )
 
@@ -8,6 +10,7 @@ find_package(Qt5 CONFIG REQUIRED COMPONENTS
     Qml
 )
 
+add_subdirectory(kpackage-integration)
 add_subdirectory(plugin)
 add_subdirectory(translations)
 

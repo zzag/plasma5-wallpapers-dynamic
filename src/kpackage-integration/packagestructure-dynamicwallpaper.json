@@ -1,0 +1,16 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "vladzzag@gmail.com",
+                "Name": "Vlad Zahorodnii"
+            }
+        ],
+        "Id": "Wallpaper/Dynamic",
+        "Name": "Dynamic Wallpaper",
+        "ServiceTypes": [
+            "KPackage/PackageStructure"
+        ],
+        "Version": "1"
+    }
+}

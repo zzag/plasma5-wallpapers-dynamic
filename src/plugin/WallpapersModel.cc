@@ -19,12 +19,11 @@
 // Own
 #include "WallpapersModel.h"
 
+// KF
+#include <KPackage/PackageLoader>
+
 // Qt
-#include <QDir>
-#include <QFile>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <QStandardPaths>
 
 WallpapersModel::WallpapersModel(QObject* parent)
     : QAbstractListModel(parent)
@@ -83,53 +82,43 @@ int WallpapersModel::indexOf(const QString& id) const
     return std::distance(m_wallpapers.begin(), it);
 }
 
+static void forEachPackage(const QString& packageFormat, std::function<void(const KPackage::Package&)> callback)
+{
+    const QList<KPluginMetaData> packages = KPackage::PackageLoader::self()->listPackages(packageFormat);
+    for (const KPluginMetaData& metaData : packages) {
+        const QString pluginId = metaData.pluginId();
+        const KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(packageFormat, pluginId);
+        if (package.isValid())
+            callback(package);
+    }
+}
+
+static QString previewFromMetaData(const KPluginMetaData& metaData)
+{
+    const QJsonObject wallpaperObject = metaData.rawData().value(QLatin1String("Wallpaper")).toObject();
+    if (wallpaperObject.isEmpty())
+        return QString();
+
+    return wallpaperObject.value(QLatin1String("Preview")).toString();
+}
+
 void WallpapersModel::load()
 {
-    const QStringList dirs = QStandardPaths::locateAll(
-        QStandardPaths::GenericDataLocation,
-        QStringLiteral("dynamicwallpapers/"),
-        QStandardPaths::LocateDirectory);
-    if (dirs.isEmpty())
-        return;
+    QVector<Wallpaper> wallpapers;
 
-    QHash<QString, Wallpaper> wallpapers;
-    for (const QString& root : dirs) {
-        const QDir dir(root);
-        const QStringList ids = dir.entryList(QDir::Dirs);
+    forEachPackage(QStringLiteral("Wallpaper/Dynamic"), [&](const KPackage::Package& package) {
+        Wallpaper wallpaper = {};
+        wallpaper.id = package.metadata().pluginId();
+        wallpaper.name = package.metadata().name();
 
-        for (const QString& id : ids) {
-            const QStringList parts { root, id, QStringLiteral("metadata.json") };
-            QFile file(parts.join('/'));
-            if (!file.open(QIODevice::ReadOnly))
-                continue;
+        const QString previewFileName = previewFromMetaData(package.metadata());
+        if (!previewFileName.isEmpty())
+            wallpaper.previewUrl = package.fileUrl(QByteArrayLiteral("images"), previewFileName);
 
-            const QJsonDocument metadata = QJsonDocument::fromJson(file.readAll());
-            if (metadata.isNull())
-                continue;
-
-            if (!metadata.isObject())
-                continue;
-
-            const QJsonObject rootObject = metadata.object();
-            if (!rootObject.contains(QLatin1String("name")))
-                continue;
-
-            Wallpaper wallpaper;
-
-            wallpaper.name = rootObject.value(QLatin1String("name")).toString();
-            wallpaper.id = id;
-
-            const QString previewFileName = rootObject.value(QLatin1String("preview")).toString();
-            if (!previewFileName.isEmpty()) {
-                const QStringList parts { root, id, QStringLiteral("images"), previewFileName };
-                wallpaper.previewUrl = QUrl::fromLocalFile(parts.join('/'));
-            }
-
-            wallpapers.insert(id, wallpaper);
-        }
-    }
+        wallpapers << wallpaper;
+    });
 
     beginResetModel();
-    m_wallpapers = wallpapers.values().toVector();
+    m_wallpapers = wallpapers;
     endResetModel();
 }
