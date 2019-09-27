@@ -68,6 +68,8 @@ DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperPackage* wall
         case WallpaperType::Timed:
             time = image.time;
             break;
+        default:
+            Q_UNREACHABLE();
         }
 
         m_knots << Knot { time, image.url };
