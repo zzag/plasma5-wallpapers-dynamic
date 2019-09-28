@@ -36,10 +36,10 @@ SunPath::SunPath()
 {
 }
 
-SunPath::SunPath(const QDateTime& now, qreal latitude, qreal longitude)
+SunPath::SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude)
 {
     auto at = [&](const QTime& time) {
-        return SunPosition(QDateTime(now.date(), time), latitude, longitude);
+        return SunPosition(QDateTime(dateTime.date(), time), latitude, longitude);
     };
 
     const int numSamples = 24;

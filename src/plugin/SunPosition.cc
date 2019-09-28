@@ -99,11 +99,11 @@ SunPosition::SunPosition(qreal elevation, qreal azimuth)
 {
 }
 
-SunPosition::SunPosition(const QDateTime& time, qreal latitude, qreal longitude)
+SunPosition::SunPosition(const QDateTime& dateTime, qreal latitude, qreal longitude)
 {
-    const qreal t = (time.date().toJulianDay() - 2451545.0) / 36525.0;
+    const qreal t = (dateTime.date().toJulianDay() - 2451545.0) / 36525.0;
 
-    const qreal progress = (QDateTime(time.date()).secsTo(time) - time.offsetFromUtc()) / 86400.0;
+    const qreal progress = (QDateTime(dateTime.date()).secsTo(dateTime) - dateTime.offsetFromUtc()) / 86400.0;
     qreal azimuth = std::fmod(2 * M_PI * progress + equationOfTime(t) + radians(longitude), 2 * M_PI) - M_PI;
 
     const qreal d = solarDeclination(t);

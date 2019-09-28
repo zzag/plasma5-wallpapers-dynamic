@@ -27,7 +27,7 @@ class SunPosition;
 class SunPath {
 public:
     SunPath();
-    SunPath(const QDateTime& now, qreal latitude, qreal longitude);
+    SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude);
 
     /**
      * Whether this sun path is valid.

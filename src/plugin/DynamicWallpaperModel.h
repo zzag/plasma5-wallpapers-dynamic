@@ -34,7 +34,7 @@ public:
     ~DynamicWallpaperModel();
 
     /**
-     * Whether the model is no longer actual.
+     * Whether the model is no longer actual and must be destroyed.
      */
     bool isExpired() const;
 

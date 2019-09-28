@@ -26,7 +26,7 @@ class SunPosition {
 public:
     SunPosition();
     SunPosition(qreal elevation, qreal azimuth);
-    SunPosition(const QDateTime& time, qreal latitude, qreal longitude);
+    SunPosition(const QDateTime& dateTime, qreal latitude, qreal longitude);
 
     /**
      * Elevation of the Sun above the local horizon.
