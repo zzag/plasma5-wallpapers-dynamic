@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Id": "Unique id",
+        "Name": "Human-readable name"
+    },
+    "Wallpaper": {
+        "Preview": "preview.png",
+        "Type": "solar",
+        "MetaData": [
+            {
+                "Azimuth": 0,
+                "Elevation": 0,
+                "FileName": "0.png"
+            },
+            ...
+        ]
+    }
+}

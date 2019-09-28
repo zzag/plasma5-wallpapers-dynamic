@@ -1,0 +1,25 @@
+{
+    "KPlugin": {
+        "Id": "Unique id",
+        "Name": "Human-readable name"
+    },
+    "Wallpaper": {
+        "Preview": "preview.png",
+        "Type": "timed",
+        "MetaData": [
+            {
+                "Time": 0.0,
+                "FileName": "0.jpeg"
+            },
+            {
+                "Time": 0.5,
+                "FileName": "1.jpeg"
+            },
+            {
+                "Time": 0.7,
+                "FileName": "2.jpeg"
+            },
+            ...
+        ]
+    }
+}
