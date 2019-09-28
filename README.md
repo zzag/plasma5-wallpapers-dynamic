@@ -150,10 +150,5 @@ foobar
 Once you have all images and the metadata prepared, you can install the wallpaper
 
 ```sh
-# Install the wallpaper user-wide.
-mkdir -p ~/.local/share/dynamicwallpapers
-cp -pr foobar ~/.local/share/dynamicwallpapers/
-
-# Install the wallpaper system-wide.
-sudo cp -pr foobar /usr/share/dynamicwallpapers/
+kpackagetool5 --type Wallpaper/Dynamic --install foobar
 ```
