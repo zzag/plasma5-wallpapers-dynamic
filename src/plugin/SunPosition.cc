@@ -22,14 +22,38 @@
 // Qt
 #include <QtMath>
 
-static qreal degrees(qreal radians)
+// std
+#include <limits>
+
+static qreal julianCenturiesToJulianDay(qreal t)
 {
-    return radians * 180 / M_PI;
+    return 36525.0 * t + 2451545.0;
 }
 
-static qreal radians(qreal degrees)
+static qreal julianDayToJulianCenturies(qreal t)
 {
-    return degrees * M_PI / 180;
+    return (t - 2451545.0) / 36525.0;
+}
+
+static qreal julianCenturies(const QDateTime& dateTime)
+{
+    const qreal jd = dateTime.toSecsSinceEpoch() / 86400.0 + 2440587.5;
+    return julianDayToJulianCenturies(jd);
+}
+
+static qreal sind(qreal value)
+{
+    return std::sin(qDegreesToRadians(value));
+}
+
+static qreal cosd(qreal value)
+{
+    return std::cos(qDegreesToRadians(value));
+}
+
+static qreal tand(qreal value)
+{
+    return std::tan(qDegreesToRadians(value));
 }
 
 static qreal eccentricityEarthOrbit(qreal t)
@@ -39,28 +63,28 @@ static qreal eccentricityEarthOrbit(qreal t)
 
 static qreal solarGeometricMeanAnomaly(qreal t)
 {
-    return radians(357.52911 + t * (35999.05029 - 0.0001537 * t));
+    return 357.52911 + t * (35999.05029 - 0.0001537 * t);
 }
 
 static qreal obliquityCorrection(qreal t)
 {
     const qreal temp1 = 23 + (26 + (21.448 - t * (46.815 + t * (0.00059 - t * 0.001813))) / 60) / 60;
-    const qreal temp2 = 0.00256 * std::cos(radians(125.04 - 1934.136 * t));
-    return radians(temp1 + temp2);
+    const qreal temp2 = 0.00256 * cosd(125.04 - t * 1934.136);
+    return temp1 + temp2;
 }
 
 static qreal solarEquationOfCenter(qreal t)
 {
     const qreal anomaly = solarGeometricMeanAnomaly(t);
-    return radians(std::sin(anomaly) * (1.914602 - t * (0.004817 + 0.000014 * t))
-        + std::sin(2 * anomaly) * (0.019993 - 0.000101 * t)
-        + std::sin(3 * anomaly) * 0.000289);
+    return sind(anomaly) * (1.914602 - t * (0.004817 + t * 0.000014))
+        + sind(2 * anomaly) * (0.019993 - t * 0.000101)
+        + sind(3 * anomaly) * 0.000289;
 }
 
 static qreal solarGeometricMeanLongitude(qreal t)
 {
     const qreal l = std::fmod(280.46646 + t * (36000.76983 + t * 0.0003032), 360);
-    return radians(l < 0 ? l + 360 : l);
+    return l < 0 ? l + 360 : l;
 }
 
 static qreal solarTrueLongitude(qreal t)
@@ -70,12 +94,12 @@ static qreal solarTrueLongitude(qreal t)
 
 static qreal solarApparentLongitude(qreal t)
 {
-    return solarTrueLongitude(t) - radians(0.00569 + 0.00478 * std::sin(radians(125.04 - 1934.136 * t)));
+    return solarTrueLongitude(t) - 0.00569 - 0.00478 * sind(125.04 - t * 1934.136);
 }
 
 static qreal solarDeclination(qreal t)
 {
-    return std::asin(std::sin(obliquityCorrection(t)) * std::sin(solarApparentLongitude(t)));
+    return std::asin(sind(obliquityCorrection(t)) * sind(solarApparentLongitude(t)));
 }
 
 static qreal equationOfTime(qreal t)
@@ -83,9 +107,73 @@ static qreal equationOfTime(qreal t)
     const qreal e = eccentricityEarthOrbit(t);
     const qreal m = solarGeometricMeanAnomaly(t);
     const qreal l = solarGeometricMeanLongitude(t);
-    const qreal y = std::pow(std::tan(obliquityCorrection(t) / 2), 2);
-    return y * std::sin(2 * l) - 2 * e * std::sin(m) + 4 * e * y * std::sin(m) * std::cos(2 * l)
-        - 0.5 * y * y * std::sin(4 * l) - 1.25 * e * e * std::sin(2 * m);
+    const qreal y = std::pow(tand(0.5 * obliquityCorrection(t)), 2);
+    const qreal equation = y * sind(2 * l) - 2 * e * sind(m)
+        + 4 * e * y * sind(m) * cosd(2 * l) - 0.5 * y * y * sind(4 * l)
+        - 1.25 * e * e * sind(2 * m);
+    return qRadiansToDegrees(equation);
+}
+
+static qreal hourAngle(qreal t, qreal longitude)
+{
+    const qreal jd = julianCenturiesToJulianDay(t);
+    const qreal offset = (jd - std::round(jd) - 0.5) * 1440;
+
+    qreal angle = std::fmod(longitude + equationOfTime(t) - (720 - offset) / 4, 360);
+    if (angle < -180)
+        angle += 360;
+    if (angle > 180)
+        angle -= 360;
+
+    return angle;
+}
+
+static qreal solarZenith(qreal t, qreal latitude, qreal longitude)
+{
+    const qreal angle = hourAngle(t, longitude);
+    const qreal declination = solarDeclination(t);
+
+    const qreal zenith = std::acos(sind(latitude) * std::sin(declination)
+        + cosd(latitude) * std::cos(declination) * cosd(angle));
+
+    return qRadiansToDegrees(zenith);
+}
+
+static qreal solarAzimuth(qreal t, qreal latitude, qreal longitude, qreal zenith)
+{
+    const qreal denominator = cosd(latitude) * sind(zenith);
+    if (qFuzzyIsNull(denominator))
+        return std::numeric_limits<qreal>::quiet_NaN();
+
+    const qreal declination = solarDeclination(t);
+    const qreal numerator = sind(latitude) * cosd(zenith) - std::sin(declination);
+
+    qreal azimuth = std::acos(qBound(-1.0, numerator / denominator, 1.0));
+
+    if (hourAngle(t, longitude) < 0)
+        azimuth = M_PI - azimuth;
+    else
+        azimuth = azimuth + M_PI;
+
+    return qRadiansToDegrees(azimuth);
+}
+
+static qreal atmosphericRefractionCorrection(qreal e)
+{
+    if (e > 85)
+        return 0;
+
+    const qreal te = tand(e);
+    qreal correction = 0;
+
+    if (e > 5)
+        correction = 58.1 / te - 0.07 / (te * te * te) + 0.000086 / (te * te * te * te * te);
+    else if (e > -0.575)
+        correction = 1735 + e * (-518.2 + e * (103.4 + e * (-12.79 + e * 0.711)));
+    else
+        correction = -20.774 / te;
+
+    return correction / 3600;
 }
 
 SunPosition::SunPosition()
@@ -101,42 +189,13 @@ SunPosition::SunPosition(qreal elevation, qreal azimuth)
 
 SunPosition::SunPosition(const QDateTime& dateTime, qreal latitude, qreal longitude)
 {
-    const qreal t = (dateTime.date().toJulianDay() - 2451545.0) / 36525.0;
+    const qreal jcent = julianCenturies(dateTime);
+    const qreal zenith = solarZenith(jcent, latitude, longitude);
 
-    const qreal progress = (QDateTime(dateTime.date()).secsTo(dateTime) - dateTime.offsetFromUtc()) / 86400.0;
-    qreal azimuth = std::fmod(2 * M_PI * progress + equationOfTime(t) + radians(longitude), 2 * M_PI) - M_PI;
+    m_azimuth = solarAzimuth(jcent, latitude, longitude, zenith);
 
-    const qreal d = solarDeclination(t);
-    qreal zenith = std::acos(std::max(-1.0, std::min(1.0, std::sin(radians(latitude)) * std::sin(radians(d)) + std::cos(radians(latitude)) * std::cos(radians(d)) * std::cos(azimuth))));
-
-    if (azimuth < -M_PI)
-        azimuth += 2 * M_PI;
-
-    const qreal azimuthDenominator = std::cos(radians(latitude)) * std::sin(zenith);
-    if (azimuthDenominator > 1e-6) {
-        const qreal temp = (std::sin(radians(latitude)) * std::cos(zenith) - std::sin(radians(d))) / azimuthDenominator;
-        azimuth = (azimuth > 0 ? -1 : 1) * (M_PI - std::acos(std::max(-1.0, std::min(1.0, temp))));
-    }
-
-    if (azimuth < 0)
-        azimuth += 2 * M_PI;
-
-    const qreal refraction = 90 - degrees(zenith);
-    if (refraction <= 85) {
-        qreal correction = 0;
-        if (refraction > 5) {
-            const qreal temp = std::tan(radians(refraction));
-            correction = 58.1 / temp - 0.07 / std::pow(temp, 3) + 0.000086 / std::pow(temp, 5);
-        } else if (refraction > -0.575) {
-            correction = 1735 + refraction * (-518.2 + refraction * (103.4 + refraction * (-12.79 + refraction * 0.711)));
-        } else {
-            correction = -20.774 / std::tan(radians(refraction));
-        }
-        zenith -= radians(correction / 3600);
-    }
-
-    m_elevation = 90.0 - degrees(zenith);
-    m_azimuth = degrees(azimuth);
+    m_elevation = 90 - zenith;
+    m_elevation += atmosphericRefractionCorrection(m_elevation);
 }
 
 qreal SunPosition::elevation() const
@@ -151,8 +210,9 @@ qreal SunPosition::azimuth() const
 
 QVector3D SunPosition::toVector() const
 {
-    const float x = static_cast<float>(std::cos(radians(m_elevation)) * std::cos(radians(m_azimuth)));
-    const float y = static_cast<float>(std::cos(radians(m_elevation)) * std::sin(radians(m_azimuth)));
-    const float z = static_cast<float>(std::sin(radians(m_elevation)));
+    const float x = static_cast<float>(cosd(m_elevation) * cosd(m_azimuth));
+    const float y = static_cast<float>(cosd(m_elevation) * sind(m_azimuth));
+    const float z = static_cast<float>(sind(m_elevation));
+
     return QVector3D(x, y, z);
 }
