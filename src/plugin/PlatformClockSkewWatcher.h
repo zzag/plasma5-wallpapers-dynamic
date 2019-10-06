@@ -20,18 +20,18 @@
 
 #include <QObject>
 
-class PlatformDateTimeWatcher : public QObject {
+class PlatformClockSkewWatcher : public QObject {
     Q_OBJECT
 
 public:
-    explicit PlatformDateTimeWatcher(QObject* parent = nullptr);
-    ~PlatformDateTimeWatcher() override;
+    explicit PlatformClockSkewWatcher(QObject* parent = nullptr);
+    ~PlatformClockSkewWatcher() override;
 
     virtual bool isValid() const = 0;
 
 signals:
-    void dateTimeChanged();
+    void clockSkewed();
 
 private:
-    Q_DISABLE_COPY(PlatformDateTimeWatcher)
+    Q_DISABLE_COPY(PlatformClockSkewWatcher)
 };

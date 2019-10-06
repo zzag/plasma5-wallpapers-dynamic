@@ -18,27 +18,23 @@
 
 #pragma once
 
-#include <QObject>
+#include "PlatformClockSkewWatcher.h"
 
-class DateTimeWatcherPrivate;
-
-class DateTimeWatcher : public QObject {
+class LinuxClockSkewWatcher : public PlatformClockSkewWatcher {
     Q_OBJECT
-    Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
 
 public:
-    explicit DateTimeWatcher(QObject* parent = nullptr);
-    ~DateTimeWatcher() override;
+    explicit LinuxClockSkewWatcher(QObject* parent = nullptr);
+    ~LinuxClockSkewWatcher() override;
 
-    bool isActive() const;
-    void setActive(bool set);
+    bool isValid() const override;
 
-signals:
-    void activeChanged();
-    void dateTimeChanged();
+private slots:
+    void slotTimerCancelled();
 
 private:
-    QScopedPointer<DateTimeWatcherPrivate> d;
+    int m_fd = -1;
+    bool m_isValid = false;
 
-    Q_DISABLE_COPY(DateTimeWatcher)
+    Q_DISABLE_COPY(LinuxClockSkewWatcher)
 };

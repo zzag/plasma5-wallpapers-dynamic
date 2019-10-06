@@ -18,7 +18,7 @@
 
 // Own
 #include "plugin.h"
-#include "DateTimeWatcher.h"
+#include "ClockSkewWatcher.h"
 #include "DynamicWallpaper.h"
 #include "WallpapersModel.h"
 
@@ -30,5 +30,5 @@ void Plugin::registerTypes(const char* uri)
     Q_ASSERT(uri == QLatin1String("com.github.zzag.private.wallpaper"));
     qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");
     qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
-    qmlRegisterType<DateTimeWatcher>(uri, 1, 1, "DateTimeWatcher");
+    qmlRegisterType<ClockSkewWatcher>(uri, 1, 1, "ClockSkewWatcher");
 }

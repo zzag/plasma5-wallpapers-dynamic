@@ -16,25 +16,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#pragma once
+#include "PlatformClockSkewWatcher.h"
 
-#include "PlatformDateTimeWatcher.h"
+PlatformClockSkewWatcher::PlatformClockSkewWatcher(QObject* parent)
+    : QObject(parent)
+{
+}
 
-class LinuxDateTimeWatcher : public PlatformDateTimeWatcher {
-    Q_OBJECT
-
-public:
-    explicit LinuxDateTimeWatcher(QObject* parent = nullptr);
-    ~LinuxDateTimeWatcher() override;
-
-    bool isValid() const override;
-
-private slots:
-    void slotTimerCancelled();
-
-private:
-    int m_fd = -1;
-    bool m_isValid = false;
-
-    Q_DISABLE_COPY(LinuxDateTimeWatcher)
-};
+PlatformClockSkewWatcher::~PlatformClockSkewWatcher()
+{
+}

@@ -16,13 +16,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "PlatformDateTimeWatcher.h"
+#pragma once
 
-PlatformDateTimeWatcher::PlatformDateTimeWatcher(QObject* parent)
-    : QObject(parent)
-{
-}
+#include <QObject>
 
-PlatformDateTimeWatcher::~PlatformDateTimeWatcher()
-{
-}
+class ClockSkewWatcherPrivate;
+
+class ClockSkewWatcher : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
+
+public:
+    explicit ClockSkewWatcher(QObject* parent = nullptr);
+    ~ClockSkewWatcher() override;
+
+    bool isActive() const;
+    void setActive(bool set);
+
+signals:
+    void activeChanged();
+    void clockSkewed();
+
+private:
+    QScopedPointer<ClockSkewWatcherPrivate> d;
+
+    Q_DISABLE_COPY(ClockSkewWatcher)
+};

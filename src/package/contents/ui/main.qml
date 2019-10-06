@@ -79,9 +79,9 @@ Item {
         wallpaperId: wallpaperId
     }
 
-    DateTimeWatcher {
+    ClockSkewWatcher {
         active: dynamicWallpaper.status == DynamicWallpaper.Ok
-        onDateTimeChanged: dynamicWallpaper.update()
+        onClockSkewed: dynamicWallpaper.update()
     }
 
     Timer {

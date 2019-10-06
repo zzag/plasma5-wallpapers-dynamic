@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "DateTimeWatcher_linux.h"
+#include "ClockSkewWatcher_linux.h"
 
 #include <QSocketNotifier>
 
@@ -24,8 +24,8 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
-LinuxDateTimeWatcher::LinuxDateTimeWatcher(QObject* parent)
-    : PlatformDateTimeWatcher(parent)
+LinuxClockSkewWatcher::LinuxClockSkewWatcher(QObject* parent)
+    : PlatformClockSkewWatcher(parent)
 {
     m_fd = timerfd_create(CLOCK_REALTIME, O_CLOEXEC | O_NONBLOCK);
     if (m_fd == -1) {
@@ -41,26 +41,26 @@ LinuxDateTimeWatcher::LinuxDateTimeWatcher(QObject* parent)
     }
 
     const QSocketNotifier* notifier = new QSocketNotifier(m_fd, QSocketNotifier::Read, this);
-    connect(notifier, &QSocketNotifier::activated, this, &LinuxDateTimeWatcher::slotTimerCancelled);
+    connect(notifier, &QSocketNotifier::activated, this, &LinuxClockSkewWatcher::slotTimerCancelled);
 
     m_isValid = true;
 }
 
-LinuxDateTimeWatcher::~LinuxDateTimeWatcher()
+LinuxClockSkewWatcher::~LinuxClockSkewWatcher()
 {
     if (m_fd != -1)
         close(m_fd);
 }
 
-bool LinuxDateTimeWatcher::isValid() const
+bool LinuxClockSkewWatcher::isValid() const
 {
     return m_isValid;
 }
 
-void LinuxDateTimeWatcher::slotTimerCancelled()
+void LinuxClockSkewWatcher::slotTimerCancelled()
 {
     uint64_t expirationCount;
     read(m_fd, &expirationCount, sizeof(expirationCount));
 
-    emit dateTimeChanged();
+    emit clockSkewed();
 }

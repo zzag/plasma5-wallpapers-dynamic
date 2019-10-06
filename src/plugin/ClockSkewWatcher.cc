@@ -16,32 +16,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "DateTimeWatcher.h"
+#include "ClockSkewWatcher.h"
 #if defined(Q_OS_LINUX)
-#include "DateTimeWatcher_linux.h"
+#include "ClockSkewWatcher_linux.h"
 #endif
 
-class DateTimeWatcherPrivate {
+class ClockSkewWatcherPrivate {
 public:
-    DateTimeWatcherPrivate(DateTimeWatcher* parent);
+    ClockSkewWatcherPrivate(ClockSkewWatcher* parent);
 
     void loadPlatformWatcher();
     void unloadPlatformWatcher();
 
-    DateTimeWatcher* q;
-    QScopedPointer<PlatformDateTimeWatcher> platformWatcher;
+    ClockSkewWatcher* q;
+    QScopedPointer<PlatformClockSkewWatcher> platformWatcher;
     bool isActive = false;
 };
 
-DateTimeWatcherPrivate::DateTimeWatcherPrivate(DateTimeWatcher* parent)
+ClockSkewWatcherPrivate::ClockSkewWatcherPrivate(ClockSkewWatcher* parent)
     : q(parent)
 {
 }
 
-void DateTimeWatcherPrivate::loadPlatformWatcher()
+void ClockSkewWatcherPrivate::loadPlatformWatcher()
 {
 #if defined(Q_OS_LINUX)
-    platformWatcher.reset(new LinuxDateTimeWatcher());
+    platformWatcher.reset(new LinuxClockSkewWatcher());
 #endif
 
     if (!platformWatcher)
@@ -52,31 +52,31 @@ void DateTimeWatcherPrivate::loadPlatformWatcher()
         return;
     }
 
-    QObject::connect(platformWatcher.data(), &PlatformDateTimeWatcher::dateTimeChanged,
-        q, &DateTimeWatcher::dateTimeChanged);
+    QObject::connect(platformWatcher.data(), &PlatformClockSkewWatcher::clockSkewed,
+        q, &ClockSkewWatcher::clockSkewed);
 }
 
-void DateTimeWatcherPrivate::unloadPlatformWatcher()
+void ClockSkewWatcherPrivate::unloadPlatformWatcher()
 {
     platformWatcher.reset();
 }
 
-DateTimeWatcher::DateTimeWatcher(QObject* parent)
+ClockSkewWatcher::ClockSkewWatcher(QObject* parent)
     : QObject(parent)
-    , d(new DateTimeWatcherPrivate(this))
+    , d(new ClockSkewWatcherPrivate(this))
 {
 }
 
-DateTimeWatcher::~DateTimeWatcher()
+ClockSkewWatcher::~ClockSkewWatcher()
 {
 }
 
-bool DateTimeWatcher::isActive() const
+bool ClockSkewWatcher::isActive() const
 {
     return d->isActive;
 }
 
-void DateTimeWatcher::setActive(bool set)
+void ClockSkewWatcher::setActive(bool set)
 {
     if (d->isActive == set)
         return;
