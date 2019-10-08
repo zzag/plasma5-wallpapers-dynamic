@@ -63,7 +63,10 @@ StackView {
     Component {
         id: baseImage
 
-        WallpaperImage {}
+        WallpaperImage {
+            // We have to manually destroy any item pushed onto a StackView.
+            StackView.onRemoved: destroy()
+        }
     }
 
     replaceEnter: Transition {
