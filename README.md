@@ -30,15 +30,21 @@ The dynamic-wallpaper plugin is available from [home:KAMiKAZOW:KDE](https://soft
 Arch Linux:
 
 ```sh
-sudo pacman -S cmake extra-cmake-modules git plasma-framework qt5-base \
-    qt5-declarative
+sudo pacman -S cmake extra-cmake-modules git plasma-framework qt5-base qt5-declarative
+```
+
+Fedora:
+
+```sh
+sudo dnf install cmake extra-cmake-modules git kf5-kpackage-devel kf5-plasma-devel \
+    kf5-ki18n-devel qt5-qtbase-devel qt5-qtdeclarative-devel
 ```
 
 Ubuntu:
 
 ```sh
-sudo apt install cmake extra-cmake-modules git libkf5plasma-dev qtbase5-dev \
-    qtdeclarative5-dev
+sudo apt install cmake extra-cmake-modules git libkf5package-dev libkf5plasma-dev \
+    qtbase5-dev qtdeclarative5-dev
 ```
 
 
