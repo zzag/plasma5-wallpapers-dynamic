@@ -162,21 +162,26 @@ void DynamicWallpaper::reloadModel()
     if (!m_wallpaper)
         return;
 
-    if (qAbs(m_latitude) > 86.5) {
-        const QString pole = m_latitude > 0 ? QStringLiteral("North") : QStringLiteral("South");
-        setError(QStringLiteral("Argh, darn it... It looks like you are located near the %1 pole.").arg(pole));
-        setStatus(Status::Error);
-        return;
+    std::unique_ptr<DynamicWallpaperModel> model;
+
+    switch (m_wallpaper->type()) {
+    case WallpaperType::Solar:
+        model.reset(new SolarDynamicWallpaperModel(m_wallpaper.get(), m_latitude, m_longitude));
+        break;
+    case WallpaperType::Timed:
+        model.reset(new TimedDynamicWallpaperModel(m_wallpaper.get()));
+        break;
     }
 
-    auto model = std::make_unique<DynamicWallpaperModel>(m_wallpaper.get(), m_latitude, m_longitude);
     if (!model->isValid()) {
-        setError(QStringLiteral("Couldn't construct path of the Sun."));
+        setError(QStringLiteral("Couldn't initialize the dynamic wallpaper model."));
         setStatus(Status::Error);
         return;
     }
 
     m_model = std::move(model);
+    m_model->update();
+
     setStatus(Status::Ok);
 }
 

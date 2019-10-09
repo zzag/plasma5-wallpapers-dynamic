@@ -30,26 +30,29 @@ class DynamicWallpaperPackage;
 
 class DynamicWallpaperModel {
 public:
-    DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude);
-    ~DynamicWallpaperModel();
+    virtual ~DynamicWallpaperModel();
 
     /**
-     * Whether the model is no longer actual and must be destroyed.
+     * Returns whether the model is no longer actual and must be destroyed.
+     *
+     * Default implementation returns @c false.
      */
-    bool isExpired() const;
+    virtual bool isExpired() const;
 
     /**
-     * Whether the model is valid.
+     * Returns whether the dynamic wallpaper model is valid.
+     *
+     * Default implementation returns @c true.
      */
-    bool isValid() const;
+    virtual bool isValid() const;
 
     /**
-     * Returns path to image that has to be displayed in the bottom layer.
+     * Returns the path to image that has to be displayed in the bottom layer.
      */
     QUrl bottomLayer() const;
 
     /**
-     * Returns path to image that has to be displayed in the top layer.
+     * Returns the path to image that has to be displayed in the top layer.
      */
     QUrl topLayer() const;
 
@@ -63,11 +66,11 @@ public:
     qreal blendFactor() const;
 
     /**
-     * Updates the state of the model.
+     * Updates the internal state of the dynamic wallpaper model.
      */
-    void update();
+    virtual void update() = 0;
 
-private:
+protected:
     struct Knot {
         bool operator<(const Knot& other) const { return time < other.time; }
         bool operator<=(const Knot& other) const { return time <= other.time; }
@@ -79,10 +82,28 @@ private:
     Knot currentBottomKnot() const;
     Knot currentTopKnot() const;
 
+    QVector<Knot> m_knots;
+    qreal m_time = 0;
+};
+
+class SolarDynamicWallpaperModel : public DynamicWallpaperModel {
+public:
+    SolarDynamicWallpaperModel(const DynamicWallpaperPackage* package, qreal latitude, qreal longitude);
+
+    bool isExpired() const override;
+    bool isValid() const override;
+    void update() override;
+
+private:
+    SunPath m_sunPath;
     QDateTime m_dateTime;
     qreal m_latitude;
     qreal m_longitude;
-    SunPath m_sunPath;
-    QVector<Knot> m_knots;
-    qreal m_time;
+};
+
+class TimedDynamicWallpaperModel : public DynamicWallpaperModel {
+public:
+    explicit TimedDynamicWallpaperModel(const DynamicWallpaperPackage* package);
+
+    void update() override;
 };

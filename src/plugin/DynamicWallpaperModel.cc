@@ -47,11 +47,10 @@ static qreal computeTime(const SunPath& path, const SunPosition& position)
     return angle / ARC_LENGTH;
 }
 
-DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude)
+SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude)
     : m_dateTime(QDateTime::currentDateTime())
     , m_latitude(latitude)
     , m_longitude(longitude)
-    , m_time(0)
 {
     m_sunPath = SunPath(m_dateTime, latitude, longitude);
     if (!m_sunPath.isValid())
@@ -59,25 +58,47 @@ DynamicWallpaperModel::DynamicWallpaperModel(const DynamicWallpaperPackage* wall
 
     const QVector<WallpaperImage> images = wallpaper->images();
     for (const WallpaperImage& image : images) {
-        qreal time;
-
-        switch (wallpaper->type()) {
-        case WallpaperType::Solar:
-            time = computeTime(m_sunPath, image.position);
-            break;
-        case WallpaperType::Timed:
-            time = image.time;
-            break;
-        default:
-            Q_UNREACHABLE();
-        }
-
+        const qreal time = computeTime(m_sunPath, image.position);
         m_knots << Knot { time, image.url };
     }
 
     std::sort(m_knots.begin(), m_knots.end());
+}
 
-    update();
+bool SolarDynamicWallpaperModel::isExpired() const
+{
+    // Rebuild the model each hour.
+    const QDateTime now = QDateTime::currentDateTime();
+    return qAbs(now.secsTo(m_dateTime)) > 3600;
+}
+
+bool SolarDynamicWallpaperModel::isValid() const
+{
+    return m_sunPath.isValid();
+}
+
+void SolarDynamicWallpaperModel::update()
+{
+    const QDateTime now(QDateTime::currentDateTime());
+    const SunPosition position(now, m_latitude, m_longitude);
+    m_time = computeTime(m_sunPath, position);
+}
+
+TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(const DynamicWallpaperPackage* package)
+{
+    const QVector<WallpaperImage> images = package->images();
+    for (const WallpaperImage& image : images) {
+        m_knots << Knot { image.time, image.url };
+    }
+
+    std::sort(m_knots.begin(), m_knots.end());
+}
+
+void TimedDynamicWallpaperModel::update()
+{
+    const int elapsedSeconds = QTime(0, 0).secsTo(QTime::currentTime());
+    const int secondsPerDay = 86400;
+    m_time = qreal(elapsedSeconds) / secondsPerDay;
 }
 
 DynamicWallpaperModel::~DynamicWallpaperModel()
@@ -86,14 +107,12 @@ DynamicWallpaperModel::~DynamicWallpaperModel()
 
 bool DynamicWallpaperModel::isExpired() const
 {
-    // Rebuild the model each hour.
-    const QDateTime now = QDateTime::currentDateTime();
-    return qAbs(now.secsTo(m_dateTime)) > 3600;
+    return false;
 }
 
 bool DynamicWallpaperModel::isValid() const
 {
-    return m_sunPath.isValid();
+    return true;
 }
 
 QUrl DynamicWallpaperModel::bottomLayer() const
@@ -154,11 +173,4 @@ DynamicWallpaperModel::Knot DynamicWallpaperModel::currentTopKnot() const
         return *it;
 
     return *std::next(it);
-}
-
-void DynamicWallpaperModel::update()
-{
-    const QDateTime now(QDateTime::currentDateTime());
-    const SunPosition position(now, m_latitude, m_longitude);
-    m_time = computeTime(m_sunPath, position);
 }
