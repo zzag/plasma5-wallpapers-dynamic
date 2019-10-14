@@ -96,9 +96,9 @@ TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(const DynamicWallpaperPac
 
 void TimedDynamicWallpaperModel::update()
 {
-    const int elapsedSeconds = QTime(0, 0).secsTo(QTime::currentTime());
-    const int secondsPerDay = 86400;
-    m_time = qreal(elapsedSeconds) / secondsPerDay;
+    const int elapsedMsecs = QTime::currentTime().msecsSinceStartOfDay();
+    const int msecsPerDay = 86400000;
+    m_time = qreal(elapsedMsecs) / msecsPerDay;
 }
 
 DynamicWallpaperModel::~DynamicWallpaperModel()
