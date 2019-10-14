@@ -20,25 +20,15 @@
 
 #include <QObject>
 
-class ClockSkewWatcherPrivate;
-
-class ClockSkewWatcher : public QObject {
+class ClockSkewNotifierEngine : public QObject {
     Q_OBJECT
-    Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
 
 public:
-    explicit ClockSkewWatcher(QObject* parent = nullptr);
-    ~ClockSkewWatcher() override;
+    static ClockSkewNotifierEngine* create(QObject* parent);
 
-    bool isActive() const;
-    void setActive(bool set);
+protected:
+    explicit ClockSkewNotifierEngine(QObject* parent);
 
-signals:
-    void activeChanged();
+Q_SIGNALS:
     void clockSkewed();
-
-private:
-    QScopedPointer<ClockSkewWatcherPrivate> d;
-
-    Q_DISABLE_COPY(ClockSkewWatcher)
 };

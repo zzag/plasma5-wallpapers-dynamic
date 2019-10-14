@@ -16,19 +16,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-// Own
-#include "plugin.h"
-#include "ClockSkewNotifier.h"
-#include "DynamicWallpaper.h"
-#include "WallpapersModel.h"
+#include "ClockSkewNotifierEngine.h"
+#if defined(Q_OS_LINUX)
+#include "ClockSkewNotifierEngine_linux.h"
+#endif
 
-// Qt
-#include <QQmlEngine>
-
-void Plugin::registerTypes(const char* uri)
+ClockSkewNotifierEngine* ClockSkewNotifierEngine::create(QObject* parent)
 {
-    Q_ASSERT(uri == QLatin1String("com.github.zzag.private.wallpaper"));
-    qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");
-    qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
-    qmlRegisterType<ClockSkewNotifier>(uri, 1, 1, "ClockSkewNotifier");
+#if defined(Q_OS_LINUX)
+    return LinuxClockSkewNotifierEngine::create(parent);
+#else
+    return nullptr;
+#endif
+}
+
+ClockSkewNotifierEngine::ClockSkewNotifierEngine(QObject* parent)
+    : QObject(parent)
+{
 }

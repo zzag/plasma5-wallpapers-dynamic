@@ -1,9 +1,9 @@
 set(wallpaperplugin_SRCS
-    ClockSkewWatcher.cc
+    ClockSkewNotifier.cc
+    ClockSkewNotifierEngine.cc
     DynamicWallpaper.cc
     DynamicWallpaperModel.cc
     DynamicWallpaperPackage.cc
-    PlatformClockSkewWatcher.cc
     SunPath.cc
     SunPosition.cc
     WallpapersModel.cc
@@ -12,7 +12,7 @@ set(wallpaperplugin_SRCS
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(wallpaperplugin_SRCS
-        ClockSkewWatcher_linux.cc
+        ClockSkewNotifierEngine_linux.cc
         ${wallpaperplugin_SRCS}
     )
 endif()

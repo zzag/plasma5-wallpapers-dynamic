@@ -18,23 +18,21 @@
 
 #pragma once
 
-#include "PlatformClockSkewWatcher.h"
+#include "ClockSkewNotifierEngine.h"
 
-class LinuxClockSkewWatcher : public PlatformClockSkewWatcher {
+class LinuxClockSkewNotifierEngine : public ClockSkewNotifierEngine {
     Q_OBJECT
 
 public:
-    explicit LinuxClockSkewWatcher(QObject* parent = nullptr);
-    ~LinuxClockSkewWatcher() override;
+    ~LinuxClockSkewNotifierEngine() override;
 
-    bool isValid() const override;
+    static LinuxClockSkewNotifierEngine* create(QObject* parent);
 
-private slots:
-    void slotTimerCancelled();
+private Q_SLOTS:
+    void handleTimerCancelled();
 
 private:
-    int m_fd = -1;
-    bool m_isValid = false;
+    LinuxClockSkewNotifierEngine(int fd, QObject* parent);
 
-    Q_DISABLE_COPY(LinuxClockSkewWatcher)
+    int m_fd;
 };

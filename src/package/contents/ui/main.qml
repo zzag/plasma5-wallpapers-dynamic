@@ -79,7 +79,7 @@ Item {
         wallpaperId: wallpaperId
     }
 
-    ClockSkewWatcher {
+    ClockSkewNotifier {
         active: dynamicWallpaper.status == DynamicWallpaper.Ok
         onClockSkewed: dynamicWallpaper.update()
     }
