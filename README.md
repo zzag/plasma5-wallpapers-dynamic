@@ -74,86 +74,33 @@ Open desktop configuration dialog and select "Dynamic" wallpaper type.
 
 ## How to create custom dynamic wallpaper
 
-Each dynamic wallpaper is composed of a bunch of images and associated metadata,
-e.g. sun positions, name, etc. The metadata is stored in a json file, which looks
-something like this
+A dynamic wallpaper is composed of a bunch of images and the associated metadata, e.g. the position of the Sun.
 
-```json
-{
-    "KPlugin": {
-        "Id": "fancy-wallpaper",
-        "Name": "My Fancy Wallpaper"
-    },
-    "Wallpaper": {
-        "Preview": "preview.png",
-        "Type": "solar",
-        "MetaData": [
-            {
-                "Azimuth": 2.73,
-                "Elevation": -45.17,
-                "FileName": "image_1.png"
-            },
-            {
-                "Azimuth": 56.83,
-                "Elevation": -24.75,
-                "FileName": "image_2.png"
-            },
-            {
-                "Azimuth": 92.15,
-                "Elevation": 0.98,
-                "FileName": "image_3.png"
-            },
-            {
-                "Azimuth": 128.26,
-                "Elevation": 29.67,
-                "FileName": "image_4.png"
-            },
-            {
-                "Azimuth": 182.68,
-                "Elevation": 43.0,
-                "FileName": "image_5.png"
-            },
-            {
-                "Azimuth": 235.51,
-                "Elevation": 27.56,
-                "FileName": "image_6.png"
-            },
-            {
-                "Azimuth": 270.81,
-                "Elevation": -1.41,
-                "FileName": "image_7.png"
-            },
-            {
-                "Azimuth": 307.09,
-                "Elevation": -31.25,
-                "FileName": "image_8.png"
-            }
-        ]
-    }
-}
-```
-
-All images(including the preview image) have to be stored in a folder called
-`images` (see below). The preview image is optional, it's used only in the
-configuration dialog.
+A dynamic wallpaper must have the following filesystem structure
 
 ```
 foobar
 ├── contents
 │   └── images
-│       ├── image_1.png
-│       ├── image_2.png
-│       ├── image_3.png
-│       ├── image_4.png
-│       ├── image_5.png
-│       ├── image_6.png
-│       ├── image_7.png
-│       ├── image_8.png
+│       ├── image.png
 │       └── preview.png
 └── metadata.json
 ```
 
-Once you have all images and the metadata prepared, you can install the wallpaper
+This plugin supports two types of dynamic wallpapers - solar and timed.
+
+With a solar dynamic wallpaper, the position of the Sun is provided along each image. However, do keep in mind that such wallpapers won't work for you if you live near the North or South pole. See sample metadata.json file [metadata.json.solar](metadata.json.solar).
+
+With a timed dynamic wallpaper, a time value is provided along each image. The time value is calculated as follows
+
+    time = the number of seconds since the start of the day / 86400
+
+See sample metadata.json file [metadata.json.timed](metadata.json.timed).
+
+In addition to normal wallpaper images, one can provide the preview image, which is optional.
+
+
+## How to install a dynamic wallpaper
 
 ```sh
 kpackagetool5 --type Wallpaper/Dynamic --install foobar
