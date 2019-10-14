@@ -89,13 +89,13 @@ foobar
 
 This plugin supports two types of dynamic wallpapers - solar and timed.
 
-With a solar dynamic wallpaper, the position of the Sun is provided along each image. However, do keep in mind that such wallpapers won't work for you if you live near the North or South pole. See sample metadata.json file [metadata.json.solar](metadata.json.solar).
+With a solar dynamic wallpaper, the position of the Sun is provided along each image. However, do keep in mind that such wallpapers won't work for you if you live near the North or South pole. See sample metadata.json file [metadata.json.solar.sample](metadata.json.solar.sample).
 
 With a timed dynamic wallpaper, a time value is provided along each image. The time value is calculated as follows
 
     time = the number of seconds since the start of the day / 86400
 
-See sample metadata.json file [metadata.json.timed](metadata.json.timed).
+See sample metadata.json file [metadata.json.timed.sample](metadata.json.timed.sample).
 
 In addition to normal wallpaper images, one can provide the preview image, which is optional.
 
