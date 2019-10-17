@@ -54,6 +54,16 @@ StackView {
      */
     property size sourceSize
 
+    /**
+     * This property holds the wallpaper image about to be presented.
+     */
+    property WallpaperImage __nextImage: null
+
+    /**
+     * This property holds the status of image loading.
+     */
+    readonly property int status: __nextImage ? __nextImage.status : Image.Null
+
     onBottomLayerChanged: Qt.callLater(reload)
     onTopLayerChanged: Qt.callLater(reload)
     onBlendFactorChanged: Qt.callLater(reblend)
@@ -83,7 +93,15 @@ StackView {
         }
     }
 
-    function reload() {
+    function __swap() {
+        if (root.__nextImage.status == Image.Loading)
+            return;
+
+        root.__nextImage.statusChanged.disconnect(__swap);
+
+        if (root.__nextImage.status == Image.Error)
+            return;
+
         var operation;
         if (!root.currentItem)
             operation = StackView.Immediate;
@@ -94,25 +112,27 @@ StackView {
         else
             operation = StackView.Immediate;
 
-        let opacity = (operation == StackView.Transition) ? 0 : 1;
+        if (operation == StackView.Transition)
+            root.__nextImage.opacity = 0;
+        else
+            root.__nextImage.opacity = 1;
 
-        let image = baseImage.createObject(root, {
+        root.replace(root.__nextImage, {}, operation);
+    }
+
+    function reload() {
+        if (root.status == Image.Loading)
+            root.__nextImage.statusChanged.disconnect(__swap);
+
+        root.__nextImage = baseImage.createObject(root, {
             bottomLayer,
             topLayer,
             blendFactor,
             fillMode,
-            sourceSize,
-            opacity
+            sourceSize
         });
 
-        function commit() {
-            if (image.status == Image.Loading)
-                return;
-            root.replace(image, {}, operation);
-            image.statusChanged.disconnect(commit);
-        }
-
-        image.statusChanged.connect(commit);
+        root.__nextImage.statusChanged.connect(__swap);
     }
 
     function reblend() {

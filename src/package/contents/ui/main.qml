@@ -91,4 +91,27 @@ Item {
         running: dynamicWallpaper.status == DynamicWallpaper.Ok
         onTriggered: dynamicWallpaper.update()
     }
+
+    Connections {
+        target: dynamicWallpaper
+
+        onStatusChanged: {
+            if (dynamicWallpaper.status != DynamicWallpaper.Ok)
+                wallpaper.loading = false;
+        }
+    }
+
+    Connections {
+        target: wallpaperView
+
+        onStatusChanged: {
+            if (wallpaperView.status != Image.Loading)
+                wallpaper.loading = false;
+        }
+    }
+
+    Component.onCompleted: {
+        // Delay KSplash until the dynamic wallpaper is loaded.
+        wallpaper.loading = true;
+    }
 }
