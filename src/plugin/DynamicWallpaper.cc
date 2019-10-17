@@ -24,6 +24,11 @@
 DynamicWallpaper::DynamicWallpaper(QObject* parent)
     : QObject(parent)
 {
+    // The purpose of this timer is to compress multiple scheduled update requests.
+    m_scheduleTimer = new QTimer(this);
+    m_scheduleTimer->setSingleShot(true);
+    m_scheduleTimer->setInterval(0);
+    connect(m_scheduleTimer, &QTimer::timeout, this, &DynamicWallpaper::update);
 }
 
 DynamicWallpaper::~DynamicWallpaper()
@@ -208,5 +213,5 @@ void DynamicWallpaper::reloadWallpaper()
 
 void DynamicWallpaper::scheduleUpdate()
 {
-    QMetaObject::invokeMethod(this, &DynamicWallpaper::update, Qt::QueuedConnection);
+    m_scheduleTimer->start();
 }

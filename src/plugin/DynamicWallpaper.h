@@ -20,6 +20,7 @@
 
 // Qt
 #include <QObject>
+#include <QTimer>
 #include <QUrl>
 
 // std
@@ -87,6 +88,7 @@ private:
     void reloadWallpaper();
     void scheduleUpdate();
 
+    QTimer* m_scheduleTimer = nullptr;
     Status m_status = Status::Ok;
     QString m_error;
     QString m_wallpaperId;
