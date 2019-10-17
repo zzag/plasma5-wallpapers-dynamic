@@ -58,18 +58,21 @@ Item {
     property size sourceSize: undefined
 
     /**
-     * Whether the wallpaper is currently being loaded and should not be
-     * displayed.
+     * This property holds the status of image loading.
      */
-    readonly property bool loading: bottom.loading || top.loading
+    readonly property int status: {
+        if (bottom.status == Image.Error || top.status == Image.Error)
+            return Image.Error;
+        if (bottom.status == Image.Loading || top.status == Image.Loading)
+            return Image.Loading;
+        if (bottom.status == Image.Ready && top.status == Image.Ready)
+            return Image.Ready;
+        return Image.Null;
+    }
 
     Image {
         id: bottom
-
         anchors.fill: parent
-
-        readonly property bool loading: status == Image.Loading
-
         asynchronous: true
         autoTransform: true
         cache: false
@@ -80,11 +83,7 @@ Item {
 
     Image {
         id: top
-
         anchors.fill: parent
-
-        readonly property bool loading: status == Image.Loading
-
         asynchronous: true
         autoTransform: true
         cache: false

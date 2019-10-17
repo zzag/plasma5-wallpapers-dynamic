@@ -106,14 +106,13 @@ StackView {
         });
 
         function commit() {
+            if (image.status == Image.Loading)
+                return;
             root.replace(image, {}, operation);
-            image.loadingChanged.disconnect(commit);
+            image.statusChanged.disconnect(commit);
         }
 
-        if (image.loading)
-            image.loadingChanged.connect(commit);
-        else
-            commit();
+        image.statusChanged.connect(commit);
     }
 
     function reblend() {
