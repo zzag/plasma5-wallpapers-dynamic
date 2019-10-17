@@ -97,7 +97,7 @@ StackView {
         if (root.__nextItem.status == Image.Loading)
             return;
 
-        root.__nextItem.statusChanged.disconnect(__swap);
+        root.__nextItem.statusChanged.disconnect(root.__swap);
 
         if (root.__nextItem.status == Image.Error)
             return;
@@ -122,7 +122,7 @@ StackView {
 
     function reload() {
         if (root.status == Image.Loading)
-            root.__nextItem.statusChanged.disconnect(__swap);
+            root.__nextItem.statusChanged.disconnect(root.__swap);
 
         root.__nextItem = baseImage.createObject(root, {
             bottomLayer,
@@ -132,7 +132,7 @@ StackView {
             sourceSize
         });
 
-        root.__nextItem.statusChanged.connect(__swap);
+        root.__nextItem.statusChanged.connect(root.__swap);
     }
 
     function reblend() {
