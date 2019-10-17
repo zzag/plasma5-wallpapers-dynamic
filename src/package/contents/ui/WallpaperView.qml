@@ -81,7 +81,7 @@ StackView {
 
     replaceEnter: Transition {
         OpacityAnimator {
-            duration: 250
+            duration: 330
             from: 0
             to: 1
         }
@@ -89,7 +89,7 @@ StackView {
 
     replaceExit: Transition {
         PauseAnimation {
-            duration: 250
+            duration: 330
         }
     }
 
