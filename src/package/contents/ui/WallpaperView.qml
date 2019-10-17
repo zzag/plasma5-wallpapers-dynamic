@@ -57,12 +57,12 @@ StackView {
     /**
      * This property holds the wallpaper image about to be presented.
      */
-    property WallpaperImage __nextImage: null
+    property WallpaperImage __nextItem: null
 
     /**
      * This property holds the status of image loading.
      */
-    readonly property int status: __nextImage ? __nextImage.status : Image.Null
+    readonly property int status: __nextItem ? __nextItem.status : Image.Null
 
     onBottomLayerChanged: Qt.callLater(reload)
     onTopLayerChanged: Qt.callLater(reload)
@@ -94,12 +94,12 @@ StackView {
     }
 
     function __swap() {
-        if (root.__nextImage.status == Image.Loading)
+        if (root.__nextItem.status == Image.Loading)
             return;
 
-        root.__nextImage.statusChanged.disconnect(__swap);
+        root.__nextItem.statusChanged.disconnect(__swap);
 
-        if (root.__nextImage.status == Image.Error)
+        if (root.__nextItem.status == Image.Error)
             return;
 
         var operation;
@@ -113,18 +113,18 @@ StackView {
             operation = StackView.Immediate;
 
         if (operation == StackView.Transition)
-            root.__nextImage.opacity = 0;
+            root.__nextItem.opacity = 0;
         else
-            root.__nextImage.opacity = 1;
+            root.__nextItem.opacity = 1;
 
-        root.replace(root.__nextImage, {}, operation);
+        root.replace(root.__nextItem, {}, operation);
     }
 
     function reload() {
         if (root.status == Image.Loading)
-            root.__nextImage.statusChanged.disconnect(__swap);
+            root.__nextItem.statusChanged.disconnect(__swap);
 
-        root.__nextImage = baseImage.createObject(root, {
+        root.__nextItem = baseImage.createObject(root, {
             bottomLayer,
             topLayer,
             blendFactor,
@@ -132,7 +132,7 @@ StackView {
             sourceSize
         });
 
-        root.__nextImage.statusChanged.connect(__swap);
+        root.__nextItem.statusChanged.connect(__swap);
     }
 
     function reblend() {
