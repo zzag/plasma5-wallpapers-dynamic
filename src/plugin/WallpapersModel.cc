@@ -34,7 +34,7 @@ WallpapersModel::WallpapersModel(QObject* parent)
 
 QHash<int, QByteArray> WallpapersModel::roleNames() const
 {
-    const QHash<int, QByteArray> roles {
+    QHash<int, QByteArray> additionalRoles {
         { NameRole, QByteArrayLiteral("name") },
         { IdRole, QByteArrayLiteral("id") },
         { PreviewUrlRole, QByteArrayLiteral("previewUrl") },
@@ -42,7 +42,7 @@ QHash<int, QByteArray> WallpapersModel::roleNames() const
         { IsRemovableRole, QByteArrayLiteral("removable") },
         { IsZombieRole, QByteArrayLiteral("zombie") },
     };
-    return roles;
+    return additionalRoles.unite(QAbstractListModel::roleNames());
 }
 
 int WallpapersModel::rowCount(const QModelIndex& parent) const
