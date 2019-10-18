@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dynamic-wallpaper\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
-"POT-Creation-Date: 2019-10-18 19:10+0300\n"
+"POT-Creation-Date: 2019-10-18 19:18+0300\n"
 "PO-Revision-Date: 2019-03-24 13:45+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -87,6 +87,11 @@ msgstr "Вилучити тло"
 #, kde-format
 msgid "Open Wallpaper"
 msgstr "Відкриття тла"
+
+#: package/contents/ui/config.qml:175
+#, kde-format
+msgid "Wallpaper metadata file (metadata.json)"
+msgstr ""
 
 #: package/contents/ui/config.qml:187
 #, kde-format
