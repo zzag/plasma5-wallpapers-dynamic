@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dynamic-wallpaper\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
-"POT-Creation-Date: 2019-10-18 18:51+0300\n"
+"POT-Creation-Date: 2019-10-18 19:10+0300\n"
 "PO-Revision-Date: 2019-04-05 20:03+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <vistausss@outlook.com>\n"
@@ -83,6 +83,11 @@ msgstr ""
 #: package/contents/ui/config.qml:153
 #, kde-format
 msgid "Remove Wallpaper"
+msgstr ""
+
+#: package/contents/ui/config.qml:173
+#, kde-format
+msgid "Open Wallpaper"
 msgstr ""
 
 #: package/contents/ui/config.qml:187

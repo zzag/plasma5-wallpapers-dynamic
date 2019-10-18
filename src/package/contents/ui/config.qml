@@ -170,7 +170,7 @@ ColumnLayout {
 
     FileDialog {
         id: wallpaperDialog
-        title: "Please choose a dynamic wallpaper"
+        title: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Open Wallpaper")
         folder: shortcuts.home
         nameFilters: ["Wallpaper metadata file (metadata.json)"]
         selectExisting: true
