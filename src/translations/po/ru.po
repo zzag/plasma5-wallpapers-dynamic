@@ -84,9 +84,9 @@ msgid "Remove Wallpaper"
 msgstr "Удалить обои"
 
 #: package/contents/ui/config.qml:173
-#, fuzzy, kde-format
+#, kde-format
 msgid "Open Wallpaper"
-msgstr "Удалить обои"
+msgstr "Открытие обоев"
 
 #: package/contents/ui/config.qml:187
 #, kde-format
