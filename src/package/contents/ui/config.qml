@@ -17,14 +17,15 @@
  */
 
 import QtQuick 2.5
+import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
 
 import org.kde.kcm 1.1 as KCM
-import org.kde.kirigami 2.5 as Kirigami
+import org.kde.kirigami 2.10 as Kirigami
 
-import com.github.zzag.private.wallpaper 1.0
+import com.github.zzag.private.wallpaper 1.2
 
 ColumnLayout {
     id: root
@@ -35,6 +36,11 @@ ColumnLayout {
 
     property alias cfg_Latitude: latitudeSpinbox.value
     property alias cfg_Longitude: longitudeSpinbox.value
+
+    function saveConfig() {
+        // Uninstall all zombie wallpapers when the user clicks OK or Apply button.
+        installer.uninstall(wallpapersModel.zombies());
+    }
 
     Kirigami.FormLayout {
         twinFormLayouts: parentLayout
@@ -105,6 +111,17 @@ ColumnLayout {
         }
     }
 
+    RowLayout {
+        Kirigami.InlineMessage {
+            id: installerErrorMessage
+            Layout.fillWidth: true
+            showCloseButton: true
+            type: Kirigami.MessageType.Error
+            text: installer.error
+            visible: false
+        }
+    }
+
     KCM.GridView {
         id: wallpapersGrid
 
@@ -117,6 +134,27 @@ ColumnLayout {
             hoverEnabled: true
             text: model.name
             toolTip: model.name
+            opacity: model.zombie ? 0.5 : 1
+
+            actions: [
+                Kirigami.Action {
+                    icon.name: "document-open-folder"
+                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Open Containing Folder")
+                    onTriggered: Qt.openUrlExternally(model.folder)
+                },
+                Kirigami.Action {
+                    icon.name: "edit-undo"
+                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Restore Wallpaper")
+                    visible: model.zombie
+                    onTriggered: model.zombie = false
+                },
+                Kirigami.Action {
+                    icon.name: "edit-delete"
+                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Remove Wallpaper")
+                    visible: !model.zombie && model.removable
+                    onTriggered: model.zombie = true
+                }
+            ]
 
             thumbnail: Image {
                 anchors.fill: parent
@@ -130,7 +168,35 @@ ColumnLayout {
         }
     }
 
+    FileDialog {
+        id: wallpaperDialog
+        title: "Please choose a dynamic wallpaper"
+        folder: shortcuts.home
+        nameFilters: ["Wallpaper metadata file (metadata.json)"]
+        selectExisting: true
+        selectFolder: false
+        selectMultiple: false
+        onAccepted: installer.install(wallpaperDialog.fileUrl)
+    }
+
+    RowLayout {
+        Layout.alignment: Qt.AlignRight
+
+        QtControls2.Button {
+            icon.name: "list-add"
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Add Wallpaper...")
+            onClicked: wallpaperDialog.open()
+        }
+    }
+
     WallpapersModel {
         id: wallpapersModel
+    }
+
+    DynamicWallpaperInstaller {
+        id: installer
+        onInstalled: Qt.callLater(wallpapersModel.reload)
+        onUninstalled: Qt.callLater(wallpapersModel.reload)
+        onErrorChanged: installerErrorMessage.visible = true
     }
 }

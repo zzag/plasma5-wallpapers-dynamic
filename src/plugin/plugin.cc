@@ -20,6 +20,7 @@
 #include "plugin.h"
 #include "ClockSkewNotifier.h"
 #include "DynamicWallpaper.h"
+#include "DynamicWallpaperInstaller.h"
 #include "WallpapersModel.h"
 
 // Qt
@@ -31,4 +32,5 @@ void Plugin::registerTypes(const char* uri)
     qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");
     qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
     qmlRegisterType<ClockSkewNotifier>(uri, 1, 1, "ClockSkewNotifier");
+    qmlRegisterType<DynamicWallpaperInstaller>(uri, 1, 2, "DynamicWallpaperInstaller");
 }

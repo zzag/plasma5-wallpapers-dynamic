@@ -2,6 +2,7 @@ set(wallpaperplugin_SRCS
     ClockSkewNotifier.cc
     ClockSkewNotifierEngine.cc
     DynamicWallpaper.cc
+    DynamicWallpaperInstaller.cc
     DynamicWallpaperModel.cc
     DynamicWallpaperPackage.cc
     SunPath.cc
@@ -23,6 +24,7 @@ target_link_libraries(wallpaperplugin
     Qt5::Gui
     Qt5::Qml
 
+    KF5::I18n
     KF5::Package
 )
 

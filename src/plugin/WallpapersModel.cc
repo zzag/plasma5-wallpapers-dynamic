@@ -18,6 +18,7 @@
 
 // Own
 #include "WallpapersModel.h"
+#include "DynamicWallpaperInstaller.h"
 
 // KF
 #include <KPackage/PackageLoader>
@@ -28,15 +29,18 @@
 WallpapersModel::WallpapersModel(QObject* parent)
     : QAbstractListModel(parent)
 {
-    load();
+    reload();
 }
 
 QHash<int, QByteArray> WallpapersModel::roleNames() const
 {
     const QHash<int, QByteArray> roles {
-        { Name, QByteArrayLiteral("name") },
-        { Id, QByteArrayLiteral("id") },
-        { PreviewUrl, QByteArrayLiteral("previewUrl") }
+        { NameRole, QByteArrayLiteral("name") },
+        { IdRole, QByteArrayLiteral("id") },
+        { PreviewUrlRole, QByteArrayLiteral("previewUrl") },
+        { FolderRole, QByteArrayLiteral("folder") },
+        { IsRemovableRole, QByteArrayLiteral("removable") },
+        { IsZombieRole, QByteArrayLiteral("zombie") },
     };
     return roles;
 }
@@ -59,15 +63,58 @@ QVariant WallpapersModel::data(const QModelIndex& index, int role) const
 
     switch (role) {
     case Qt::DisplayRole:
-    case Name:
+    case NameRole:
         return wallpaper.name;
-    case Id:
+    case IdRole:
         return wallpaper.id;
-    case PreviewUrl:
+    case PreviewUrlRole:
         return wallpaper.previewUrl;
+    case FolderRole:
+        return wallpaper.folderUrl;
+    case IsRemovableRole:
+        return wallpaper.isRemovable;
+    case IsZombieRole:
+        return wallpaper.isZombie;
     default:
         return QVariant();
     }
+}
+
+bool WallpapersModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if (!index.isValid())
+        return false;
+
+    Wallpaper& wallpaper = m_wallpapers[index.row()];
+    QVector<int> modifiedRoles;
+
+    if (role == IsZombieRole) {
+        const bool zombie = value.toBool();
+        if (wallpaper.isZombie != zombie) {
+            wallpaper.isZombie = zombie;
+            modifiedRoles << IsZombieRole;
+        }
+    }
+
+    if (modifiedRoles.isEmpty())
+        return false;
+
+    emit dataChanged(index, index, modifiedRoles);
+
+    return true;
+}
+
+QStringList WallpapersModel::zombies() const
+{
+    QStringList zombies;
+
+    for (const Wallpaper& wallpaper : m_wallpapers) {
+        if (!wallpaper.isZombie)
+            continue;
+        zombies << wallpaper.id;
+    }
+
+    return zombies;
 }
 
 int WallpapersModel::indexOf(const QString& id) const
@@ -102,14 +149,20 @@ static QString previewFromMetaData(const KPluginMetaData& metaData)
     return wallpaperObject.value(QLatin1String("Preview")).toString();
 }
 
-void WallpapersModel::load()
+void WallpapersModel::reload()
 {
+    const QString localWallpapersRoot = DynamicWallpaperInstaller::locatePackageRoot();
+
     QVector<Wallpaper> wallpapers;
 
     forEachPackage(QStringLiteral("Wallpaper/Dynamic"), [&](const KPackage::Package& package) {
         Wallpaper wallpaper = {};
         wallpaper.id = package.metadata().pluginId();
         wallpaper.name = package.metadata().name();
+
+        const QString folder = package.path();
+        wallpaper.folderUrl = QUrl::fromLocalFile(folder);
+        wallpaper.isRemovable = folder.startsWith(localWallpapersRoot);
 
         const QString previewFileName = previewFromMetaData(package.metadata());
         if (!previewFileName.isEmpty())
