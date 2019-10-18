@@ -91,7 +91,7 @@ msgstr "Відкриття тла"
 #: package/contents/ui/config.qml:175
 #, kde-format
 msgid "Wallpaper metadata file (metadata.json)"
-msgstr ""
+msgstr "Файл з метаданими тла (metadata.json)"
 
 #: package/contents/ui/config.qml:187
 #, kde-format
