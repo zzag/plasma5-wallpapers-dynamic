@@ -1,11 +1,11 @@
 # This file is distributed under the same license as the dynamic-wallpaper package.
-#
+# 
 # eogan <eogan@tutanota.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: dynamic-wallpaper\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
-"POT-Creation-Date: 2019-03-27 22:00+0100\n"
+"POT-Creation-Date: 2019-10-18 18:51+0300\n"
 "PO-Revision-Date: 2019-03-27 22:05+0100\n"
 "Last-Translator: eogan <eogan@tutanota.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -21,49 +21,69 @@ msgstr ""
 msgid "Fill Mode:"
 msgstr "Mode de remplissage:"
 
-#: package/contents/ui/config.qml:58
+#: package/contents/ui/config.qml:53
 #, kde-format
 msgid "Scaled and Cropped"
 msgstr "Adapté et rogné"
 
-#: package/contents/ui/config.qml:62
+#: package/contents/ui/config.qml:57
 #, kde-format
 msgid "Scaled"
 msgstr "Adapté"
 
-#: package/contents/ui/config.qml:66
+#: package/contents/ui/config.qml:61
 #, kde-format
 msgid "Scaled, Keep Proportions"
 msgstr "Adapté, conserver les proportions"
 
-#: package/contents/ui/config.qml:70
+#: package/contents/ui/config.qml:65
 #, kde-format
 msgid "Centered"
 msgstr "Centré"
 
-#: package/contents/ui/config.qml:74
+#: package/contents/ui/config.qml:69
 #, kde-format
 msgid "Tiled"
 msgstr "Mosaïque"
 
-#: package/contents/ui/config.qml:100
+#: package/contents/ui/config.qml:89
 #, kde-format
 msgid "Latitude:"
 msgstr "Latitude:"
 
-#: package/contents/ui/config.qml:119
+#: package/contents/ui/config.qml:97
 #, kde-format
 msgid "Longitude:"
 msgstr "Longitude:"
 
-#: package/contents/ui/config.qml:138
+#: package/contents/ui/config.qml:105
 #, kde-format
 msgid "Update Every:"
 msgstr "Mettre à jour tous les:"
 
-#: package/contents/ui/config.qml:146
+#: package/contents/ui/config.qml:108
 #, kde-format
 msgid " min"
 msgid_plural " min"
 msgstr[0] " minute"
 msgstr[1] " minutes"
+
+#: package/contents/ui/config.qml:142
+#, kde-format
+msgid "Open Containing Folder"
+msgstr ""
+
+#: package/contents/ui/config.qml:147
+#, kde-format
+msgid "Restore Wallpaper"
+msgstr ""
+
+#: package/contents/ui/config.qml:153
+#, kde-format
+msgid "Remove Wallpaper"
+msgstr ""
+
+#: package/contents/ui/config.qml:187
+#, kde-format
+msgid "Add Wallpaper..."
+msgstr ""
