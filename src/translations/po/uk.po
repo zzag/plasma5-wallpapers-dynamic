@@ -84,9 +84,9 @@ msgid "Remove Wallpaper"
 msgstr "Вилучити тло"
 
 #: package/contents/ui/config.qml:173
-#, fuzzy, kde-format
+#, kde-format
 msgid "Open Wallpaper"
-msgstr "Вилучити тло"
+msgstr "Відкриття тла"
 
 #: package/contents/ui/config.qml:187
 #, kde-format
