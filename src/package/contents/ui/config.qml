@@ -16,12 +16,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-import QtQuick 2.1
+import QtQuick 2.5
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
+import QtQuick.Controls 2.3 as QtControls2
 
 import org.kde.kcm 1.1 as KCM
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kirigami 2.5 as Kirigami
 
 import com.github.zzag.private.wallpaper 1.0
 
@@ -35,24 +36,12 @@ ColumnLayout {
     property alias cfg_Latitude: latitudeSpinbox.value
     property alias cfg_Longitude: longitudeSpinbox.value
 
-    // This is a very ugly hack to make width of our input fields same as width
-    // of the Wallpaper Type combo box. A better way to align input elements has
-    // to be found.
-    readonly property int inputFieldWidth: wallpaperComboBox.width
+    Kirigami.FormLayout {
+        twinFormLayouts: parentLayout
 
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: positioningComboBox.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Fill Mode:")
-        }
-
-        QtControls.ComboBox {
+        QtControls2.ComboBox {
             id: positioningComboBox
-            width: inputFieldWidth
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Fill Mode:")
             model: [
                 {
                     "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled and Cropped"),
@@ -88,59 +77,26 @@ ColumnLayout {
                 }
             }
         }
-    }
-
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: latitudeSpinbox.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
-        }
 
         QtControls.SpinBox {
             id: latitudeSpinbox
-            width: inputFieldWidth
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
             decimals: 2
             minimumValue: -90
             maximumValue: 90
         }
-    }
-
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: longitudeSpinbox.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
-        }
 
         QtControls.SpinBox {
             id: longitudeSpinbox
-            width: inputFieldWidth
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
             decimals: 2
             minimumValue: -180
             maximumValue: 180
         }
-    }
-
-    Row {
-        spacing: units.largeSpacing / 2
-
-        QtControls.Label {
-            anchors.verticalCenter: updateIntervalSpinbox.verticalCenter
-            width: formAlignment - units.largeSpacing
-            horizontalAlignment: Text.AlignRight
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
-        }
 
         QtControls.SpinBox {
             id: updateIntervalSpinbox
-            width: inputFieldWidth
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
             maximumValue: 59
             minimumValue: 1
             suffix: i18ndp("plasma_wallpaper_com.github.zzag.wallpaper", " min", " min", value)
