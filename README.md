@@ -1,6 +1,6 @@
-# dynamic-wallpaper
+# plasma5-wallpapers-dynamic
 
-This is a simple dynamic wallpaper plugin for KDE Plasma.
+plasma5-wallpapers-dynamic is a simple dynamic wallpaper plugin for KDE Plasma.
 [Demo](https://www.youtube.com/watch?v=UIMM6DpEpqA)
 
 
@@ -11,21 +11,10 @@ please visit [Additional Wallpapers](https://github.com/zzag/dynamic-wallpaper/w
 page.
 
 
-## How to install
+## Building plasma5-wallpapers-dynamic from Git
 
-Arch Linux:
-
-```sh
-yay -S plasma5-wallpapers-dynamic
-```
-
-openSUSE Tumbleweed:
-
-The dynamic-wallpaper plugin is available from [home:KAMiKAZOW:KDE](https://software.opensuse.org//download.html?project=home%3AKAMiKAZOW%3AKDE&package=plasma5-dynamic-wallpaper) of openSUSE Build Service.
-
-## Build from source code
-
-### Prerequisites
+Before building plasma5-wallpapers-dynamic from source code, you need to install
+a couple of prerequisites.
 
 Arch Linux:
 
@@ -47,61 +36,102 @@ sudo apt install cmake extra-cmake-modules git libkf5package-dev libkf5plasma-de
     qtbase5-dev qtdeclarative5-dev
 ```
 
-
-### Build and install
-
-Open the terminal and run the following command
+Once all prerequisites are installed, you need to grab the source code
 
 ```sh
 git clone https://github.com/zzag/dynamic-wallpaper.git
+cd dynamic-wallpaper
 ```
 
-Once you have the source code, you can build the plugin
+If you want to build some specific version of this plugin, run the following command
+from terminal
+
+```sh
+git checkout <version>
+```
+
+Configure the build
 
 ```sh
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib
+```
+
+Now trigger the build by running the following command
+
+```sh
 make
+```
+
+To install run
+
+```sh
 sudo make install
 ```
 
-## How to use it
 
-Open desktop configuration dialog and select "Dynamic" wallpaper type.
+## Install plasma5-wallpapers-dynamic using a package manager
+
+Arch Linux:
+
+```sh
+yay -S plasma5-wallpapers-dynamic
+```
+
+openSUSE Tumbleweed:
+
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:KAMiKAZOW:KDE/openSUSE_Tumbleweed/home:KAMiKAZOW:KDE.repo
+zypper refresh
+zypper install plasma5-dynamic-wallpaper
+```
 
 
-## How to create custom dynamic wallpaper
+## How to start using this wallpaper plugin
 
-A dynamic wallpaper is composed of a bunch of images and the associated metadata, e.g. the position of the Sun.
+Right-click a blank area of the desktop and choose "Configure Desktop...", select
+"Dynamic" wallpaper type and click the Apply button.
+
+
+## Dynamic wallpaper structure
+
+A dynamic wallpaper is composed of a bunch of images and the associated metadata.
+The metadata contains all relevant information about the wallpaper, for example
+the user visible name, the type (solar or timed), per image data that can be used
+to determine what images reflect the user's light situation most accurately, etc.
 
 A dynamic wallpaper must have the following filesystem structure
 
 ```
-foobar
+package
 ├── contents
-│   └── images
-│       ├── image.png
-│       └── preview.png
+│   └── images
+│       ├── image.png
+│       └── preview.png
 └── metadata.json
 ```
 
-This plugin supports two types of dynamic wallpapers - solar and timed.
+All images, including the preview image, must be stored in contents/images folder.
+There must be at least two images, excluding the preview image. The metadata.json
+file is located in the toplevel wallpaper directory. This file contains all useful
+information about the dynamic wallpaper.
 
-With a solar dynamic wallpaper, the position of the Sun is provided along each image. However, do keep in mind that such wallpapers won't work for you if you live near the North or South pole. See sample metadata.json file [metadata.json.solar.sample](metadata.json.solar.sample).
-
-With a timed dynamic wallpaper, a time value is provided along each image. The time value is calculated as follows
-
-    time = the number of seconds since the start of the day / 86400
-
-See sample metadata.json file [metadata.json.timed.sample](metadata.json.timed.sample).
-
-In addition to normal wallpaper images, one can provide the preview image, which is optional.
+You can find two sample metadata.json files in this repository. One is for a solar
+dynamic wallpaper, see [metadata.json.solar.sample](metadata.json.solar.sample),
+and the other one is for a timed dynamic wallpaper, see [metadata.json.timed.sample](metadata.json.timed.sample).
 
 
 ## How to install a dynamic wallpaper
 
+There are several ways one could install a dynamic wallpaper.
+
+The most preferred way is to use the "Add Wallpaper..." button in the configuration
+module of this plugin.
+
+The other way is to use `kpackagetool5` tool
+
 ```sh
-kpackagetool5 --type Wallpaper/Dynamic --install foobar
+kpackagetool5 --type Wallpaper/Dynamic --install <path to the wallpaper>
 ```
