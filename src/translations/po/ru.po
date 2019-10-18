@@ -71,19 +71,19 @@ msgstr[1] " мин"
 #: package/contents/ui/config.qml:142
 #, kde-format
 msgid "Open Containing Folder"
-msgstr ""
+msgstr "Открыть содержащую объект папку"
 
 #: package/contents/ui/config.qml:147
 #, kde-format
 msgid "Restore Wallpaper"
-msgstr ""
+msgstr "Вернуть обои в этот список"
 
 #: package/contents/ui/config.qml:153
 #, kde-format
 msgid "Remove Wallpaper"
-msgstr ""
+msgstr "Удалить обои"
 
 #: package/contents/ui/config.qml:187
 #, kde-format
 msgid "Add Wallpaper..."
-msgstr ""
+msgstr "Добавить обои..."
