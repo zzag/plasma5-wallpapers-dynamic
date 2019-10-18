@@ -91,7 +91,7 @@ msgstr "Открытие обоев"
 #: package/contents/ui/config.qml:175
 #, kde-format
 msgid "Wallpaper metadata file (metadata.json)"
-msgstr ""
+msgstr "Файл метаданных обоев (metadata.json)"
 
 #: package/contents/ui/config.qml:187
 #, kde-format
