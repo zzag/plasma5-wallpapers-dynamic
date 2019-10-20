@@ -1,6 +1,6 @@
 {
     "KPlugin": {
-        "Id": "Unique id",
+        "Id": "unique_id",
         "Name": "Human-readable name"
     },
     "Wallpaper": {
@@ -8,11 +8,15 @@
         "Type": "solar",
         "MetaData": [
             {
-                "Azimuth": 0,
+                "Azimuth": 90,
                 "Elevation": 0,
                 "FileName": "0.png"
             },
-            ...
+            {
+                "Azimuth": 122.0,
+                "Elevation": 42.0,
+                "FileName": "1.png"
+            }
         ]
     }
 }
