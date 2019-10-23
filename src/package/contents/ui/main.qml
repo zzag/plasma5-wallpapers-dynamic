@@ -53,6 +53,9 @@ Item {
         sourceSize: root.sourceSize
         topLayer: dynamicWallpaper.topLayer
         visible: dynamicWallpaper.status == DynamicWallpaper.Ok
+        onStatusChanged: if (status != Image.Loading) {
+            wallpaper.loading = false;
+        }
     }
 
     Rectangle {
@@ -77,6 +80,9 @@ Item {
         latitude: latitude
         longitude: longitude
         wallpaperId: wallpaperId
+        onStatusChanged: if (status != DynamicWallpaper.Ok) {
+            wallpaper.loading = false;
+        }
     }
 
     ClockSkewNotifier {
@@ -90,24 +96,6 @@ Item {
         repeat: true
         running: dynamicWallpaper.status == DynamicWallpaper.Ok
         onTriggered: dynamicWallpaper.update()
-    }
-
-    Connections {
-        target: dynamicWallpaper
-
-        onStatusChanged: {
-            if (dynamicWallpaper.status != DynamicWallpaper.Ok)
-                wallpaper.loading = false;
-        }
-    }
-
-    Connections {
-        target: wallpaperView
-
-        onStatusChanged: {
-            if (wallpaperView.status != Image.Loading)
-                wallpaper.loading = false;
-        }
     }
 
     Component.onCompleted: {
