@@ -21,6 +21,9 @@
 #include "DynamicWallpaperModel.h"
 #include "DynamicWallpaperPackage.h"
 
+// KF
+#include <KLocalizedString>
+
 DynamicWallpaper::DynamicWallpaper(QObject* parent)
     : QObject(parent)
 {
@@ -179,7 +182,7 @@ void DynamicWallpaper::reloadModel()
     }
 
     if (!model->isValid()) {
-        setError(QStringLiteral("Couldn't initialize the dynamic wallpaper model."));
+        setError(i18n("Couldn't initialize the dynamic wallpaper model."));
         setStatus(Status::Error);
         return;
     }
@@ -196,13 +199,13 @@ void DynamicWallpaper::reloadWallpaper()
 
     std::unique_ptr<DynamicWallpaperPackage> wallpaper = DynamicWallpaperPackage::load(m_wallpaperId);
     if (!wallpaper) {
-        setError(QStringLiteral("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
+        setError(i18n("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
         setStatus(Status::Error);
         return;
     }
 
     if (wallpaper->images().count() < 2) {
-        setError(QStringLiteral("The dynamic wallpaper doesn't have enough pictures."));
+        setError(i18n("The dynamic wallpaper doesn't have enough pictures."));
         setStatus(Status::Error);
         return;
     }
