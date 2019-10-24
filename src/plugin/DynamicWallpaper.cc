@@ -182,7 +182,7 @@ void DynamicWallpaper::reloadModel()
     }
 
     if (!model->isValid()) {
-        setError(i18n("Couldn't initialize the dynamic wallpaper model."));
+        setError(i18n("Couldn't initialize the dynamic wallpaper model"));
         setStatus(Status::Error);
         return;
     }
@@ -199,13 +199,13 @@ void DynamicWallpaper::reloadWallpaper()
 
     std::unique_ptr<DynamicWallpaperPackage> wallpaper = DynamicWallpaperPackage::load(m_wallpaperId);
     if (!wallpaper) {
-        setError(i18n("Couldn't load dynamic wallpaper with id '%1'.").arg(m_wallpaperId));
+        setError(i18n("Couldn't load dynamic wallpaper with id '%1'", m_wallpaperId));
         setStatus(Status::Error);
         return;
     }
 
     if (wallpaper->images().count() < 2) {
-        setError(i18n("The dynamic wallpaper doesn't have enough pictures."));
+        setError(i18n("The dynamic wallpaper doesn't have enough pictures"));
         setStatus(Status::Error);
         return;
     }
