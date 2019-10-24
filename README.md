@@ -39,8 +39,8 @@ sudo apt install cmake extra-cmake-modules git libkf5package-dev libkf5plasma-de
 Once all prerequisites are installed, you need to grab the source code
 
 ```sh
-git clone https://github.com/zzag/dynamic-wallpaper.git
-cd dynamic-wallpaper
+git clone https://github.com/zzag/plasma5-wallpapers-dynamic.git
+cd plasma5-wallpapers-dynamic
 ```
 
 If you want to build some specific version of this plugin, run the following command
