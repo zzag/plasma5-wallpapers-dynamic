@@ -4,8 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issues\n"
-"POT-Creation-Date: 2019-10-24 19:50+0300\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
+"issues\n"
+"POT-Creation-Date: 2019-10-24 21:03+0300\n"
 "PO-Revision-Date: 2019-03-24 13:45+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -16,6 +17,32 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 18.12.3\n"
+
+#: plugin/DynamicWallpaperInstaller.cc:62
+#: plugin/DynamicWallpaperInstaller.cc:79
+#, kde-format
+msgid "Couldn't locate 'Wallpaper/Dynamic' package structure"
+msgstr ""
+
+#: plugin/DynamicWallpaper.cc:185
+#, kde-format
+msgid "Couldn't initialize the dynamic wallpaper model."
+msgstr ""
+
+#: plugin/DynamicWallpaper.cc:202
+#, kde-format
+msgid "Couldn't load dynamic wallpaper with id '%1'."
+msgstr ""
+
+#: plugin/DynamicWallpaper.cc:208
+#, kde-format
+msgid "The dynamic wallpaper doesn't have enough pictures."
+msgstr ""
+
+#: kpackage-integration/DynamicWallpaperPackageStructure.cc:36
+#, kde-format
+msgid "Dynamic wallpaper images"
+msgstr ""
 
 #: package/contents/ui/config.qml:50
 #, kde-format

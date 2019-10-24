@@ -1,3 +1,5 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.wallpaper\")
+
 set(wallpaperplugin_SRCS
     ClockSkewNotifier.cc
     ClockSkewNotifierEngine.cc
