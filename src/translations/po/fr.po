@@ -1,10 +1,10 @@
-# This file is distributed under the same license as the dynamic-wallpaper package.
-# 
+# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
+#
 # eogan <eogan@tutanota.com>, 2019.
 msgid ""
 msgstr ""
-"Project-Id-Version: dynamic-wallpaper\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
+"Project-Id-Version: plasma5-wallpapers-dynamic\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issues\n"
 "POT-Creation-Date: 2019-10-24 19:50+0300\n"
 "PO-Revision-Date: 2019-03-27 22:05+0100\n"
 "Last-Translator: eogan <eogan@tutanota.com>\n"

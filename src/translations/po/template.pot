@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR This file is copyright:
-# This file is distributed under the same license as the dynamic-wallpaper package.
+# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: dynamic-wallpaper\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
+"Project-Id-Version: plasma5-wallpapers-dynamic\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issues\n"
 "POT-Creation-Date: 2019-10-24 19:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"

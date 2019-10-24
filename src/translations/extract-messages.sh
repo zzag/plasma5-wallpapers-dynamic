@@ -6,8 +6,8 @@ SRCDIR="$(dirname $BASEDIR)"
 
 function xgettext_wrapper {
     xgettext --copyright-holder="This file is copyright:" \
-        --package-name=dynamic-wallpaper \
-        --msgid-bugs-address=https://github.com/zzag/dynamic-wallpaper/issues \
+        --package-name=plasma5-wallpapers-dynamic \
+        --msgid-bugs-address=https://github.com/zzag/plasma5-wallpapers-dynamic/issues \
         --from-code=UTF-8 \
         -C --kde \
         -ci18n \
