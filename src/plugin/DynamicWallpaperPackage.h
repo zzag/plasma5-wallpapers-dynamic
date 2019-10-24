@@ -71,14 +71,39 @@ public:
      */
     QVector<WallpaperImage> images() const;
 
-    /**
-     * Loads dynamic wallpaper with the given id.
-     *
-     * If there is no such wallpaper, @c null is returned.
-     */
-    static std::unique_ptr<DynamicWallpaperPackage> load(const QString& id);
-
 private:
     QVector<WallpaperImage> m_images;
     WallpaperType m_type;
+
+    friend class DynamicWallpaperLoader;
+};
+
+class DynamicWallpaperLoader {
+public:
+    /**
+     * Loads a dynamic wallpaper with the given @p id.
+     *
+     * This method returns @c true if the wallpaper has been loaded successfully; otherwise
+     * @c false. If an error has occurred during the loading process, you can use errorText()
+     * method to retrieve the error message.
+     */
+    bool load(const QString& id);
+
+    /**
+     * Returns the error text if an error has occurred during the loading process.
+     */
+    QString errorText() const;
+
+    /**
+     * Returns the loaded dynamic wallpaper package object.
+     *
+     * This method will return @c null if an error has occured during the loading process.
+     */
+    std::shared_ptr<DynamicWallpaperPackage> wallpaper() const;
+
+private:
+    void reset();
+
+    QString m_errorText;
+    std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
 };

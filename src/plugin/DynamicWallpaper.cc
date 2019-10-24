@@ -197,20 +197,14 @@ void DynamicWallpaper::reloadWallpaper()
 {
     m_wallpaper.reset();
 
-    std::unique_ptr<DynamicWallpaperPackage> wallpaper = DynamicWallpaperPackage::load(m_wallpaperId);
-    if (!wallpaper) {
-        setError(i18n("Couldn't load dynamic wallpaper with id '%1'", m_wallpaperId));
+    DynamicWallpaperLoader loader;
+    if (!loader.load(m_wallpaperId)) {
+        setError(i18n("Couldn't load the dynamic wallpaper: %1", loader.errorText()));
         setStatus(Status::Error);
         return;
     }
 
-    if (wallpaper->images().count() < 2) {
-        setError(i18n("The dynamic wallpaper doesn't have enough pictures"));
-        setStatus(Status::Error);
-        return;
-    }
-
-    m_wallpaper = std::move(wallpaper);
+    m_wallpaper = loader.wallpaper();
     setStatus(Status::Ok);
 }
 

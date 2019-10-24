@@ -92,7 +92,7 @@ private:
     Status m_status = Status::Ok;
     QString m_error;
     QString m_wallpaperId;
-    std::unique_ptr<DynamicWallpaperPackage> m_wallpaper;
+    std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
     std::unique_ptr<DynamicWallpaperModel> m_model;
     QUrl m_bottomLayer;
     QUrl m_topLayer;

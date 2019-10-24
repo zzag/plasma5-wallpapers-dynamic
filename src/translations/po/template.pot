@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2019-10-24 21:03+0300\n"
+"POT-Creation-Date: 2019-10-24 23:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+#: plugin/DynamicWallpaperPackage.cc:62
+#, kde-format
+msgid "'Wallpaper' object doesn't exist"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:80
+#, kde-format
+msgid "Unknown wallpaper type: %1"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:97 plugin/DynamicWallpaperPackage.cc:145
+#, kde-format
+msgid "Image with index %1 has no metadata"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:102
+#, kde-format
+msgid "Image with index %1 has invalid azimuth value type"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:108
+#, kde-format
+msgid "Image with index %1 has invalid azimuth value"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:113
+#, kde-format
+msgid "Image with index %1 has invalid elevation value type"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:119
+#, kde-format
+msgid "Image with index %1 has invalid elevation value"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:150
+#, kde-format
+msgid "Image with index %1 has invalid time value type"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:156
+#, kde-format
+msgid "Image with index %1 has invalid time value"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:179
+#, kde-format
+msgid "Couldn't load wallpaper package: %1"
+msgstr ""
+
+#: plugin/DynamicWallpaperPackage.cc:201
+#, kde-format
+msgid "Not enough images"
+msgstr ""
+
 #: plugin/DynamicWallpaperInstaller.cc:62
 #: plugin/DynamicWallpaperInstaller.cc:79
 #, kde-format
@@ -27,22 +82,17 @@ msgstr ""
 
 #: plugin/DynamicWallpaper.cc:185
 #, kde-format
-msgid "Couldn't initialize the dynamic wallpaper model."
+msgid "Couldn't initialize the dynamic wallpaper model"
 msgstr ""
 
 #: plugin/DynamicWallpaper.cc:202
 #, kde-format
-msgid "Couldn't load dynamic wallpaper with id '%1'."
+msgid "Couldn't load the dynamic wallpaper: %1"
 msgstr ""
 
-#: plugin/DynamicWallpaper.cc:208
+#: kpackage-integration/DynamicWallpaperPackageStructure.cc:38
 #, kde-format
-msgid "The dynamic wallpaper doesn't have enough pictures."
-msgstr ""
-
-#: kpackage-integration/DynamicWallpaperPackageStructure.cc:36
-#, kde-format
-msgid "Dynamic wallpaper images"
+msgid "Images"
 msgstr ""
 
 #: package/contents/ui/config.qml:50

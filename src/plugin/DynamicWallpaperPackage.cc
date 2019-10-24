@@ -20,10 +20,10 @@
 #include "DynamicWallpaperPackage.h"
 
 // KF
+#include <KLocalizedString>
 #include <KPackage/PackageLoader>
 
 // Qt
-#include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
 
@@ -37,59 +37,94 @@ QVector<WallpaperImage> DynamicWallpaperPackage::images() const
     return m_images;
 }
 
-static bool parseSolarMetaData(const KPackage::Package& package, const QJsonObject& rootObject, QVector<WallpaperImage>& images)
+static QJsonObject extractWallpaperObject(const KPackage::Package& package)
 {
-    const QJsonArray metaData = rootObject.value(QLatin1String("MetaData")).toArray();
-    if (metaData.isEmpty()) {
-        qWarning() << "A dynamic wallpaper should contain at least one image";
+    const QJsonObject& rootObject = package.metadata().rawData();
+    if (rootObject.isEmpty())
+        return QJsonObject();
+
+    return rootObject.value(QLatin1String("Wallpaper")).toObject();
+}
+
+static QJsonArray extractMetaData(const KPackage::Package& package)
+{
+    const QJsonObject& wallpaperObject = extractWallpaperObject(package);
+    if (wallpaperObject.isEmpty())
+        return QJsonArray();
+
+    return wallpaperObject.value(QLatin1String("MetaData")).toArray();
+}
+
+static bool parseWallpaperType(const KPackage::Package& package, WallpaperType& type, QString& errorText)
+{
+    const QJsonObject wallpaperObject = extractWallpaperObject(package);
+    if (wallpaperObject.isEmpty()) {
+        errorText = i18n("'Wallpaper' object doesn't exist");
         return false;
     }
+
+    const QJsonValue value = wallpaperObject.value(QStringLiteral("Type"));
+    if (value.isUndefined()) {
+        // Type is not set explicitly, assume that's a solar dynamic wallpaper.
+        type = WallpaperType::Solar;
+        return true;
+    }
+
+    const static QHash<QString, WallpaperType> knownWallpaperTypes {
+        { QStringLiteral("solar"), WallpaperType::Solar },
+        { QStringLiteral("timed"), WallpaperType::Timed },
+    };
+
+    const auto typeIt = knownWallpaperTypes.constFind(value.toString());
+    if (typeIt == knownWallpaperTypes.constEnd()) {
+        errorText = i18n("Unknown wallpaper type: %1", value.toString());
+        return false;
+    }
+
+    type = *typeIt;
+    return true;
+}
+
+static bool parseSolarMetaData(const KPackage::Package& package, QVector<WallpaperImage>& images, QString& errorText)
+{
+    const QJsonArray metaData = extractMetaData(package);
 
     images.reserve(metaData.count());
 
     for (int i = 0; i < metaData.count(); ++i) {
         const QJsonObject rawImage = metaData.at(i).toObject();
         if (rawImage.isEmpty()) {
-            qWarning("Image with index %d doesn't have any associated metadata", i);
+            errorText = i18n("Image with index %1 has no metadata", i);
             return false;
         }
 
         if (!rawImage.value(QLatin1String("Azimuth")).isDouble()) {
-            qWarning("Image with index %d has invalid azimuth value type", i);
+            errorText = i18n("Image with index %1 has invalid azimuth value type", i);
             return false;
         }
 
         const qreal azimuth = rawImage.value(QLatin1String("Azimuth")).toDouble();
         if (std::abs(azimuth) > 360) {
-            qWarning("Image with index %d has invalid azimuth value", i);
+            errorText = i18n("Image with index %1 has invalid azimuth value", i);
             return false;
         }
 
         if (!rawImage.value(QLatin1String("Elevation")).isDouble()) {
-            qWarning("Image with index %d has invalid elevation value type", i);
+            errorText = i18n("Image with index %1 has invalid elevation value type", i);
             return false;
         }
 
         const qreal elevation = rawImage.value(QLatin1String("Elevation")).toDouble();
         if (std::abs(elevation) > 90) {
-            qWarning("Image with index %d has invalid elevation value", i);
-            return false;
-        }
-
-        if (!rawImage.value(QLatin1String("FileName")).isString()) {
-            qWarning("Image with index %d has invalid filename", i);
-            return false;
-        }
-
-        const QString fileName = rawImage.value(QLatin1String("FileName")).toString();
-        const QUrl url = package.fileUrl(QByteArrayLiteral("images"), fileName);
-        if (!url.isValid()) {
-            qWarning("Couldn't locate image with index %d", i);
+            errorText = i18n("Image with index %1 has invalid elevation value", i);
             return false;
         }
 
         WallpaperImage image = {};
         image.position = SunPosition(elevation, azimuth);
+
+        const QString fileName = rawImage.value(QLatin1String("FileName")).toString();
+        const QUrl url = package.fileUrl(QByteArrayLiteral("images"), fileName);
         image.url = url;
 
         images << image;
@@ -98,48 +133,35 @@ static bool parseSolarMetaData(const KPackage::Package& package, const QJsonObje
     return true;
 }
 
-static bool parseTimedMetaData(const KPackage::Package& package, const QJsonObject& rootObject, QVector<WallpaperImage>& images)
+static bool parseTimedMetaData(const KPackage::Package& package, QVector<WallpaperImage>& images, QString& errorText)
 {
-    const QJsonArray metaData = rootObject.value(QLatin1String("MetaData")).toArray();
-    if (metaData.isEmpty()) {
-        qWarning() << "A dynamic wallpaper should contain at least one image";
-        return false;
-    }
+    const QJsonArray metaData = extractMetaData(package);
 
     images.reserve(metaData.count());
 
     for (int i = 0; i < metaData.count(); ++i) {
         const QJsonObject rawImage = metaData.at(i).toObject();
         if (rawImage.isEmpty()) {
-            qWarning("Image with index %d doesn't have any associated metadata", i);
+            errorText = i18n("Image with index %1 has no metadata", i);
             return false;
         }
 
         if (!rawImage.value(QLatin1String("Time")).isDouble()) {
-            qWarning("Image with index %d has invalid time value type", i);
+            errorText = i18n("Image with index %1 has invalid time value type", i);
             return false;
         }
 
         const qreal time = rawImage.value(QLatin1String("Time")).toDouble();
         if (time < 0 || time > 1) {
-            qWarning("Image with index %d has invalid time value", i);
-            return false;
-        }
-
-        if (!rawImage.value(QLatin1String("FileName")).isString()) {
-            qWarning("Image with index %d has invalid filename", i);
-            return false;
-        }
-
-        const QString fileName = rawImage.value(QLatin1String("FileName")).toString();
-        const QUrl url = package.fileUrl(QByteArrayLiteral("images"), fileName);
-        if (!url.isValid()) {
-            qWarning("Couldn't locate image with index %d", i);
+            errorText = i18n("Image with index %1 has invalid time value", i);
             return false;
         }
 
         WallpaperImage image = {};
         image.time = time;
+
+        const QString fileName = rawImage.value(QLatin1String("FileName")).toString();
+        const QUrl url = package.fileUrl(QByteArrayLiteral("images"), fileName);
         image.url = url;
 
         images << image;
@@ -148,51 +170,55 @@ static bool parseTimedMetaData(const KPackage::Package& package, const QJsonObje
     return true;
 }
 
-static bool parseWallpaperType(const QJsonObject& rootObject, WallpaperType& type)
+bool DynamicWallpaperLoader::load(const QString& id)
 {
-    const QJsonValue value = rootObject.value(QStringLiteral("Type"));
-    if (value == QStringLiteral("solar")) {
-        type = WallpaperType::Solar;
-        return true;
-    }
-    if (value == QStringLiteral("timed")) {
-        type = WallpaperType::Timed;
-        return true;
-    }
-    if (value.isUndefined()) {
-        type = WallpaperType::Solar;
-        return true;
-    }
-    qWarning() << "Unknown wallpaper type:" << value;
-    return false;
-}
+    reset();
 
-std::unique_ptr<DynamicWallpaperPackage> DynamicWallpaperPackage::load(const QString& id)
-{
     const KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Wallpaper/Dynamic"), id);
-    if (!package.isValid())
-        return nullptr;
+    if (!package.isValid()) {
+        m_errorText = i18n("Couldn't load wallpaper package: %1", id);
+        return false;
+    }
 
-    const QJsonObject rootObject = package.metadata().rawData().value(QLatin1String("Wallpaper")).toObject();
-    if (rootObject.isEmpty())
-        return nullptr;
-
-    std::unique_ptr<DynamicWallpaperPackage> wallpaper = std::make_unique<DynamicWallpaperPackage>();
-    if (!parseWallpaperType(rootObject, wallpaper->m_type))
-        return nullptr;
+    auto wallpaper = std::make_shared<DynamicWallpaperPackage>();
+    if (!parseWallpaperType(package, wallpaper->m_type, m_errorText))
+        return false;
 
     switch (wallpaper->type()) {
     case WallpaperType::Solar:
-        if (!parseSolarMetaData(package, rootObject, wallpaper->m_images))
-            return nullptr;
+        if (!parseSolarMetaData(package, wallpaper->m_images, m_errorText))
+            return false;
         break;
     case WallpaperType::Timed:
-        if (!parseTimedMetaData(package, rootObject, wallpaper->m_images))
-            return nullptr;
+        if (!parseTimedMetaData(package, wallpaper->m_images, m_errorText))
+            return false;
         break;
     default:
         Q_UNREACHABLE();
     }
 
-    return wallpaper;
+    if (wallpaper->m_images.count() < 2) {
+        m_errorText = i18n("Not enough images");
+        return false;
+    }
+
+    m_wallpaper = wallpaper;
+
+    return true;
+}
+
+QString DynamicWallpaperLoader::errorText() const
+{
+    return m_errorText;
+}
+
+std::shared_ptr<DynamicWallpaperPackage> DynamicWallpaperLoader::wallpaper() const
+{
+    return m_wallpaper;
+}
+
+void DynamicWallpaperLoader::reset()
+{
+    m_errorText = QString();
+    m_wallpaper = {};
 }
