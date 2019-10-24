@@ -1,6 +1,13 @@
 {
     "KPlugin": {
+        "Authors": [
+            {
+                "Email": "user@example.com",
+                "Name": "Full Name"
+            }
+        ],
         "Id": "unique_id",
+        "License": "LGPLv3",
         "Name": "Human-readable name"
     },
     "Wallpaper": {

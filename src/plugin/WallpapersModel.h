@@ -34,6 +34,8 @@ public:
         FolderRole, ///< Path to the root of the wallpaper.
         IsRemovableRole, ///< Whether the wallpaper can be removed.
         IsZombieRole, ///< Whether the wallpaper is about to be removed.
+        AuthorRole, ///< The author of the wallpaper.
+        LicenseRole, ///< License under which the wallpaper is distributed.
     };
 
     explicit WallpapersModel(QObject* parent = nullptr);
@@ -52,6 +54,8 @@ private:
     struct Wallpaper {
         QString name;
         QString id;
+        QString author;
+        QString license;
         QUrl folderUrl;
         QUrl previewUrl;
         bool isRemovable = false;

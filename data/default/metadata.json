@@ -1,6 +1,13 @@
 {
     "KPlugin": {
+        "Authors": [
+            {
+                "Email": "vladzzag@gmail.com",
+                "Name": "Vlad Zahorodnii"
+            }
+        ],
         "Id": "default",
+        "License": "LGPLv3",
         "Name": "Default"
     },
     "Wallpaper": {

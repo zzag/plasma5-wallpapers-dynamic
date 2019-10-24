@@ -21,6 +21,7 @@
 #include "DynamicWallpaperInstaller.h"
 
 // KF
+#include <KAboutData>
 #include <KPackage/PackageLoader>
 
 // Qt
@@ -41,6 +42,8 @@ QHash<int, QByteArray> WallpapersModel::roleNames() const
         { FolderRole, QByteArrayLiteral("folder") },
         { IsRemovableRole, QByteArrayLiteral("removable") },
         { IsZombieRole, QByteArrayLiteral("zombie") },
+        { AuthorRole, QByteArrayLiteral("author") },
+        { LicenseRole, QByteArrayLiteral("license") },
     };
     return additionalRoles.unite(QAbstractListModel::roleNames());
 }
@@ -75,6 +78,10 @@ QVariant WallpapersModel::data(const QModelIndex& index, int role) const
         return wallpaper.isRemovable;
     case IsZombieRole:
         return wallpaper.isZombie;
+    case AuthorRole:
+        return wallpaper.author;
+    case LicenseRole:
+        return wallpaper.license;
     default:
         return QVariant();
     }
@@ -156,15 +163,21 @@ void WallpapersModel::reload()
     QVector<Wallpaper> wallpapers;
 
     forEachPackage(QStringLiteral("Wallpaper/Dynamic"), [&](const KPackage::Package& package) {
+        const KPluginMetaData metaData = package.metadata();
+
         Wallpaper wallpaper = {};
-        wallpaper.id = package.metadata().pluginId();
-        wallpaper.name = package.metadata().name();
+        wallpaper.id = metaData.pluginId();
+        wallpaper.name = metaData.name();
+        wallpaper.license = metaData.license();
 
         const QString folder = package.path();
         wallpaper.folderUrl = QUrl::fromLocalFile(folder);
         wallpaper.isRemovable = folder.startsWith(localWallpapersRoot);
 
-        const QString previewFileName = previewFromMetaData(package.metadata());
+        if (!metaData.authors().isEmpty())
+            wallpaper.author = metaData.authors().first().name();
+
+        const QString previewFileName = previewFromMetaData(metaData);
         if (!previewFileName.isEmpty())
             wallpaper.previewUrl = package.fileUrl(QByteArrayLiteral("images"), previewFileName);
 

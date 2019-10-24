@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dynamic-wallpaper\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/dynamic-wallpaper/issues\n"
-"POT-Creation-Date: 2019-10-18 19:18+0300\n"
+"POT-Creation-Date: 2019-10-24 19:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,32 +70,44 @@ msgid_plural " min"
 msgstr[0] ""
 msgstr[1] ""
 
+#: package/contents/ui/config.qml:140
+#, kde-format
+msgctxt "<image> by <author> (<license>)"
+msgid "By %1 (%2)"
+msgstr ""
+
 #: package/contents/ui/config.qml:142
+#, kde-format
+msgctxt "<image> (<license>)"
+msgid "%1 (%2)"
+msgstr ""
+
+#: package/contents/ui/config.qml:149
 #, kde-format
 msgid "Open Containing Folder"
 msgstr ""
 
-#: package/contents/ui/config.qml:147
+#: package/contents/ui/config.qml:154
 #, kde-format
 msgid "Restore Wallpaper"
 msgstr ""
 
-#: package/contents/ui/config.qml:153
+#: package/contents/ui/config.qml:160
 #, kde-format
 msgid "Remove Wallpaper"
 msgstr ""
 
-#: package/contents/ui/config.qml:173
+#: package/contents/ui/config.qml:180
 #, kde-format
 msgid "Open Wallpaper"
 msgstr ""
 
-#: package/contents/ui/config.qml:175
+#: package/contents/ui/config.qml:182
 #, kde-format
 msgid "Wallpaper metadata file (metadata.json)"
 msgstr ""
 
-#: package/contents/ui/config.qml:187
+#: package/contents/ui/config.qml:194
 #, kde-format
 msgid "Add Wallpaper..."
 msgstr ""

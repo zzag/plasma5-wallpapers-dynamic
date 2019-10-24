@@ -133,8 +133,15 @@ ColumnLayout {
         view.delegate: KCM.GridDelegate {
             hoverEnabled: true
             text: model.name
-            toolTip: model.name
             opacity: model.zombie ? 0.5 : 1
+
+            toolTip: {
+                if (model.author && model.license)
+                    return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
+                if (model.license)
+                    return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> (<license>)", "%1 (%2)", model.name, model.license);
+                return model.name;
+            }
 
             actions: [
                 Kirigami.Action {
