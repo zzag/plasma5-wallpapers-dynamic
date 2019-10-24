@@ -21,62 +21,62 @@ msgstr ""
 #: plugin/DynamicWallpaperModel.cc:86
 #, kde-format
 msgid "Could not construct the path of the Sun"
-msgstr ""
+msgstr "Невозможно построить путь Солнца"
 
 #: plugin/DynamicWallpaperPackage.cc:62
 #, kde-format
 msgid "Could not find 'Wallpaper' object"
-msgstr ""
+msgstr "Невозможно найти 'Wallpaper' объект"
 
 #: plugin/DynamicWallpaperPackage.cc:80
 #, kde-format
 msgid "Unknown wallpaper type: %1"
-msgstr ""
+msgstr "Неизвестный тип обоев: %1"
 
 #: plugin/DynamicWallpaperPackage.cc:97 plugin/DynamicWallpaperPackage.cc:134
 #, kde-format
 msgid "Image %1 has no metadata associated with it"
-msgstr ""
+msgstr "Изображение %1 не имеет метаданных"
 
 #: plugin/DynamicWallpaperPackage.cc:103
 #, kde-format
 msgid "Image %1 has invalid azimuth value: %2"
-msgstr ""
+msgstr "Изображение %1 имеет недействительное значение азимута: %2"
 
 #: plugin/DynamicWallpaperPackage.cc:108
 #, kde-format
 msgid "Image %1 has invalid elevation value: %2"
-msgstr ""
+msgstr "Изображение %1 имеет недействительное значение высоты Солнца: %2"
 
 #: plugin/DynamicWallpaperPackage.cc:140 plugin/DynamicWallpaperPackage.cc:145
 #, kde-format
 msgid "Image %1 has invalid time value: %2"
-msgstr ""
+msgstr "Изображение %1 имеет недействительное значение времени: %2"
 
 #: plugin/DynamicWallpaperPackage.cc:168
 #, kde-format
 msgid "Could not load wallpaper package: %1"
-msgstr ""
+msgstr "Невозможно загрузить обои: %1"
 
 #: plugin/DynamicWallpaperPackage.cc:190
 #, kde-format
 msgid "Wallpaper does not have enough images"
-msgstr ""
+msgstr "Обои имеют недостаточно изображений"
 
 #: plugin/DynamicWallpaper.cc:185
 #, kde-format
 msgid "Could not initialize dynamic wallpaper: %1"
-msgstr ""
+msgstr "Невозможно инициализировать обои: %1"
 
 #: plugin/DynamicWallpaper.cc:202
 #, kde-format
 msgid "Could not load dynamic wallpaper: %1"
-msgstr ""
+msgstr "Невозможно загрузить динамические обои: %1"
 
 #: kpackage-integration/DynamicWallpaperPackageStructure.cc:38
 #, kde-format
 msgid "Images"
-msgstr ""
+msgstr "Изображения"
 
 #: package/contents/ui/config.qml:50
 #, kde-format
