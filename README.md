@@ -7,7 +7,7 @@ plasma5-wallpapers-dynamic is a simple dynamic wallpaper plugin for KDE Plasma.
 ## Additional wallpapers
 
 This plugin ships with only one dynamic wallpaper. If you'd like to install more,
-please visit [Additional Wallpapers](https://github.com/zzag/dynamic-wallpaper/wiki/Additional-Wallpapers)
+please visit [Additional Wallpapers](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/Additional-Wallpapers)
 page.
 
 
