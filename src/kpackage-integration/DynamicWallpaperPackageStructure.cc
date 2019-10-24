@@ -16,8 +16,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+// Own
 #include "DynamicWallpaperPackageStructure.h"
 
+// KF
 #include <KLocalizedString>
 
 DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject* parent, const QVariantList& args)

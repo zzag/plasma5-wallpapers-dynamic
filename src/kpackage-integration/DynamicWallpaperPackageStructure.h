@@ -18,6 +18,7 @@
 
 #pragma once
 
+// KF
 #include <KPackage/PackageStructure>
 
 class DynamicWallpaperPackageStructure : public KPackage::PackageStructure {
