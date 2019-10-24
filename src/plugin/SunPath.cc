@@ -32,34 +32,41 @@ static QVector3D computeNormal(const QVector3D& center, const QVector3D& v1, con
     return cross.normalized();
 }
 
+static QVector3D positionToVector(const SunPosition& position)
+{
+    return position.toVector();
+}
+
 SunPath::SunPath()
 {
 }
 
 SunPath::SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude)
 {
-    auto at = [&](const QTime& time) {
-        return SunPosition(QDateTime(dateTime.date(), time), latitude, longitude);
-    };
-
+    const QDate date = dateTime.date();
     const int sampleCount = 24;
+
+    QVector<SunPosition> positions;
+    positions.reserve(sampleCount);
+    for (int i = 0; i < sampleCount; ++i)
+        positions << SunPosition(QDateTime(date, QTime(i, 0)), latitude, longitude);
+
     QVector<QVector3D> samples;
     samples.reserve(sampleCount);
-    for (int i = 0; i < sampleCount; ++i)
-        samples << at(QTime(i, 0)).toVector();
+    std::transform(positions.constBegin(), positions.constEnd(),
+        std::back_inserter(samples), positionToVector);
 
-    for (const QVector3D& sample : samples)
-        m_center += sample;
-    m_center /= samples.count();
+    m_center = std::accumulate(samples.constBegin(), samples.constEnd(), QVector3D());
+    m_center /= sampleCount;
 
     for (int i = 1; i < samples.count(); ++i) {
         const QVector3D v1 = samples.at(i - 1);
         const QVector3D v2 = samples.at(i);
         m_normal += computeNormal(m_center, v1, v2);
     }
-    m_normal /= samples.count() - 1;
+    m_normal /= sampleCount - 1;
 
-    m_midnight = project(at(QTime(0, 0)));
+    m_midnight = project(positions.first());
 }
 
 bool SunPath::isValid() const
