@@ -72,13 +72,13 @@ msgstr[1] " мин"
 #, kde-format
 msgctxt "<image> by <author> (<license>)"
 msgid "By %1 (%2)"
-msgstr ""
+msgstr "От %1 (%2)"
 
 #: package/contents/ui/config.qml:142
 #, kde-format
 msgctxt "<image> (<license>)"
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #: package/contents/ui/config.qml:149
 #, kde-format
