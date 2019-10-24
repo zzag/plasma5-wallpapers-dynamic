@@ -47,6 +47,13 @@ public:
     virtual bool isValid() const;
 
     /**
+     * Returns the text with the description why the model is invalid.
+     *
+     * Default implementation returns empty string.
+     */
+    virtual QString errorText() const;
+
+    /**
      * Returns the path to image that has to be displayed in the bottom layer.
      */
     QUrl bottomLayer() const;
@@ -92,6 +99,7 @@ public:
 
     bool isExpired() const override;
     bool isValid() const override;
+    QString errorText() const override;
     void update() override;
 
 private:

@@ -20,7 +20,6 @@
 #include "DynamicWallpaperInstaller.h"
 
 // KF
-#include <KLocalizedString>
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 
@@ -58,10 +57,8 @@ static KPackage::PackageStructure* locatePackageStructure()
 void DynamicWallpaperInstaller::install(const QUrl& fileUrl)
 {
     KPackage::PackageStructure* structure = locatePackageStructure();
-    if (!structure) {
-        setError(i18n("Couldn't locate 'Wallpaper/Dynamic' package structure"));
+    if (!structure)
         return;
-    }
 
     const QString metaDataFilePath = fileUrl.toLocalFile();
     const QString sourcePackage = QFileInfo(metaDataFilePath).path();
@@ -75,10 +72,8 @@ void DynamicWallpaperInstaller::install(const QUrl& fileUrl)
 void DynamicWallpaperInstaller::uninstall(const QString& packageName)
 {
     KPackage::PackageStructure* structure = locatePackageStructure();
-    if (!structure) {
-        setError(i18n("Couldn't locate 'Wallpaper/Dynamic' package structure"));
+    if (!structure)
         return;
-    }
 
     KPackage::Package package(structure);
     KJob* job = package.uninstall(packageName, locatePackageRoot());

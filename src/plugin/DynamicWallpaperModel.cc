@@ -21,6 +21,9 @@
 #include "DynamicWallpaperPackage.h"
 #include "SunPosition.h"
 
+// KF
+#include <KLocalizedString>
+
 // Qt
 #include <QtMath>
 
@@ -77,6 +80,13 @@ bool SolarDynamicWallpaperModel::isValid() const
     return m_sunPath.isValid();
 }
 
+QString SolarDynamicWallpaperModel::errorText() const
+{
+    if (!m_sunPath.isValid())
+        return i18n("Could not construct the path of the Sun");
+    return QString();
+}
+
 void SolarDynamicWallpaperModel::update()
 {
     const QDateTime now(QDateTime::currentDateTime());
@@ -113,6 +123,11 @@ bool DynamicWallpaperModel::isExpired() const
 bool DynamicWallpaperModel::isValid() const
 {
     return true;
+}
+
+QString DynamicWallpaperModel::errorText() const
+{
+    return QString();
 }
 
 QUrl DynamicWallpaperModel::bottomLayer() const

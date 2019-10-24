@@ -59,7 +59,7 @@ static bool parseWallpaperType(const KPackage::Package& package, WallpaperType& 
 {
     const QJsonObject wallpaperObject = extractWallpaperObject(package);
     if (wallpaperObject.isEmpty()) {
-        errorText = i18n("'Wallpaper' object doesn't exist");
+        errorText = i18n("Could not find 'Wallpaper' object");
         return false;
     }
 
@@ -94,34 +94,23 @@ static bool parseSolarMetaData(const KPackage::Package& package, QVector<Wallpap
     for (int i = 0; i < metaData.count(); ++i) {
         const QJsonObject rawImage = metaData.at(i).toObject();
         if (rawImage.isEmpty()) {
-            errorText = i18n("Image with index %1 has no metadata", i);
+            errorText = i18n("Image %1 has no metadata associated with it", i);
             return false;
         }
 
-        if (!rawImage.value(QLatin1String("Azimuth")).isDouble()) {
-            errorText = i18n("Image with index %1 has invalid azimuth value type", i);
+        const QJsonValue rawAzimuth = rawImage.value(QLatin1String("Azimuth"));
+        if (!rawAzimuth.isDouble()) {
+            errorText = i18n("Image %1 has invalid azimuth value: %2", i, rawAzimuth.toString());
             return false;
         }
-
-        const qreal azimuth = rawImage.value(QLatin1String("Azimuth")).toDouble();
-        if (std::abs(azimuth) > 360) {
-            errorText = i18n("Image with index %1 has invalid azimuth value", i);
-            return false;
-        }
-
-        if (!rawImage.value(QLatin1String("Elevation")).isDouble()) {
-            errorText = i18n("Image with index %1 has invalid elevation value type", i);
-            return false;
-        }
-
-        const qreal elevation = rawImage.value(QLatin1String("Elevation")).toDouble();
-        if (std::abs(elevation) > 90) {
-            errorText = i18n("Image with index %1 has invalid elevation value", i);
+        const QJsonValue rawElevation = rawImage.value(QLatin1String("Elevation"));
+        if (!rawElevation.isDouble()) {
+            errorText = i18n("Image %1 has invalid elevation value: %2", i, rawElevation.toString());
             return false;
         }
 
         WallpaperImage image = {};
-        image.position = SunPosition(elevation, azimuth);
+        image.position = SunPosition(rawElevation.toDouble(), rawAzimuth.toDouble());
 
         const QString fileName = rawImage.value(QLatin1String("FileName")).toString();
         const QUrl url = package.fileUrl(QByteArrayLiteral("images"), fileName);
@@ -142,18 +131,18 @@ static bool parseTimedMetaData(const KPackage::Package& package, QVector<Wallpap
     for (int i = 0; i < metaData.count(); ++i) {
         const QJsonObject rawImage = metaData.at(i).toObject();
         if (rawImage.isEmpty()) {
-            errorText = i18n("Image with index %1 has no metadata", i);
+            errorText = i18n("Image %1 has no metadata associated with it", i);
             return false;
         }
 
-        if (!rawImage.value(QLatin1String("Time")).isDouble()) {
-            errorText = i18n("Image with index %1 has invalid time value type", i);
+        const QJsonValue rawTime = rawImage.value(QLatin1String("Time"));
+        if (!rawTime.isDouble()) {
+            errorText = i18n("Image %1 has invalid time value: %2", i, rawTime.toString());
             return false;
         }
-
-        const qreal time = rawImage.value(QLatin1String("Time")).toDouble();
+        const qreal time = rawTime.toDouble();
         if (time < 0 || time > 1) {
-            errorText = i18n("Image with index %1 has invalid time value", i);
+            errorText = i18n("Image %1 has invalid time value: %2", i, time);
             return false;
         }
 
@@ -176,7 +165,7 @@ bool DynamicWallpaperLoader::load(const QString& id)
 
     const KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Wallpaper/Dynamic"), id);
     if (!package.isValid()) {
-        m_errorText = i18n("Couldn't load wallpaper package: %1", id);
+        m_errorText = i18n("Could not load wallpaper package: %1", id);
         return false;
     }
 
@@ -198,7 +187,7 @@ bool DynamicWallpaperLoader::load(const QString& id)
     }
 
     if (wallpaper->m_images.count() < 2) {
-        m_errorText = i18n("Not enough images");
+        m_errorText = i18n("Wallpaper does not have enough images");
         return false;
     }
 

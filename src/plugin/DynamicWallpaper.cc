@@ -182,7 +182,7 @@ void DynamicWallpaper::reloadModel()
     }
 
     if (!model->isValid()) {
-        setError(i18n("Couldn't initialize the dynamic wallpaper model"));
+        setError(i18n("Could not initialize dynamic wallpaper: %1", model->errorText()));
         setStatus(Status::Error);
         return;
     }
@@ -199,7 +199,7 @@ void DynamicWallpaper::reloadWallpaper()
 
     DynamicWallpaperLoader loader;
     if (!loader.load(m_wallpaperId)) {
-        setError(i18n("Couldn't load the dynamic wallpaper: %1", loader.errorText()));
+        setError(i18n("Could not load dynamic wallpaper: %1", loader.errorText()));
         setStatus(Status::Error);
         return;
     }
