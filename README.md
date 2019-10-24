@@ -122,6 +122,10 @@ You can find two sample metadata.json files in this repository. One is for a sol
 dynamic wallpaper, see [metadata.json.solar.sample](metadata.json.solar.sample),
 and the other one is for a timed dynamic wallpaper, see [metadata.json.timed.sample](metadata.json.timed.sample).
 
+For more details, see
+* [metadata.json keys](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/metadata.json-keys)
+* [Difference Between Solar Dynamic Wallpapers and Timed Dynamic Wallpapers](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/Difference-Between-Solar-Dynamic-Wallpapers-and-Timed-Dynamic-Wallpapers)
+
 
 ## How to install a dynamic wallpaper
 
