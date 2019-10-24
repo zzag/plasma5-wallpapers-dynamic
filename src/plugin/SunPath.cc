@@ -42,10 +42,10 @@ SunPath::SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude)
         return SunPosition(QDateTime(dateTime.date(), time), latitude, longitude);
     };
 
-    const int numSamples = 24;
+    const int sampleCount = 24;
     QVector<QVector3D> samples;
-    samples.reserve(numSamples);
-    for (int i = 0; i < numSamples; ++i)
+    samples.reserve(sampleCount);
+    for (int i = 0; i < sampleCount; ++i)
         samples << at(QTime(i, 0)).toVector();
 
     for (const QVector3D& sample : samples)
