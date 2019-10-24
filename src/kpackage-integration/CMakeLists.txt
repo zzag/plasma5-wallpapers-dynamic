@@ -1,3 +1,5 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.wallpaper\")
+
 set(packagestructure_SRCS
     DynamicWallpaperPackageStructure.cc
 )

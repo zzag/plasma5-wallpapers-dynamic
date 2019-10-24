@@ -33,7 +33,7 @@ void DynamicWallpaperPackageStructure::initPackage(KPackage::Package* package)
     };
 
     package->setDefaultPackageRoot(QStringLiteral("dynamicwallpapers/"));
-    package->addDirectoryDefinition(QByteArrayLiteral("images"), QStringLiteral("images"), i18n("Dynamic wallpaper images"));
+    package->addDirectoryDefinition(QByteArrayLiteral("images"), QStringLiteral("images"), i18n("Images"));
     package->setMimeTypes(QByteArrayLiteral("images"), supportedImageFormats);
     package->setRequired(QByteArrayLiteral("images"), true);
 }
