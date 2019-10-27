@@ -27,12 +27,13 @@
  * the system clock. Such changes are usually initiated by the user adjusting values
  * in the Date and Time KCM or calls made to functions like settimeofday().
  */
-class ClockSkewNotifier : public QObject {
+class ClockSkewNotifier : public QObject
+{
     Q_OBJECT
     Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
 
 public:
-    explicit ClockSkewNotifier(QObject* parent = nullptr);
+    explicit ClockSkewNotifier(QObject *parent = nullptr);
     ~ClockSkewNotifier() override;
 
     /**

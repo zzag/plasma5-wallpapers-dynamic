@@ -24,7 +24,7 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
-LinuxClockSkewNotifierEngine* LinuxClockSkewNotifierEngine::create(QObject* parent)
+LinuxClockSkewNotifierEngine *LinuxClockSkewNotifierEngine::create(QObject *parent)
 {
     const int fd = timerfd_create(CLOCK_REALTIME, O_CLOEXEC | O_NONBLOCK);
     if (fd == -1) {
@@ -43,11 +43,11 @@ LinuxClockSkewNotifierEngine* LinuxClockSkewNotifierEngine::create(QObject* pare
     return new LinuxClockSkewNotifierEngine(fd, parent);
 }
 
-LinuxClockSkewNotifierEngine::LinuxClockSkewNotifierEngine(int fd, QObject* parent)
+LinuxClockSkewNotifierEngine::LinuxClockSkewNotifierEngine(int fd, QObject *parent)
     : ClockSkewNotifierEngine(parent)
     , m_fd(fd)
 {
-    const QSocketNotifier* notifier = new QSocketNotifier(fd, QSocketNotifier::Read, this);
+    const QSocketNotifier *notifier = new QSocketNotifier(fd, QSocketNotifier::Read, this);
     connect(notifier, &QSocketNotifier::activated, this, &LinuxClockSkewNotifierEngine::handleTimerCancelled);
 }
 

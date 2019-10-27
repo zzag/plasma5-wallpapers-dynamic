@@ -24,10 +24,11 @@
 
 class SunPosition;
 
-class SunPath {
+class SunPath
+{
 public:
     SunPath();
-    SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude);
+    SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude);
 
     /**
      * Whether this sun path is valid.
@@ -52,7 +53,7 @@ public:
     /**
      * Projects the given sun position onto this sun path.
      */
-    QVector3D project(const SunPosition& position) const;
+    QVector3D project(const SunPosition &position) const;
 
 private:
     QVector3D m_center;

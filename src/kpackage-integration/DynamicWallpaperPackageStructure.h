@@ -21,11 +21,12 @@
 // KF
 #include <KPackage/PackageStructure>
 
-class DynamicWallpaperPackageStructure : public KPackage::PackageStructure {
+class DynamicWallpaperPackageStructure : public KPackage::PackageStructure
+{
     Q_OBJECT
 
 public:
-    explicit DynamicWallpaperPackageStructure(QObject* parent = nullptr, const QVariantList& args = QVariantList());
+    explicit DynamicWallpaperPackageStructure(QObject *parent = nullptr, const QVariantList &args = QVariantList());
 
-    void initPackage(KPackage::Package* package) override;
+    void initPackage(KPackage::Package *package) override;
 };

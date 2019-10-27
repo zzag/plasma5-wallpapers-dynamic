@@ -29,7 +29,8 @@
 class DynamicWallpaperModel;
 class DynamicWallpaperPackage;
 
-class DynamicWallpaper : public QObject {
+class DynamicWallpaper : public QObject
+{
     Q_OBJECT
     Q_PROPERTY(QUrl bottomLayer READ bottomLayer NOTIFY bottomLayerChanged)
     Q_PROPERTY(QUrl topLayer READ topLayer NOTIFY topLayerChanged)
@@ -47,7 +48,7 @@ public:
     };
     Q_ENUM(Status)
 
-    explicit DynamicWallpaper(QObject* parent = nullptr);
+    explicit DynamicWallpaper(QObject *parent = nullptr);
     ~DynamicWallpaper() override;
 
     QUrl bottomLayer() const;
@@ -57,7 +58,7 @@ public:
     QString error() const;
 
     QString wallpaperId() const;
-    void setWallpaperId(const QString& id);
+    void setWallpaperId(const QString &id);
 
     qreal latitude() const;
     void setLatitude(qreal latitude);
@@ -79,16 +80,16 @@ public Q_SLOTS:
     void update();
 
 private:
-    void setBottomLayer(const QUrl& url);
-    void setTopLayer(const QUrl& url);
+    void setBottomLayer(const QUrl &url);
+    void setTopLayer(const QUrl &url);
     void setBlendFactor(qreal factor);
     void setStatus(Status status);
-    void setError(const QString& error);
+    void setError(const QString &error);
     void reloadModel();
     void reloadWallpaper();
     void scheduleUpdate();
 
-    QTimer* m_scheduleTimer = nullptr;
+    QTimer *m_scheduleTimer = nullptr;
     Status m_status = Status::Ok;
     QString m_error;
     QString m_wallpaperId;

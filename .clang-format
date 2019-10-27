@@ -4,8 +4,26 @@ BasedOnStyle: WebKit
 Language: Cpp
 Standard: Cpp11
 
+# Braces are usually attached, but not after functions or class declarations.
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: true
+    AfterControlStatement: false
+    AfterEnum: false
+    AfterFunction: true
+    AfterNamespace: false
+    AfterObjCDeclaration: false
+    AfterStruct: true
+    AfterUnion: false
+    BeforeCatch: false
+    BeforeElse: false
+    IndentBraces: false
+
 # Break before operators that aren’t assignments.
 BreakBeforeBinaryOperators: NonAssignment
+
+# Align pointers to the right.
+PointerAlignment: Right
 
 # Macros for which the opening brace stays attached.
 ForEachMacros:

@@ -20,14 +20,15 @@
 
 #include <QObject>
 
-class ClockSkewNotifierEngine : public QObject {
+class ClockSkewNotifierEngine : public QObject
+{
     Q_OBJECT
 
 public:
-    static ClockSkewNotifierEngine* create(QObject* parent);
+    static ClockSkewNotifierEngine *create(QObject *parent);
 
 protected:
-    explicit ClockSkewNotifierEngine(QObject* parent);
+    explicit ClockSkewNotifierEngine(QObject *parent);
 
 Q_SIGNALS:
     void clockSkewed();

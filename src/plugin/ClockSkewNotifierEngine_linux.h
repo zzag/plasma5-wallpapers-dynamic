@@ -20,19 +20,20 @@
 
 #include "ClockSkewNotifierEngine.h"
 
-class LinuxClockSkewNotifierEngine : public ClockSkewNotifierEngine {
+class LinuxClockSkewNotifierEngine : public ClockSkewNotifierEngine
+{
     Q_OBJECT
 
 public:
     ~LinuxClockSkewNotifierEngine() override;
 
-    static LinuxClockSkewNotifierEngine* create(QObject* parent);
+    static LinuxClockSkewNotifierEngine *create(QObject *parent);
 
 private Q_SLOTS:
     void handleTimerCancelled();
 
 private:
-    LinuxClockSkewNotifierEngine(int fd, QObject* parent);
+    LinuxClockSkewNotifierEngine(int fd, QObject *parent);
 
     int m_fd;
 };

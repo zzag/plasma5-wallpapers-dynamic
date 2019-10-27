@@ -53,7 +53,8 @@ enum class WallpaperType {
     Timed,
 };
 
-struct WallpaperImage {
+struct WallpaperImage
+{
     /**
      * Position of the Sun when the picture was taken.
      */
@@ -70,7 +71,8 @@ struct WallpaperImage {
     QUrl url;
 };
 
-class DynamicWallpaperPackage {
+class DynamicWallpaperPackage
+{
 public:
     /**
      * Returns the type of the dynamic wallpaper.
@@ -89,7 +91,8 @@ private:
     friend class DynamicWallpaperLoader;
 };
 
-class DynamicWallpaperLoader {
+class DynamicWallpaperLoader
+{
 public:
     /**
      * Loads a dynamic wallpaper with the given @p id.
@@ -98,7 +101,7 @@ public:
      * otherwise @c false. If an error has occurred during the loading process,
      * you can use errorText() method to retrieve the error message.
      */
-    bool load(const QString& id);
+    bool load(const QString &id);
 
     /**
      * Returns the error text if an error has occurred during the loading process.

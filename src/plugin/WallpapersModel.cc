@@ -27,7 +27,7 @@
 // Qt
 #include <QJsonObject>
 
-WallpapersModel::WallpapersModel(QObject* parent)
+WallpapersModel::WallpapersModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     reload();
@@ -48,13 +48,13 @@ QHash<int, QByteArray> WallpapersModel::roleNames() const
     return additionalRoles.unite(QAbstractListModel::roleNames());
 }
 
-int WallpapersModel::rowCount(const QModelIndex& parent) const
+int WallpapersModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
     return m_wallpapers.count();
 }
 
-QVariant WallpapersModel::data(const QModelIndex& index, int role) const
+QVariant WallpapersModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -62,7 +62,7 @@ QVariant WallpapersModel::data(const QModelIndex& index, int role) const
     if (m_wallpapers.count() <= index.row())
         return QVariant();
 
-    const Wallpaper& wallpaper = m_wallpapers.at(index.row());
+    const Wallpaper &wallpaper = m_wallpapers.at(index.row());
 
     switch (role) {
     case Qt::DisplayRole:
@@ -87,12 +87,12 @@ QVariant WallpapersModel::data(const QModelIndex& index, int role) const
     }
 }
 
-bool WallpapersModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool WallpapersModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!index.isValid())
         return false;
 
-    Wallpaper& wallpaper = m_wallpapers[index.row()];
+    Wallpaper &wallpaper = m_wallpapers[index.row()];
     QVector<int> modifiedRoles;
 
     if (role == IsZombieRole) {
@@ -115,7 +115,7 @@ QStringList WallpapersModel::zombies() const
 {
     QStringList zombies;
 
-    for (const Wallpaper& wallpaper : m_wallpapers) {
+    for (const Wallpaper &wallpaper : m_wallpapers) {
         if (!wallpaper.isZombie)
             continue;
         zombies << wallpaper.id;
@@ -124,10 +124,10 @@ QStringList WallpapersModel::zombies() const
     return zombies;
 }
 
-int WallpapersModel::indexOf(const QString& id) const
+int WallpapersModel::indexOf(const QString &id) const
 {
     auto it = std::find_if(m_wallpapers.begin(), m_wallpapers.end(),
-        [id](const Wallpaper& wallpaper) {
+        [id](const Wallpaper &wallpaper) {
             return wallpaper.id == id;
         });
     if (it == m_wallpapers.end())
@@ -136,10 +136,10 @@ int WallpapersModel::indexOf(const QString& id) const
     return std::distance(m_wallpapers.begin(), it);
 }
 
-static void forEachPackage(const QString& packageFormat, std::function<void(const KPackage::Package&)> callback)
+static void forEachPackage(const QString &packageFormat, std::function<void(const KPackage::Package &)> callback)
 {
     const QList<KPluginMetaData> packages = KPackage::PackageLoader::self()->listPackages(packageFormat);
-    for (const KPluginMetaData& metaData : packages) {
+    for (const KPluginMetaData &metaData : packages) {
         const QString pluginId = metaData.pluginId();
         const KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(packageFormat, pluginId);
         if (package.isValid())
@@ -147,7 +147,7 @@ static void forEachPackage(const QString& packageFormat, std::function<void(cons
     }
 }
 
-static QString previewFromMetaData(const KPluginMetaData& metaData)
+static QString previewFromMetaData(const KPluginMetaData &metaData)
 {
     const QJsonObject wallpaperObject = metaData.rawData().value(QLatin1String("Wallpaper")).toObject();
     if (wallpaperObject.isEmpty())
@@ -162,7 +162,7 @@ void WallpapersModel::reload()
 
     QVector<Wallpaper> wallpapers;
 
-    forEachPackage(QStringLiteral("Wallpaper/Dynamic"), [&](const KPackage::Package& package) {
+    forEachPackage(QStringLiteral("Wallpaper/Dynamic"), [&](const KPackage::Package &package) {
         const KPluginMetaData metaData = package.metadata();
 
         Wallpaper wallpaper = {};

@@ -35,7 +35,7 @@ static qreal julianDayToJulianCenturies(qreal t)
     return (t - 2451545.0) / 36525.0;
 }
 
-static qreal julianCenturies(const QDateTime& dateTime)
+static qreal julianCenturies(const QDateTime &dateTime)
 {
     const qreal jd = dateTime.toSecsSinceEpoch() / 86400.0 + 2440587.5;
     return julianDayToJulianCenturies(jd);
@@ -187,7 +187,7 @@ SunPosition::SunPosition(qreal elevation, qreal azimuth)
 {
 }
 
-SunPosition::SunPosition(const QDateTime& dateTime, qreal latitude, qreal longitude)
+SunPosition::SunPosition(const QDateTime &dateTime, qreal latitude, qreal longitude)
 {
     const qreal jcent = julianCenturies(dateTime);
     const qreal zenith = solarZenith(jcent, latitude, longitude);

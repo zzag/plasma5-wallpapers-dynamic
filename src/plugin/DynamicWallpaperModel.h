@@ -28,7 +28,8 @@
 
 class DynamicWallpaperPackage;
 
-class DynamicWallpaperModel {
+class DynamicWallpaperModel
+{
 public:
     virtual ~DynamicWallpaperModel();
 
@@ -78,9 +79,10 @@ public:
     virtual void update() = 0;
 
 protected:
-    struct Knot {
-        bool operator<(const Knot& other) const { return time < other.time; }
-        bool operator<=(const Knot& other) const { return time <= other.time; }
+    struct Knot
+    {
+        bool operator<(const Knot &other) const { return time < other.time; }
+        bool operator<=(const Knot &other) const { return time <= other.time; }
 
         qreal time;
         QUrl url;
@@ -93,9 +95,10 @@ protected:
     qreal m_time = 0;
 };
 
-class SolarDynamicWallpaperModel : public DynamicWallpaperModel {
+class SolarDynamicWallpaperModel : public DynamicWallpaperModel
+{
 public:
-    SolarDynamicWallpaperModel(const DynamicWallpaperPackage* package, qreal latitude, qreal longitude);
+    SolarDynamicWallpaperModel(const DynamicWallpaperPackage *package, qreal latitude, qreal longitude);
 
     bool isExpired() const override;
     bool isValid() const override;
@@ -109,9 +112,10 @@ private:
     qreal m_longitude;
 };
 
-class TimedDynamicWallpaperModel : public DynamicWallpaperModel {
+class TimedDynamicWallpaperModel : public DynamicWallpaperModel
+{
 public:
-    explicit TimedDynamicWallpaperModel(const DynamicWallpaperPackage* package);
+    explicit TimedDynamicWallpaperModel(const DynamicWallpaperPackage *package);
 
     void update() override;
 };

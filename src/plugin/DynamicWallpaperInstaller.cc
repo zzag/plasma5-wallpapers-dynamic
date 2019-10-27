@@ -27,7 +27,7 @@
 #include <QDir>
 #include <QStandardPaths>
 
-DynamicWallpaperInstaller::DynamicWallpaperInstaller(QObject* parent)
+DynamicWallpaperInstaller::DynamicWallpaperInstaller(QObject *parent)
     : QObject(parent)
 {
 }
@@ -37,7 +37,7 @@ QString DynamicWallpaperInstaller::error() const
     return m_error;
 }
 
-void DynamicWallpaperInstaller::setError(const QString& error)
+void DynamicWallpaperInstaller::setError(const QString &error)
 {
     m_error = error;
     emit errorChanged();
@@ -49,14 +49,14 @@ QString DynamicWallpaperInstaller::locatePackageRoot()
     return dataFolder + QLatin1String("/dynamicwallpapers");
 }
 
-static KPackage::PackageStructure* locatePackageStructure()
+static KPackage::PackageStructure *locatePackageStructure()
 {
     return KPackage::PackageLoader::self()->loadPackageStructure(QStringLiteral("Wallpaper/Dynamic"));
 }
 
-void DynamicWallpaperInstaller::install(const QUrl& fileUrl)
+void DynamicWallpaperInstaller::install(const QUrl &fileUrl)
 {
-    KPackage::PackageStructure* structure = locatePackageStructure();
+    KPackage::PackageStructure *structure = locatePackageStructure();
     if (!structure)
         return;
 
@@ -64,30 +64,30 @@ void DynamicWallpaperInstaller::install(const QUrl& fileUrl)
     const QString sourcePackage = QFileInfo(metaDataFilePath).path();
 
     KPackage::Package package(structure);
-    KJob* job = package.install(sourcePackage, locatePackageRoot());
+    KJob *job = package.install(sourcePackage, locatePackageRoot());
 
     connect(job, &KJob::finished, this, &DynamicWallpaperInstaller::slotPackageInstalled);
 }
 
-void DynamicWallpaperInstaller::uninstall(const QString& packageName)
+void DynamicWallpaperInstaller::uninstall(const QString &packageName)
 {
-    KPackage::PackageStructure* structure = locatePackageStructure();
+    KPackage::PackageStructure *structure = locatePackageStructure();
     if (!structure)
         return;
 
     KPackage::Package package(structure);
-    KJob* job = package.uninstall(packageName, locatePackageRoot());
+    KJob *job = package.uninstall(packageName, locatePackageRoot());
 
     connect(job, &KJob::finished, this, &DynamicWallpaperInstaller::slotPackageUninstalled);
 }
 
-void DynamicWallpaperInstaller::uninstall(const QStringList& packageNames)
+void DynamicWallpaperInstaller::uninstall(const QStringList &packageNames)
 {
-    for (const QString& packageName : packageNames)
+    for (const QString &packageName : packageNames)
         uninstall(packageName);
 }
 
-void DynamicWallpaperInstaller::slotPackageInstalled(KJob* job)
+void DynamicWallpaperInstaller::slotPackageInstalled(KJob *job)
 {
     if (job->error() != KJob::NoError)
         setError(job->errorText());
@@ -95,7 +95,7 @@ void DynamicWallpaperInstaller::slotPackageInstalled(KJob* job)
         emit installed();
 }
 
-void DynamicWallpaperInstaller::slotPackageUninstalled(KJob* job)
+void DynamicWallpaperInstaller::slotPackageUninstalled(KJob *job)
 {
     if (job->error() != KJob::NoError)
         setError(job->errorText());

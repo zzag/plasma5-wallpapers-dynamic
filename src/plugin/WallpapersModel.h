@@ -23,7 +23,8 @@
 #include <QUrl>
 #include <QVector>
 
-class WallpapersModel : public QAbstractListModel {
+class WallpapersModel : public QAbstractListModel
+{
     Q_OBJECT
 
 public:
@@ -38,20 +39,21 @@ public:
         LicenseRole, ///< License under which the wallpaper is distributed.
     };
 
-    explicit WallpapersModel(QObject* parent = nullptr);
+    explicit WallpapersModel(QObject *parent = nullptr);
 
     // Reimplemented from QAbstractListModel.
     QHash<int, QByteArray> roleNames() const override;
-    int rowCount(const QModelIndex& parent = {}) const override;
-    QVariant data(const QModelIndex& index = {}, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    int rowCount(const QModelIndex &parent = {}) const override;
+    QVariant data(const QModelIndex &index = {}, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
     Q_INVOKABLE QStringList zombies() const;
-    Q_INVOKABLE int indexOf(const QString& id) const;
+    Q_INVOKABLE int indexOf(const QString &id) const;
     Q_INVOKABLE void reload();
 
 private:
-    struct Wallpaper {
+    struct Wallpaper
+    {
         QString name;
         QString id;
         QString author;

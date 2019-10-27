@@ -37,25 +37,25 @@ QVector<WallpaperImage> DynamicWallpaperPackage::images() const
     return m_images;
 }
 
-static QJsonObject extractWallpaperObject(const KPackage::Package& package)
+static QJsonObject extractWallpaperObject(const KPackage::Package &package)
 {
-    const QJsonObject& rootObject = package.metadata().rawData();
+    const QJsonObject &rootObject = package.metadata().rawData();
     if (rootObject.isEmpty())
         return QJsonObject();
 
     return rootObject.value(QLatin1String("Wallpaper")).toObject();
 }
 
-static QJsonArray extractMetaData(const KPackage::Package& package)
+static QJsonArray extractMetaData(const KPackage::Package &package)
 {
-    const QJsonObject& wallpaperObject = extractWallpaperObject(package);
+    const QJsonObject &wallpaperObject = extractWallpaperObject(package);
     if (wallpaperObject.isEmpty())
         return QJsonArray();
 
     return wallpaperObject.value(QLatin1String("MetaData")).toArray();
 }
 
-static bool parseWallpaperType(const KPackage::Package& package, WallpaperType& type, QString& errorText)
+static bool parseWallpaperType(const KPackage::Package &package, WallpaperType &type, QString &errorText)
 {
     const QJsonObject wallpaperObject = extractWallpaperObject(package);
     if (wallpaperObject.isEmpty()) {
@@ -85,7 +85,7 @@ static bool parseWallpaperType(const KPackage::Package& package, WallpaperType& 
     return true;
 }
 
-static bool parseSolarMetaData(const KPackage::Package& package, QVector<WallpaperImage>& images, QString& errorText)
+static bool parseSolarMetaData(const KPackage::Package &package, QVector<WallpaperImage> &images, QString &errorText)
 {
     const QJsonArray metaData = extractMetaData(package);
 
@@ -122,7 +122,7 @@ static bool parseSolarMetaData(const KPackage::Package& package, QVector<Wallpap
     return true;
 }
 
-static bool parseTimedMetaData(const KPackage::Package& package, QVector<WallpaperImage>& images, QString& errorText)
+static bool parseTimedMetaData(const KPackage::Package &package, QVector<WallpaperImage> &images, QString &errorText)
 {
     const QJsonArray metaData = extractMetaData(package);
 
@@ -159,7 +159,7 @@ static bool parseTimedMetaData(const KPackage::Package& package, QVector<Wallpap
     return true;
 }
 
-bool DynamicWallpaperLoader::load(const QString& id)
+bool DynamicWallpaperLoader::load(const QString &id)
 {
     reset();
 

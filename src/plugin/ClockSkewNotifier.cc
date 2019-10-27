@@ -19,13 +19,14 @@
 #include "ClockSkewNotifier.h"
 #include "ClockSkewNotifierEngine.h"
 
-class ClockSkewNotifier::Private {
+class ClockSkewNotifier::Private
+{
 public:
     void loadNotifierEngine();
     void unloadNotifierEngine();
 
-    ClockSkewNotifier* notifier = nullptr;
-    ClockSkewNotifierEngine* engine = nullptr;
+    ClockSkewNotifier *notifier = nullptr;
+    ClockSkewNotifierEngine *engine = nullptr;
     bool isActive = false;
 };
 
@@ -48,7 +49,7 @@ void ClockSkewNotifier::Private::unloadNotifierEngine()
     engine = nullptr;
 }
 
-ClockSkewNotifier::ClockSkewNotifier(QObject* parent)
+ClockSkewNotifier::ClockSkewNotifier(QObject *parent)
     : QObject(parent)
     , d(new Private)
 {

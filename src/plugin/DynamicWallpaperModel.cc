@@ -32,7 +32,7 @@
 
 const static qreal ARC_LENGTH = 2 * M_PI;
 
-static qreal computeTime(const SunPath& path, const SunPosition& position)
+static qreal computeTime(const SunPath &path, const SunPosition &position)
 {
     const QVector3D projected = path.project(position);
 
@@ -50,7 +50,7 @@ static qreal computeTime(const SunPath& path, const SunPosition& position)
     return angle / ARC_LENGTH;
 }
 
-SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(const DynamicWallpaperPackage* wallpaper, qreal latitude, qreal longitude)
+SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(const DynamicWallpaperPackage *wallpaper, qreal latitude, qreal longitude)
     : m_dateTime(QDateTime::currentDateTime())
     , m_latitude(latitude)
     , m_longitude(longitude)
@@ -60,7 +60,7 @@ SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(const DynamicWallpaperPac
         return;
 
     const QVector<WallpaperImage> images = wallpaper->images();
-    for (const WallpaperImage& image : images) {
+    for (const WallpaperImage &image : images) {
         const qreal time = computeTime(m_sunPath, image.position);
         m_knots << Knot { time, image.url };
     }
@@ -94,10 +94,10 @@ void SolarDynamicWallpaperModel::update()
     m_time = computeTime(m_sunPath, position);
 }
 
-TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(const DynamicWallpaperPackage* package)
+TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(const DynamicWallpaperPackage *package)
 {
     const QVector<WallpaperImage> images = package->images();
-    for (const WallpaperImage& image : images) {
+    for (const WallpaperImage &image : images) {
         m_knots << Knot { image.time, image.url };
     }
 

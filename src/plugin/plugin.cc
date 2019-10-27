@@ -26,7 +26,7 @@
 // Qt
 #include <QQmlEngine>
 
-void Plugin::registerTypes(const char* uri)
+void Plugin::registerTypes(const char *uri)
 {
     Q_ASSERT(uri == QLatin1String("com.github.zzag.private.wallpaper"));
     qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");

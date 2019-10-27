@@ -26,13 +26,13 @@
 // std
 #include <cmath>
 
-static QVector3D computeNormal(const QVector3D& center, const QVector3D& v1, const QVector3D& v2)
+static QVector3D computeNormal(const QVector3D &center, const QVector3D &v1, const QVector3D &v2)
 {
     const QVector3D cross = QVector3D::crossProduct(v1 - center, v2 - center);
     return cross.normalized();
 }
 
-static QVector3D positionToVector(const SunPosition& position)
+static QVector3D positionToVector(const SunPosition &position)
 {
     return position.toVector();
 }
@@ -41,7 +41,7 @@ SunPath::SunPath()
 {
 }
 
-SunPath::SunPath(const QDateTime& dateTime, qreal latitude, qreal longitude)
+SunPath::SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude)
 {
     const QDate date = dateTime.date();
     const int sampleCount = 24;
@@ -89,7 +89,7 @@ QVector3D SunPath::midnight() const
     return m_midnight;
 }
 
-QVector3D SunPath::project(const SunPosition& position) const
+QVector3D SunPath::project(const SunPosition &position) const
 {
     if (!isValid())
         return QVector3D();

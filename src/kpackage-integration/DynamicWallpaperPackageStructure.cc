@@ -22,12 +22,12 @@
 // KF
 #include <KLocalizedString>
 
-DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject* parent, const QVariantList& args)
+DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject *parent, const QVariantList &args)
     : KPackage::PackageStructure(parent, args)
 {
 }
 
-void DynamicWallpaperPackageStructure::initPackage(KPackage::Package* package)
+void DynamicWallpaperPackageStructure::initPackage(KPackage::Package *package)
 {
     const QStringList supportedImageFormats {
         QStringLiteral("image/jpeg"),

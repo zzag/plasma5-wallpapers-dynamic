@@ -24,7 +24,7 @@
 // KF
 #include <KLocalizedString>
 
-DynamicWallpaper::DynamicWallpaper(QObject* parent)
+DynamicWallpaper::DynamicWallpaper(QObject *parent)
     : QObject(parent)
 {
     // The purpose of this timer is to compress multiple scheduled update requests.
@@ -68,7 +68,7 @@ QString DynamicWallpaper::wallpaperId() const
     return m_wallpaperId;
 }
 
-void DynamicWallpaper::setWallpaperId(const QString& id)
+void DynamicWallpaper::setWallpaperId(const QString &id)
 {
     if (m_wallpaperId == id)
         return;
@@ -123,7 +123,7 @@ void DynamicWallpaper::update()
     setBlendFactor(m_model->blendFactor());
 }
 
-void DynamicWallpaper::setBottomLayer(const QUrl& url)
+void DynamicWallpaper::setBottomLayer(const QUrl &url)
 {
     if (m_bottomLayer == url)
         return;
@@ -131,7 +131,7 @@ void DynamicWallpaper::setBottomLayer(const QUrl& url)
     emit bottomLayerChanged();
 }
 
-void DynamicWallpaper::setTopLayer(const QUrl& url)
+void DynamicWallpaper::setTopLayer(const QUrl &url)
 {
     if (m_topLayer == url)
         return;
@@ -155,7 +155,7 @@ void DynamicWallpaper::setStatus(Status status)
     emit statusChanged();
 }
 
-void DynamicWallpaper::setError(const QString& error)
+void DynamicWallpaper::setError(const QString &error)
 {
     if (m_error == error)
         return;
