@@ -24,6 +24,9 @@
 
 class SunPosition;
 
+/**
+ * The SunPath class represents a path of the Sun at the given time and location.
+ */
 class SunPath
 {
 public:
@@ -31,22 +34,22 @@ public:
     SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude);
 
     /**
-     * Whether this sun path is valid.
+     * Returns @c true if the path of the Sun is valid; otherwise @c false.
      */
     bool isValid() const;
 
     /**
-     * Returns coordinates of the center of the sun path.
+     * Returns the coordinates of the center of the sun path.
      */
     QVector3D center() const;
 
     /**
-     * Returns normal of the plane that contains this sun path.
+     * Returns the normal of the plane that contains this sun path.
      */
     QVector3D normal() const;
 
     /**
-     * Returns Cartesian coordinates of the Sun during midnight.
+     * Returns the Cartesian coordinates of the Sun during midnight.
      */
     QVector3D midnight() const;
 

@@ -22,6 +22,10 @@
 #include <QDateTime>
 #include <QVector3D>
 
+/**
+ * The SunPosition class provides a convenient way for determining the position
+ * of the Sun at the given time and location.
+ */
 class SunPosition
 {
 public:
@@ -30,18 +34,22 @@ public:
     SunPosition(const QDateTime &dateTime, qreal latitude, qreal longitude);
 
     /**
-     * Elevation of the Sun above the local horizon.
+     * Returns the elevation angle of the Sun above the local horizon, in degrees.
      */
     qreal elevation() const;
 
     /**
-     * Sun's relative direction along the local horizon, where 0 degrees is north,
-     * 90 degrees is east, 180 degrees is south, and 270 degrees is west.
+     * Returns the azimuth angle of the Sun, in degrees.
+     *
+     * The azimuth angle specifies the Sun's relative direction along the local
+     * horizon, where 0 degrees corresponds to north, 90 degrees corresponds to
+     * east, 180 degrees corresponds to south, and 270 degrees corresponds to
+     * west.
      */
     qreal azimuth() const;
 
     /**
-     * Converts the sun position (elevation, azimuth) to Cartesian coordinates.
+     * Converts the Sun's position (elevation, azimuth) to Cartesian coordinates.
      */
     QVector3D toVector() const;
 
