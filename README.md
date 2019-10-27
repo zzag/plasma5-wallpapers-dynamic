@@ -124,7 +124,8 @@ and the other one is for a timed dynamic wallpaper, see [metadata.json.timed.sam
 
 For more details, see
 * [metadata.json keys](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/metadata.json-keys)
-* [Difference Between Solar Dynamic Wallpapers and Timed Dynamic Wallpapers](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/Difference-Between-Solar-Dynamic-Wallpapers-and-Timed-Dynamic-Wallpapers)
+* [Difference between solar dynamic wallpapers and timed dynamic wallpapers](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/Difference-between-solar-dynamic-wallpapers-and-timed-dynamic-wallpapers)
+* [Importing .heic dynamic wallpapers](https://github.com/zzag/plasma5-wallpapers-dynamic/wiki/Importing-.heic-dynamic-wallpapers)
 
 
 ## How to install a dynamic wallpaper
