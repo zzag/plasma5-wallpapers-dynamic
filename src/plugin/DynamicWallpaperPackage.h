@@ -33,11 +33,22 @@
  */
 enum class WallpaperType {
     /**
-     * The Sun's position is provided along each image in the wallpaper.
+     * A solar dynamic wallpaper uses the position of the Sun provided along each
+     * image to determine what image(s) reflect the user's light situation most
+     * accurately.
+     *
+     * Beware that a solar dynamic wallpaper may not work if the user lives close
+     * to the North or the South pole.
      */
     Solar,
     /**
-     * A number between 0 and 1 is provided along each image.
+     * A timed dynamic wallpaper uses the current time to determine what images
+     * reflect the user's light situation most accurately. The dynamic wallpaper
+     * must provide a real number along each image, which is computed as follows
+     *
+     * @code
+     * time = the number of seconds since the start of the day / 86400
+     * @endcode
      */
     Timed,
 };
@@ -83,9 +94,9 @@ public:
     /**
      * Loads a dynamic wallpaper with the given @p id.
      *
-     * This method returns @c true if the wallpaper has been loaded successfully; otherwise
-     * @c false. If an error has occurred during the loading process, you can use errorText()
-     * method to retrieve the error message.
+     * This method returns @c true if the wallpaper has been loaded successfully;
+     * otherwise @c false. If an error has occurred during the loading process,
+     * you can use errorText() method to retrieve the error message.
      */
     bool load(const QString& id);
 
