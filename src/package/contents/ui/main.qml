@@ -17,13 +17,9 @@
  */
 
 import QtQuick 2.1
-
-import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import org.kde.plasma.core 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.kirigami 2.10 as Kirigami
 
 import com.github.zzag.private.wallpaper 1.1
 
@@ -60,14 +56,14 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#707070"
+        Kirigami.Theme.colorSet: Kirigami.Theme.View
+        color: Kirigami.Theme.backgroundColor
         visible: dynamicWallpaper.status == DynamicWallpaper.Error
 
         Text {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            color: "white"
             font.pointSize: 24
             horizontalAlignment: Text.AlignHCenter
             text: dynamicWallpaper.error
