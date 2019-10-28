@@ -34,12 +34,12 @@ public:
     SunPosition(const QDateTime &dateTime, qreal latitude, qreal longitude);
 
     /**
-     * Returns the elevation angle of the Sun above the local horizon, in degrees.
+     * Returns the elevation angle of the Sun, in decimal degrees.
      */
     qreal elevation() const;
 
     /**
-     * Returns the azimuth angle of the Sun, in degrees.
+     * Returns the azimuth angle of the Sun, in decimal degrees.
      *
      * The azimuth angle specifies the Sun's relative direction along the local
      * horizon, where 0 degrees corresponds to north, 90 degrees corresponds to
@@ -49,7 +49,10 @@ public:
     qreal azimuth() const;
 
     /**
-     * Converts the Sun's position (elevation, azimuth) to Cartesian coordinates.
+     * Converts the position of the Sun (elevation, azimuth) to the Cartesian
+     * coordinates.
+     *
+     * The returned value is a unit vector, i.e. it has a magnitude of 1.
      */
     QVector3D toVector() const;
 
