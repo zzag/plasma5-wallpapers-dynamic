@@ -64,7 +64,7 @@ SunPath::SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude)
         const QVector3D v2 = samples.at(i);
         m_normal += computeNormal(m_center, v1, v2);
     }
-    m_normal /= sampleCount - 1;
+    m_normal.normalize();
 
     m_midnight = project(positions.first());
 }
