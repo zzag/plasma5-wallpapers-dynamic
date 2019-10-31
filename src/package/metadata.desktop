@@ -5,7 +5,9 @@ Name[it]=Dinamico
 Name[nl]=Dynamisch
 Name[ru]=Динамический
 Name[uk]=Динамічний
-Comment=
+Comment=Dynamic wallpaper
+Comment[ru]=Динамические обои
+Comment[uk]=Динамічне тло
 
 Type=Service
 Icon=plasma
