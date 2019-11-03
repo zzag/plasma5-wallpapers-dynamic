@@ -140,20 +140,23 @@ QUrl DynamicWallpaperModel::topLayer() const
     return currentTopKnot().url;
 }
 
+static qreal computeTimeSpan(qreal from, qreal to)
+{
+    if (to < from)
+        return (1 - from) + to;
+
+    return to - from;
+}
+
 qreal DynamicWallpaperModel::blendFactor() const
 {
     const Knot from = currentBottomKnot();
     const Knot to = currentTopKnot();
 
-    if (from < to)
-        return (m_time - from.time) / (to.time - from.time);
+    const qreal total = computeTimeSpan(from.time, to.time);
+    const qreal passed = computeTimeSpan(from.time, m_time);
 
-    const qreal duration = 1 - from.time + to.time;
-
-    if (from.time <= m_time)
-        return (m_time - from.time) / duration;
-
-    return (1 - from.time + m_time) / duration;
+    return passed / total;
 }
 
 DynamicWallpaperModel::Knot DynamicWallpaperModel::currentBottomKnot() const
