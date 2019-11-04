@@ -12,6 +12,7 @@
     },
     "Wallpaper": {
         "Preview": "preview.png",
+        "Smooth": true,
         "Type": "solar",
         "MetaData": [
             {

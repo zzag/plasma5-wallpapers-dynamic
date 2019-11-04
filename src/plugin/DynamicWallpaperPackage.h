@@ -80,6 +80,12 @@ public:
     WallpaperType type() const;
 
     /**
+     * Returns @c true if the dynamic wallpaper wants to have a smooth transition
+     * between individual images; otherwise @c false.
+     */
+    bool isSmooth() const;
+
+    /**
      * Returns all images stored in the dynamic wallpaper.
      */
     QVector<WallpaperImage> images() const;
@@ -87,6 +93,7 @@ public:
 private:
     QVector<WallpaperImage> m_images;
     WallpaperType m_type;
+    bool m_isSmooth;
 
     friend class DynamicWallpaperLoader;
 };

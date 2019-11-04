@@ -174,10 +174,10 @@ void DynamicWallpaper::reloadModel()
 
     switch (m_wallpaper->type()) {
     case WallpaperType::Solar:
-        model.reset(new SolarDynamicWallpaperModel(m_wallpaper.get(), m_latitude, m_longitude));
+        model.reset(new SolarDynamicWallpaperModel(m_wallpaper, m_latitude, m_longitude));
         break;
     case WallpaperType::Timed:
-        model.reset(new TimedDynamicWallpaperModel(m_wallpaper.get()));
+        model.reset(new TimedDynamicWallpaperModel(m_wallpaper));
         break;
     }
 

@@ -26,11 +26,15 @@
 #include <QUrl>
 #include <QVector>
 
+// std
+#include <memory>
+
 class DynamicWallpaperPackage;
 
 class DynamicWallpaperModel
 {
 public:
+    explicit DynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
     virtual ~DynamicWallpaperModel();
 
     /**
@@ -78,6 +82,11 @@ public:
      */
     virtual void update() = 0;
 
+    /**
+     * Returns the dynamic wallpaper package associated with this model.
+     */
+    DynamicWallpaperPackage *wallpaper() const;
+
 protected:
     struct Knot
     {
@@ -93,12 +102,15 @@ protected:
 
     QVector<Knot> m_knots;
     qreal m_time = 0;
+
+private:
+    std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
 };
 
 class SolarDynamicWallpaperModel : public DynamicWallpaperModel
 {
 public:
-    SolarDynamicWallpaperModel(const DynamicWallpaperPackage *package, qreal latitude, qreal longitude);
+    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, qreal latitude, qreal longitude);
 
     bool isExpired() const override;
     bool isValid() const override;
@@ -115,7 +127,7 @@ private:
 class TimedDynamicWallpaperModel : public DynamicWallpaperModel
 {
 public:
-    explicit TimedDynamicWallpaperModel(const DynamicWallpaperPackage *package);
+    explicit TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
 
     void update() override;
 };

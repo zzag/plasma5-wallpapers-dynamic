@@ -50,8 +50,9 @@ static qreal computeTime(const SunPath &path, const SunPosition &position)
     return angle / ARC_LENGTH;
 }
 
-SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(const DynamicWallpaperPackage *wallpaper, qreal latitude, qreal longitude)
-    : m_dateTime(QDateTime::currentDateTime())
+SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, qreal latitude, qreal longitude)
+    : DynamicWallpaperModel(wallpaper)
+    , m_dateTime(QDateTime::currentDateTime())
     , m_latitude(latitude)
     , m_longitude(longitude)
 {
@@ -94,9 +95,10 @@ void SolarDynamicWallpaperModel::update()
     m_time = computeTime(m_sunPath, position);
 }
 
-TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(const DynamicWallpaperPackage *package)
+TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper)
+    : DynamicWallpaperModel(wallpaper)
 {
-    const QVector<WallpaperImage> images = package->images();
+    const QVector<WallpaperImage> images = wallpaper->images();
     for (const WallpaperImage &image : images) {
         m_knots << Knot { image.time, image.url };
     }
@@ -109,6 +111,11 @@ void TimedDynamicWallpaperModel::update()
     const int elapsedMsecs = QTime::currentTime().msecsSinceStartOfDay();
     const int msecsPerDay = 86400000;
     m_time = qreal(elapsedMsecs) / msecsPerDay;
+}
+
+DynamicWallpaperModel::DynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper)
+    : m_wallpaper(std::move(wallpaper))
+{
 }
 
 DynamicWallpaperModel::~DynamicWallpaperModel()
@@ -140,6 +147,11 @@ QUrl DynamicWallpaperModel::topLayer() const
     return currentTopKnot().url;
 }
 
+DynamicWallpaperPackage *DynamicWallpaperModel::wallpaper() const
+{
+    return m_wallpaper.get();
+}
+
 static qreal computeTimeSpan(qreal from, qreal to)
 {
     if (to < from)
@@ -148,16 +160,13 @@ static qreal computeTimeSpan(qreal from, qreal to)
     return to - from;
 }
 
-qreal DynamicWallpaperModel::blendFactor() const
+static bool computeBlendFactor(qreal from, qreal to, qreal now)
 {
-    const qreal from = currentBottomKnot().time;
-    const qreal to = currentTopKnot().time;
-
     const qreal reflectedFrom = 1 - from;
     const qreal reflectedTo = 1 - to;
 
     const qreal totalDuration = computeTimeSpan(from, to);
-    const qreal totalElapsed = computeTimeSpan(from, m_time);
+    const qreal totalElapsed = computeTimeSpan(from, now);
 
     if ((reflectedFrom < from) ^ (reflectedTo < to)) {
         if (reflectedFrom < to) {
@@ -175,6 +184,19 @@ qreal DynamicWallpaperModel::blendFactor() const
     }
 
     return totalElapsed / totalDuration;
+}
+
+qreal DynamicWallpaperModel::blendFactor() const
+{
+    const qreal from = currentBottomKnot().time;
+    const qreal to = currentTopKnot().time;
+
+    const qreal blendFactor = computeBlendFactor(from, to, m_time);
+
+    if (!wallpaper()->isSmooth())
+        return std::round(blendFactor);
+
+    return blendFactor;
 }
 
 DynamicWallpaperModel::Knot DynamicWallpaperModel::currentBottomKnot() const

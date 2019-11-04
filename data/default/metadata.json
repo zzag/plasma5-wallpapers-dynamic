@@ -12,6 +12,7 @@
     },
     "Wallpaper": {
         "Preview": "north.png",
+        "Smooth": true,
         "Type": "solar",
         "MetaData": [
             {

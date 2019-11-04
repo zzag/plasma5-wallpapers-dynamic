@@ -32,6 +32,11 @@ WallpaperType DynamicWallpaperPackage::type() const
     return m_type;
 }
 
+bool DynamicWallpaperPackage::isSmooth() const
+{
+    return m_isSmooth;
+}
+
 QVector<WallpaperImage> DynamicWallpaperPackage::images() const
 {
     return m_images;
@@ -159,6 +164,15 @@ static bool parseTimedMetaData(const KPackage::Package &package, QVector<Wallpap
     return true;
 }
 
+static void parseSmoothMode(const KPackage::Package &package, bool &smooth)
+{
+    const QJsonObject wallpaperObject = extractWallpaperObject(package);
+    const QJsonValue smoothValue = wallpaperObject.value(QLatin1String("Smooth"));
+
+    // If the Smooth key is not present, assume that it's implicitly set to true.
+    smooth = smoothValue.isUndefined() || smoothValue.toBool();
+}
+
 bool DynamicWallpaperLoader::load(const QString &id)
 {
     reset();
@@ -172,6 +186,8 @@ bool DynamicWallpaperLoader::load(const QString &id)
     auto wallpaper = std::make_shared<DynamicWallpaperPackage>();
     if (!parseWallpaperType(package, wallpaper->m_type, m_errorText))
         return false;
+
+    parseSmoothMode(package, wallpaper->m_isSmooth);
 
     switch (wallpaper->type()) {
     case WallpaperType::Solar:
