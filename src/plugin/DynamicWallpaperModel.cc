@@ -150,13 +150,31 @@ static qreal computeTimeSpan(qreal from, qreal to)
 
 qreal DynamicWallpaperModel::blendFactor() const
 {
-    const Knot from = currentBottomKnot();
-    const Knot to = currentTopKnot();
+    const qreal from = currentBottomKnot().time;
+    const qreal to = currentTopKnot().time;
 
-    const qreal total = computeTimeSpan(from.time, to.time);
-    const qreal passed = computeTimeSpan(from.time, m_time);
+    const qreal reflectedFrom = 1 - from;
+    const qreal reflectedTo = 1 - to;
 
-    return passed / total;
+    const qreal totalDuration = computeTimeSpan(from, to);
+    const qreal totalElapsed = computeTimeSpan(from, m_time);
+
+    if ((reflectedFrom < from) ^ (reflectedTo < to)) {
+        if (reflectedFrom < to) {
+            const qreal threshold = computeTimeSpan(from, reflectedFrom);
+            if (totalElapsed < threshold)
+                return 0;
+            return (totalElapsed - threshold) / (totalDuration - threshold);
+        }
+        if (from < reflectedTo) {
+            const qreal threshold = computeTimeSpan(from, reflectedTo);
+            if (threshold < totalElapsed)
+                return 1;
+            return totalElapsed / threshold;
+        }
+    }
+
+    return totalElapsed / totalDuration;
 }
 
 DynamicWallpaperModel::Knot DynamicWallpaperModel::currentBottomKnot() const
