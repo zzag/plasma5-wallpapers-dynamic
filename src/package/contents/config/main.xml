@@ -62,5 +62,21 @@
     <entry name="UpdateInterval" type="UInt">
       <default>60000</default>
     </entry>
+
+    <!--
+      The transition duration specifies the number of milliseconds a transition
+      between two states should take to complete.
+
+      Just to remind, a state contains an image in the bottom layer, an image in
+      the top layer, and the blend factor between the two. If any of those state
+      components is modified, an animation will be started to smoothly transition
+      from the old state to the new state. This field specifies the duration of
+      the animation.
+    -->
+    <entry name="TransitionDuration" type="UInt">
+      <default>330</default>
+      <min>100</min>
+      <max>1000</max>
+    </entry>
   </group>
 </kcfg>
