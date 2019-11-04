@@ -1,5 +1,7 @@
 # plasma5-wallpapers-dynamic
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/plasma5-wallpapers-dynamic.svg)](https://repology.org/project/plasma5-wallpapers-dynamic/versions)
+
 plasma5-wallpapers-dynamic is a simple dynamic wallpaper plugin for KDE Plasma.
 [Demo](https://www.youtube.com/watch?v=UIMM6DpEpqA)
 
