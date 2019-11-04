@@ -92,4 +92,8 @@ Item {
         source: root.topLayer
         sourceSize: root.sourceSize
     }
+
+    Behavior on blendFactor {
+        NumberAnimation { duration: 300 }
+    }
 }
