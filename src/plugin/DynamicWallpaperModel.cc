@@ -160,7 +160,7 @@ static qreal computeTimeSpan(qreal from, qreal to)
     return to - from;
 }
 
-static bool computeBlendFactor(qreal from, qreal to, qreal now)
+static qreal computeBlendFactor(qreal from, qreal to, qreal now)
 {
     const qreal reflectedFrom = 1 - from;
     const qreal reflectedTo = 1 - to;
