@@ -95,7 +95,7 @@ Item {
 
     Behavior on blendFactor {
         NumberAnimation {
-            duration: wallpaper.configuration.transitionDuration
+            duration: wallpaper.configuration.TransitionDuration
         }
     }
 }

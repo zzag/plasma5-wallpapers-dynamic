@@ -81,7 +81,7 @@ StackView {
 
     replaceEnter: Transition {
         OpacityAnimator {
-            duration: wallpaper.configuration.transitionDuration
+            duration: wallpaper.configuration.TransitionDuration
             from: 0
             to: 1
         }
@@ -89,7 +89,7 @@ StackView {
 
     replaceExit: Transition {
         PauseAnimation {
-            duration: wallpaper.configuration.transitionDuration
+            duration: wallpaper.configuration.TransitionDuration
         }
     }
 
