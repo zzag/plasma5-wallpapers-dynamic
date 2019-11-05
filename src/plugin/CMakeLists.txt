@@ -22,6 +22,8 @@ endif()
 
 add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})
 
+target_compile_options(wallpaperplugin PRIVATE -fno-rtti)
+
 target_link_libraries(wallpaperplugin
     Qt5::Gui
     Qt5::Positioning
