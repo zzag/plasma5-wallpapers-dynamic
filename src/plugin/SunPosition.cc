@@ -22,9 +22,6 @@
 // Qt
 #include <QtMath>
 
-// std
-#include <limits>
-
 const static qreal s_midnightHourAngle = -180;
 
 static qreal julianCenturiesToJulianDay(qreal jcent)
@@ -145,7 +142,7 @@ static qreal solarAzimuth(qreal jcent, const QGeoCoordinate &location, qreal hou
 
     const qreal denominator = cosd(location.latitude()) * sind(zenith);
     if (qFuzzyIsNull(denominator))
-        return std::numeric_limits<qreal>::quiet_NaN();
+        return std::nan("");
 
     const qreal declination = solarDeclination(jcent);
     const qreal numerator = sind(location.latitude()) * cosd(zenith) - std::sin(declination);
