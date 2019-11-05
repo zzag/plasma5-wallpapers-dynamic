@@ -1,12 +1,12 @@
 # This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
-# 
+#
 # Federico Robin <bisio.97@gmail.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2019-10-25 00:53+0300\n"
+"POT-Creation-Date: 2019-11-05 22:23+0200\n"
 "PO-Revision-Date: 2019-10-26 15:00+0200\n"
 "Last-Translator: Federico Robin <bisio.97@gmail.com>\n"
 "Language: it\n"
@@ -15,54 +15,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: plugin/DynamicWallpaperModel.cc:86
-#, kde-format
-msgid "Could not construct the path of the Sun"
-msgstr "Non è stato possibile costruire il percorso del Sole"
-
-#: plugin/DynamicWallpaperPackage.cc:62
+#: plugin/DynamicWallpaperPackage.cc:67
 #, kde-format
 msgid "Could not find 'Wallpaper' object"
 msgstr "Non è stato possibile trovare l'oggetto 'Wallpaper'"
 
-#: plugin/DynamicWallpaperPackage.cc:80
+#: plugin/DynamicWallpaperPackage.cc:85
 #, kde-format
 msgid "Unknown wallpaper type: %1"
 msgstr "Tipo di wallpaper sconosciuto: %1"
 
-#: plugin/DynamicWallpaperPackage.cc:97 plugin/DynamicWallpaperPackage.cc:134
+#: plugin/DynamicWallpaperPackage.cc:102 plugin/DynamicWallpaperPackage.cc:139
 #, kde-format
 msgid "Image %1 has no metadata associated with it"
 msgstr "L'immagine %1 non ha metadati associati"
 
-#: plugin/DynamicWallpaperPackage.cc:103
+#: plugin/DynamicWallpaperPackage.cc:108
 #, kde-format
 msgid "Image %1 has invalid azimuth value: %2"
 msgstr "L'immagine %1 ha un valore di azimuth non valido: %2"
 
-#: plugin/DynamicWallpaperPackage.cc:108
+#: plugin/DynamicWallpaperPackage.cc:113
 #, kde-format
 msgid "Image %1 has invalid elevation value: %2"
 msgstr "L'immagine %1 ha un valore di elevazione non valido: %2"
 
-#: plugin/DynamicWallpaperPackage.cc:140 plugin/DynamicWallpaperPackage.cc:145
+#: plugin/DynamicWallpaperPackage.cc:145 plugin/DynamicWallpaperPackage.cc:150
 #, kde-format
 msgid "Image %1 has invalid time value: %2"
 msgstr "L'immagine %1 ha un valore di tempo non valido: %2"
 
-#: plugin/DynamicWallpaperPackage.cc:168
+#: plugin/DynamicWallpaperPackage.cc:182
 #, kde-format
 msgid "Could not load wallpaper package: %1"
 msgstr "Non è stato possibile caricare il pacchetto del wallpaper: %1"
 
-#: plugin/DynamicWallpaperPackage.cc:190
+#: plugin/DynamicWallpaperPackage.cc:206
 #, kde-format
 msgid "Wallpaper does not have enough images"
 msgstr "Il wallpaper non ha abbastanza immagini"
 
 #: plugin/DynamicWallpaper.cc:185
-#, kde-format
-msgid "Could not initialize dynamic wallpaper: %1"
+#, fuzzy, kde-format
+msgid "Could not initialize dynamic wallpaper"
 msgstr "Non è stato possibile inizializzare il wallpaper dinamico: %1"
 
 #: plugin/DynamicWallpaper.cc:202
