@@ -85,13 +85,13 @@ protected:
         QUrl url;
     };
 
-    Knot currentBottomKnot() const;
-    Knot currentTopKnot() const;
-
     QVector<Knot> m_knots;
     qreal m_time = 0;
 
 private:
+    Knot currentBottomKnot() const;
+    Knot currentTopKnot() const;
+
     std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
 };
 
