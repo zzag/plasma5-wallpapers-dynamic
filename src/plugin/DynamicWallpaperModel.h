@@ -47,20 +47,6 @@ public:
     virtual bool isExpired() const;
 
     /**
-     * Returns whether the dynamic wallpaper model is valid.
-     *
-     * Default implementation returns @c true.
-     */
-    virtual bool isValid() const;
-
-    /**
-     * Returns the text with the description why the model is invalid.
-     *
-     * Default implementation returns empty string.
-     */
-    virtual QString errorText() const;
-
-    /**
      * Returns the path to image that has to be displayed in the bottom layer.
      */
     QUrl bottomLayer() const;
@@ -112,14 +98,19 @@ private:
 class SolarDynamicWallpaperModel : public DynamicWallpaperModel
 {
 public:
-    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, const QGeoCoordinate &location);
-
     bool isExpired() const override;
-    bool isValid() const override;
-    QString errorText() const override;
     void update() override;
 
+    static SolarDynamicWallpaperModel *create(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
+                                              const QGeoCoordinate &location);
+
 private:
+    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
+                               const QDateTime &dateTime,
+                               const QGeoCoordinate &location,
+                               const SunPath &path,
+                               const SunPosition &midnight);
+
     SunPath m_sunPath;
     SunPosition m_midnight;
     QDateTime m_dateTime;
@@ -129,7 +120,10 @@ private:
 class TimedDynamicWallpaperModel : public DynamicWallpaperModel
 {
 public:
-    explicit TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
-
     void update() override;
+
+    static TimedDynamicWallpaperModel *create(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
+
+private:
+    TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
 };

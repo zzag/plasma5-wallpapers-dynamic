@@ -174,15 +174,15 @@ void DynamicWallpaper::reloadModel()
 
     switch (m_wallpaper->type()) {
     case WallpaperType::Solar:
-        model.reset(new SolarDynamicWallpaperModel(m_wallpaper, m_location));
+        model.reset(SolarDynamicWallpaperModel::create(m_wallpaper, m_location));
         break;
     case WallpaperType::Timed:
-        model.reset(new TimedDynamicWallpaperModel(m_wallpaper));
+        model.reset(TimedDynamicWallpaperModel::create(m_wallpaper));
         break;
     }
 
-    if (!model->isValid()) {
-        setError(i18n("Could not initialize dynamic wallpaper: %1", model->errorText()));
+    if (!model) {
+        setError(i18n("Could not initialize dynamic wallpaper"));
         setStatus(Status::Error);
         return;
     }

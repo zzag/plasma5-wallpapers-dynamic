@@ -50,25 +50,38 @@ static qreal computeTime(const SunPath &path, const SunPosition &midnight, const
     return angle / ARC_LENGTH;
 }
 
-SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, const QGeoCoordinate &location)
+SolarDynamicWallpaperModel *SolarDynamicWallpaperModel::create(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
+                                                               const QGeoCoordinate &location)
+{
+    const QDateTime dateTime = QDateTime::currentDateTime();
+
+    const SunPosition midnight = SunPosition::midnight(dateTime, location);
+    if (!midnight.isValid())
+        return nullptr;
+
+    const SunPath path = SunPath::create(dateTime, location);
+    if (!path.isValid())
+        return nullptr;
+
+    return new SolarDynamicWallpaperModel(wallpaper, dateTime, location, path, midnight);
+}
+
+SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
+                                                       const QDateTime &dateTime,
+                                                       const QGeoCoordinate &location,
+                                                       const SunPath &path,
+                                                       const SunPosition &midnight)
     : DynamicWallpaperModel(wallpaper)
-    , m_dateTime(QDateTime::currentDateTime())
+    , m_sunPath(path)
+    , m_midnight(midnight)
+    , m_dateTime(dateTime)
     , m_location(location)
 {
-    m_midnight = SunPosition::midnight(m_dateTime, location);
-    if (!m_midnight.isValid())
-        return;
-
-    m_sunPath = SunPath::create(m_dateTime, location);
-    if (!m_sunPath.isValid())
-        return;
-
     const QVector<WallpaperImage> images = wallpaper->images();
     for (const WallpaperImage &image : images) {
         const qreal time = computeTime(m_sunPath, m_midnight, image.position);
         m_knots << Knot { time, image.url };
     }
-
     std::sort(m_knots.begin(), m_knots.end());
 }
 
@@ -79,23 +92,16 @@ bool SolarDynamicWallpaperModel::isExpired() const
     return qAbs(now.secsTo(m_dateTime)) > 3600;
 }
 
-bool SolarDynamicWallpaperModel::isValid() const
-{
-    return m_sunPath.isValid();
-}
-
-QString SolarDynamicWallpaperModel::errorText() const
-{
-    if (!m_sunPath.isValid())
-        return i18n("Could not construct the path of the Sun");
-    return QString();
-}
-
 void SolarDynamicWallpaperModel::update()
 {
     const QDateTime now(QDateTime::currentDateTime());
     const SunPosition position(now, m_location);
     m_time = computeTime(m_sunPath, m_midnight, position);
+}
+
+TimedDynamicWallpaperModel *TimedDynamicWallpaperModel::create(std::shared_ptr<DynamicWallpaperPackage> wallpaper)
+{
+    return new TimedDynamicWallpaperModel(wallpaper);
 }
 
 TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper)
@@ -105,7 +111,6 @@ TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(std::shared_ptr<DynamicWa
     for (const WallpaperImage &image : images) {
         m_knots << Knot { image.time, image.url };
     }
-
     std::sort(m_knots.begin(), m_knots.end());
 }
 
@@ -128,16 +133,6 @@ DynamicWallpaperModel::~DynamicWallpaperModel()
 bool DynamicWallpaperModel::isExpired() const
 {
     return false;
-}
-
-bool DynamicWallpaperModel::isValid() const
-{
-    return true;
-}
-
-QString DynamicWallpaperModel::errorText() const
-{
-    return QString();
 }
 
 QUrl DynamicWallpaperModel::bottomLayer() const

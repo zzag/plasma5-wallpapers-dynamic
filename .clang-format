@@ -25,6 +25,9 @@ BreakBeforeBinaryOperators: NonAssignment
 # Align pointers to the right.
 PointerAlignment: Right
 
+# Align arguments after an open bracket.
+AlignAfterOpenBracket: true
+
 # Macros for which the opening brace stays attached.
 ForEachMacros:
     - foreach
