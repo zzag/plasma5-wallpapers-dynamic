@@ -89,7 +89,7 @@ openSUSE Tumbleweed:
 ```sh
 zypper addrepo https://download.opensuse.org/repositories/home:KAMiKAZOW:KDE/openSUSE_Tumbleweed/home:KAMiKAZOW:KDE.repo
 zypper refresh
-zypper install plasma5-dynamic-wallpaper
+zypper install plasma5-wallpapers-dynamic
 ```
 
 
