@@ -25,6 +25,8 @@
 // std
 #include <limits>
 
+const static qreal s_midnightHourAngle = -180;
+
 static qreal julianCenturiesToJulianDay(qreal jcent)
 {
     return 36525.0 * jcent + 2451545.0;
@@ -35,10 +37,9 @@ static qreal julianDayToJulianCenturies(qreal jd)
     return (jd - 2451545.0) / 36525.0;
 }
 
-static qreal julianCenturies(const QDateTime &dateTime)
+static qreal dateTimeToJulianDay(const QDateTime &dateTime)
 {
-    const qreal jd = dateTime.toSecsSinceEpoch() / 86400.0 + 2440587.5;
-    return julianDayToJulianCenturies(jd);
+    return dateTime.toSecsSinceEpoch() / 86400.0 + 2440587.5;
 }
 
 static qreal sind(qreal value)
@@ -114,33 +115,34 @@ static qreal equationOfTime(qreal jcent)
     return qRadiansToDegrees(equation);
 }
 
-static qreal hourAngle(qreal jcent, const QGeoCoordinate &location)
+static qreal solarHourAngle(qreal jcent, const QGeoCoordinate &location)
 {
     const qreal jd = julianCenturiesToJulianDay(jcent);
     const qreal offset = (jd - std::round(jd) - 0.5) * 1440;
 
-    qreal angle = std::fmod(location.longitude() + equationOfTime(jcent) - (720 - offset) / 4, 360);
+    const qreal angle = std::fmod(location.longitude() + equationOfTime(jcent) - (720 - offset) / 4, 360);
     if (angle < -180)
-        angle += 360;
+        return angle + 360;
     if (angle > 180)
-        angle -= 360;
+        return angle - 360;
 
     return angle;
 }
 
-static qreal solarZenith(qreal jcent, const QGeoCoordinate &location)
+static qreal solarZenith(qreal jcent, const QGeoCoordinate &location, qreal hourAngle)
 {
-    const qreal angle = hourAngle(jcent, location);
     const qreal declination = solarDeclination(jcent);
 
     const qreal zenith = std::acos(sind(location.latitude()) * std::sin(declination)
-        + cosd(location.latitude()) * std::cos(declination) * cosd(angle));
+        + cosd(location.latitude()) * std::cos(declination) * cosd(hourAngle));
 
     return qRadiansToDegrees(zenith);
 }
 
-static qreal solarAzimuth(qreal jcent, const QGeoCoordinate &location, qreal zenith)
+static qreal solarAzimuth(qreal jcent, const QGeoCoordinate &location, qreal hourAngle)
 {
+    const qreal zenith = solarZenith(jcent, location, hourAngle);
+
     const qreal denominator = cosd(location.latitude()) * sind(zenith);
     if (qFuzzyIsNull(denominator))
         return std::numeric_limits<qreal>::quiet_NaN();
@@ -150,7 +152,7 @@ static qreal solarAzimuth(qreal jcent, const QGeoCoordinate &location, qreal zen
 
     qreal azimuth = std::acos(qBound(-1.0, numerator / denominator, 1.0));
 
-    if (hourAngle(jcent, location) < 0)
+    if (hourAngle < 0)
         azimuth = M_PI - azimuth;
     else
         azimuth = azimuth + M_PI;
@@ -189,13 +191,11 @@ SunPosition::SunPosition(qreal elevation, qreal azimuth)
 
 SunPosition::SunPosition(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
-    const qreal jcent = julianCenturies(dateTime);
-    const qreal zenith = solarZenith(jcent, location);
+    const qreal jd = dateTimeToJulianDay(dateTime);
+    const qreal jcent = julianDayToJulianCenturies(jd);
+    const qreal hourAngle = solarHourAngle(jcent, location);
 
-    m_azimuth = solarAzimuth(jcent, location, zenith);
-
-    m_elevation = 90 - zenith;
-    m_elevation += atmosphericRefractionCorrection(m_elevation);
+    init(jcent, location, hourAngle);
 }
 
 qreal SunPosition::elevation() const
@@ -215,4 +215,37 @@ QVector3D SunPosition::toVector() const
     const float z = static_cast<float>(sind(m_elevation));
 
     return QVector3D(x, y, z);
+}
+
+static qreal solarNoonCorrection(qreal jcent, const QGeoCoordinate &location)
+{
+    return (720 - 4 * location.longitude() - equationOfTime(jcent)) / 1440;
+}
+
+SunPosition SunPosition::midnight(const QDateTime &dateTime, const QGeoCoordinate &location)
+{
+    qreal jdNoon = std::round(dateTimeToJulianDay(dateTime));
+    qreal jcentNoon = julianDayToJulianCenturies(jdNoon);
+
+    const qreal correction = solarNoonCorrection(jcentNoon, location);
+    jdNoon += correction - 0.5;
+    jcentNoon = julianDayToJulianCenturies(jdNoon);
+
+    const qreal jdMidnight = jdNoon + 0.5;
+    const qreal jcentMidnight = julianDayToJulianCenturies(jdMidnight);
+
+    SunPosition position;
+    position.init(jcentMidnight, location, s_midnightHourAngle);
+
+    return position;
+}
+
+void SunPosition::init(qreal jcent, const QGeoCoordinate &location, qreal hourAngle)
+{
+    const qreal zenith = solarZenith(jcent, location, hourAngle);
+
+    m_elevation = 90 - zenith;
+    m_elevation += atmosphericRefractionCorrection(m_elevation);
+
+    m_azimuth = solarAzimuth(jcent, location, hourAngle);
 }

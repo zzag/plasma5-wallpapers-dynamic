@@ -57,7 +57,17 @@ public:
      */
     QVector3D toVector() const;
 
+    /**
+     * Determines the position of the Sun (elevation, azimuth) at midnight.
+     *
+     * The returned value is the lowest position of the Sun in the sky at the
+     * given time and at the given location.
+     */
+    static SunPosition midnight(const QDateTime &dateTime, const QGeoCoordinate &location);
+
 private:
+    void init(qreal jcent, const QGeoCoordinate &location, qreal hourAngle);
+
     qreal m_elevation;
     qreal m_azimuth;
 };

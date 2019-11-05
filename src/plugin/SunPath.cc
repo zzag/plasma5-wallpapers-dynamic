@@ -43,13 +43,19 @@ SunPath::SunPath()
 
 SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
-    const QDate date = dateTime.date();
     const int sampleCount = 24;
+
+    const QDateTime utcDateTime = dateTime.toUTC();
+    const QDate utcDate = utcDateTime.date();
 
     QVector<SunPosition> positions;
     positions.reserve(sampleCount);
-    for (int i = 0; i < sampleCount; ++i)
-        positions << SunPosition(QDateTime(date, QTime(i, 0)), location);
+
+    for (int i = 0; i < sampleCount; ++i) {
+        const QTime utcTime(i, 0);
+        const QDateTime sampleDataTime(utcDate, utcTime, Qt::UTC);
+        positions.append(SunPosition(sampleDataTime, location));
+    }
 
     QVector<QVector3D> samples;
     samples.reserve(sampleCount);
@@ -66,7 +72,7 @@ SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
     }
     m_normal.normalize();
 
-    m_midnight = project(positions.first());
+    m_midnight = project(SunPosition::midnight(utcDateTime, location));
 }
 
 bool SunPath::isValid() const

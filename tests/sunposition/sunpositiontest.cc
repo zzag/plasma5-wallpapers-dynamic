@@ -18,8 +18,6 @@
 
 #include <QtTest>
 
-#include <QGeoCoordinate>
-
 #include "../../src/plugin/SunPosition.h"
 
 const static qreal s_precision = 0.01;
@@ -31,6 +29,8 @@ class SunPositionTest : public QObject
 private slots:
     void location_data();
     void location();
+    void midnight_data();
+    void midnight();
 };
 
 void SunPositionTest::location_data()
@@ -635,6 +635,607 @@ void SunPositionTest::location()
     QFETCH(qreal, azimuth);
 
     const SunPosition position(dateTime, location);
+
+    QVERIFY(std::abs(position.elevation() - elevation) < s_precision);
+    QVERIFY(std::abs(position.azimuth() - azimuth) < s_precision);
+}
+
+void SunPositionTest::midnight_data()
+{
+    QTest::addColumn<QDateTime>("dateTime");
+    QTest::addColumn<QGeoCoordinate>("location");
+    QTest::addColumn<qreal>("elevation");
+    QTest::addColumn<qreal>("azimuth");
+
+    const QTimeZone gmt = QTimeZone("UTC+00:00");
+    const QTimeZone eet = QTimeZone("UTC+02:00");
+    const QTimeZone pst = QTimeZone("UTC-08:00");
+    const QTimeZone nzdt = QTimeZone("UTC+13:00");
+
+    const QGeoCoordinate coordinateGreenwich(51.47777778, 0.00138889);
+    const QGeoCoordinate coordinateKyiv(50.45000000, 30.52333333);
+    const QGeoCoordinate coordinateSeattle(47.60972222, -122.33305556);
+    const QGeoCoordinate coordinateAuckland(-36.84055556, 174.74000000);
+
+    QTest::newRow("10 Nov 2019 01:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(1, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 02:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(2, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 03:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(3, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 04:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(4, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 05:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(5, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 06:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(6, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 07:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(7, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 08:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(8, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 09:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(9, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 10:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(10, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 11:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(11, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 12:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(12, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 13:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(13, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 14:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(14, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 15:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(15, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 16:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(16, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 17:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(17, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 18:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(18, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 19:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(19, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 20:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(20, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 21:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(21, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 22:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(22, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 23:00:00 (GMT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(23, 0, 0), gmt)
+        << coordinateGreenwich
+        << -55.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 02:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(2, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 03:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(3, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 04:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(4, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 05:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(5, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 06:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(6, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 07:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(7, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 08:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(8, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 09:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(9, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 10:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(10, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 11:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(11, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 12:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(12, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 13:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(13, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 14:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(14, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 15:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(15, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 16:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(16, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 17:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(17, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 18:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(18, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 19:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(19, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 20:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(21, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 21:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(21, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 22:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(22, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 23:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 10), QTime(23, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("11 Nov 2019 00:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 11), QTime(0, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("11 Nov 2019 01:00:00 (EET)")
+        << QDateTime(QDate(2019, 11, 11), QTime(1, 0, 0), eet)
+        << coordinateKyiv
+        << -56.79
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 16:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(16, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 17:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(17, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 18:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(18, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 19:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(19, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 20:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(20, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 21:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(21, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 22:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(22, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 23:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 9), QTime(23, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 00:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(0, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 01:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(1, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 02:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(2, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 03:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(3, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 04:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(4, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 05:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(5, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 06:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(6, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 07:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(7, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 08:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(8, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 09:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(9, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 10:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(10, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 11:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(11, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 12:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(12, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 13:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(13, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 14:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(14, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("10 Nov 2019 15:00:00 (PST)")
+        << QDateTime(QDate(2019, 11, 10), QTime(15, 0, 0), pst)
+        << coordinateSeattle
+        << -59.75
+        << 0.0;
+
+    QTest::newRow("09 Nov 2019 13:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(13, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 14:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(14, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 15:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(15, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 16:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(16, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 17:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(17, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 18:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(18, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 19:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(19, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 20:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(20, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 21:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(21, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 22:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(22, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("09 Nov 2019 23:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 9), QTime(23, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 00:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(0, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 01:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(1, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 02:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(2, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 03:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(3, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 04:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(4, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 05:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(5, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 06:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(6, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 07:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(7, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 08:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(8, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 09:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(9, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 10:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(10, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 11:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(11, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+
+    QTest::newRow("10 Nov 2019 12:00:00 (NZDT)")
+        << QDateTime(QDate(2019, 11, 10), QTime(12, 0, 0), nzdt)
+        << coordinateAuckland
+        << -36.29
+        << 180.0;
+}
+
+void SunPositionTest::midnight()
+{
+    QFETCH(QDateTime, dateTime);
+    QFETCH(QGeoCoordinate, location);
+    QFETCH(qreal, elevation);
+    QFETCH(qreal, azimuth);
+
+    const SunPosition position = SunPosition::midnight(dateTime, location);
 
     QVERIFY(std::abs(position.elevation() - elevation) < s_precision);
     QVERIFY(std::abs(position.azimuth() - azimuth) < s_precision);
