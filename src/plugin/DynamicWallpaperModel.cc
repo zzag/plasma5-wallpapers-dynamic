@@ -87,7 +87,7 @@ SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWa
 
 bool SolarDynamicWallpaperModel::isExpired() const
 {
-    // Rebuild the model each hour.
+    // Rebuild the model every hour.
     const QDateTime now = QDateTime::currentDateTime();
     return std::abs(now.secsTo(m_dateTime)) > 3600;
 }
