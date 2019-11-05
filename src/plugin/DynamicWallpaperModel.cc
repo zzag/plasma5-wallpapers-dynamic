@@ -20,9 +20,6 @@
 #include "DynamicWallpaperModel.h"
 #include "DynamicWallpaperPackage.h"
 
-// KF
-#include <KLocalizedString>
-
 // Qt
 #include <QtMath>
 
