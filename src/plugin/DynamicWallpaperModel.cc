@@ -108,17 +108,16 @@ TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(std::shared_ptr<DynamicWa
     : DynamicWallpaperModel(wallpaper)
 {
     const QVector<WallpaperImage> images = wallpaper->images();
-    for (const WallpaperImage &image : images) {
+    for (const WallpaperImage &image : images)
         m_knots << Knot { image.time, image.url };
-    }
     std::sort(m_knots.begin(), m_knots.end());
 }
 
 void TimedDynamicWallpaperModel::update()
 {
-    const int elapsedMsecs = QTime::currentTime().msecsSinceStartOfDay();
-    const int msecsPerDay = 86400000;
-    m_time = qreal(elapsedMsecs) / msecsPerDay;
+    const int elapsedMilliSeconds = QTime::currentTime().msecsSinceStartOfDay();
+    const int milliSecondsPerDay = 86400000;
+    m_time = qreal(elapsedMilliSeconds) / milliSecondsPerDay;
 }
 
 DynamicWallpaperModel::DynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper)
