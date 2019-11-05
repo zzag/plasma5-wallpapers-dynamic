@@ -19,7 +19,6 @@
 // Own
 #include "DynamicWallpaperModel.h"
 #include "DynamicWallpaperPackage.h"
-#include "SunPosition.h"
 
 // KF
 #include <KLocalizedString>
@@ -32,12 +31,13 @@
 
 const static qreal ARC_LENGTH = 2 * M_PI;
 
-static qreal computeTime(const SunPath &path, const SunPosition &position)
+static qreal computeTime(const SunPath &path, const SunPosition &midnight, const SunPosition &position)
 {
-    const QVector3D projected = path.project(position);
+    const QVector3D projectedMidnight = path.project(midnight);
+    const QVector3D projectedPosition = path.project(position);
 
-    const QVector3D v1 = path.midnight() - path.center();
-    const QVector3D v2 = projected - path.center();
+    const QVector3D v1 = projectedMidnight - path.center();
+    const QVector3D v2 = projectedPosition - path.center();
 
     const QVector3D cross = QVector3D::crossProduct(v1, v2);
     const float dot = QVector3D::dotProduct(v1, v2);
@@ -55,13 +55,17 @@ SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWa
     , m_dateTime(QDateTime::currentDateTime())
     , m_location(location)
 {
-    m_sunPath = SunPath(m_dateTime, location);
+    m_midnight = SunPosition::midnight(m_dateTime, location);
+    if (!m_midnight.isValid())
+        return;
+
+    m_sunPath = SunPath::create(m_dateTime, location);
     if (!m_sunPath.isValid())
         return;
 
     const QVector<WallpaperImage> images = wallpaper->images();
     for (const WallpaperImage &image : images) {
-        const qreal time = computeTime(m_sunPath, image.position);
+        const qreal time = computeTime(m_sunPath, m_midnight, image.position);
         m_knots << Knot { time, image.url };
     }
 
@@ -91,7 +95,7 @@ void SolarDynamicWallpaperModel::update()
 {
     const QDateTime now(QDateTime::currentDateTime());
     const SunPosition position(now, m_location);
-    m_time = computeTime(m_sunPath, position);
+    m_time = computeTime(m_sunPath, m_midnight, position);
 }
 
 TimedDynamicWallpaperModel::TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper)

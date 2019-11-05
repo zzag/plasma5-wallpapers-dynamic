@@ -35,6 +35,11 @@ public:
     SunPosition(const QDateTime &dateTime, const QGeoCoordinate &location);
 
     /**
+     * Returns @c true if the position of the Sun is valid; otherwise @c false.
+     */
+    bool isValid() const;
+
+    /**
      * Returns the elevation angle of the Sun, in decimal degrees.
      */
     qreal elevation() const;

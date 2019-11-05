@@ -37,11 +37,7 @@ static QVector3D positionToVector(const SunPosition &position)
     return position.toVector();
 }
 
-SunPath::SunPath()
-{
-}
-
-SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
+SunPath SunPath::create(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
     const int sampleCount = 24;
 
@@ -54,7 +50,10 @@ SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
     for (int i = 0; i < sampleCount; ++i) {
         const QTime utcTime(i, 0);
         const QDateTime sampleDataTime(utcDate, utcTime, Qt::UTC);
-        positions.append(SunPosition(sampleDataTime, location));
+        const SunPosition position(sampleDataTime, location);
+        if (!position.isValid())
+            return SunPath();
+        positions << position;
     }
 
     QVector<QVector3D> samples;
@@ -62,17 +61,24 @@ SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
     std::transform(positions.constBegin(), positions.constEnd(),
         std::back_inserter(samples), positionToVector);
 
-    m_center = std::accumulate(samples.constBegin(), samples.constEnd(), QVector3D());
-    m_center /= sampleCount;
+    QVector3D center = std::accumulate(samples.constBegin(), samples.constEnd(), QVector3D());
+    center /= sampleCount;
 
+    QVector3D normal;
     for (int i = 1; i < samples.count(); ++i) {
         const QVector3D v1 = samples.at(i - 1);
         const QVector3D v2 = samples.at(i);
-        m_normal += computeNormal(m_center, v1, v2);
+        normal += computeNormal(center, v1, v2);
     }
-    m_normal.normalize();
+    normal.normalize();
 
-    m_midnight = project(SunPosition::midnight(utcDateTime, location));
+    return SunPath(center, normal);
+}
+
+SunPath::SunPath(const QVector3D &center, const QVector3D &normal)
+    : m_center(center)
+    , m_normal(normal)
+{
 }
 
 bool SunPath::isValid() const
@@ -88,11 +94,6 @@ QVector3D SunPath::center() const
 QVector3D SunPath::normal() const
 {
     return m_normal;
-}
-
-QVector3D SunPath::midnight() const
-{
-    return m_midnight;
 }
 
 QVector3D SunPath::project(const SunPosition &position) const

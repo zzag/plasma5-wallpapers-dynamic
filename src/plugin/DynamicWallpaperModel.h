@@ -20,6 +20,7 @@
 
 // Own
 #include "SunPath.h"
+#include "SunPosition.h"
 
 // Qt
 #include <QDateTime>
@@ -120,6 +121,7 @@ public:
 
 private:
     SunPath m_sunPath;
+    SunPosition m_midnight;
     QDateTime m_dateTime;
     QGeoCoordinate m_location;
 };

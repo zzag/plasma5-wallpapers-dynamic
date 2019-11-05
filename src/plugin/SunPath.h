@@ -31,8 +31,7 @@ class SunPosition;
 class SunPath
 {
 public:
-    SunPath();
-    SunPath(const QDateTime &dateTime, const QGeoCoordinate &location);
+    SunPath() = default;
 
     /**
      * Returns @c true if the path of the Sun is valid; otherwise @c false.
@@ -50,17 +49,18 @@ public:
     QVector3D normal() const;
 
     /**
-     * Returns the Cartesian coordinates of the Sun during midnight.
-     */
-    QVector3D midnight() const;
-
-    /**
      * Projects the given sun position onto this sun path.
      */
     QVector3D project(const SunPosition &position) const;
 
+    /**
+     * Creates a path of the Sun for the given time and location.
+     */
+    static SunPath create(const QDateTime &dateTime, const QGeoCoordinate &location);
+
 private:
+    SunPath(const QVector3D &center, const QVector3D &normal);
+
     QVector3D m_center;
     QVector3D m_normal;
-    QVector3D m_midnight;
 };

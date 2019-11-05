@@ -198,6 +198,11 @@ SunPosition::SunPosition(const QDateTime &dateTime, const QGeoCoordinate &locati
     init(jcent, location, hourAngle);
 }
 
+bool SunPosition::isValid() const
+{
+    return !(std::isnan(m_azimuth) || std::isnan(m_elevation));
+}
+
 qreal SunPosition::elevation() const
 {
     return m_elevation;
