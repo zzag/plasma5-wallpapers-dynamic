@@ -112,7 +112,7 @@ static qreal equationOfTime(qreal jcent)
     const qreal equation = y * sind(2 * l) - 2 * e * sind(m)
         + 4 * e * y * sind(m) * cosd(2 * l) - 0.5 * y * y * sind(4 * l)
         - 1.25 * e * e * sind(2 * m);
-    return qRadiansToDegrees(equation);
+    return 4 * qRadiansToDegrees(equation);
 }
 
 static qreal solarHourAngle(qreal jcent, const QGeoCoordinate &location)
@@ -120,7 +120,7 @@ static qreal solarHourAngle(qreal jcent, const QGeoCoordinate &location)
     const qreal jd = julianCenturiesToJulianDay(jcent);
     const qreal offset = (jd - std::round(jd) - 0.5) * 1440;
 
-    const qreal angle = std::fmod(location.longitude() + equationOfTime(jcent) - (720 - offset) / 4, 360);
+    const qreal angle = std::fmod(location.longitude() + (equationOfTime(jcent) + offset - 720) / 4, 360);
     if (angle < -180)
         return angle + 360;
     if (angle > 180)
