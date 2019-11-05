@@ -39,17 +39,17 @@ public:
     bool isValid() const;
 
     /**
-     * Returns the coordinates of the center of the sun path.
+     * Returns the coordinates of the center of this path of the Sun.
      */
     QVector3D center() const;
 
     /**
-     * Returns the normal of the plane that contains this sun path.
+     * Returns the normal of the plane that contains this path of the Sun.
      */
     QVector3D normal() const;
 
     /**
-     * Projects the given sun position onto this sun path.
+     * Projects given position of the Sun onto this path of the Sun.
      */
     QVector3D project(const SunPosition &position) const;
 
