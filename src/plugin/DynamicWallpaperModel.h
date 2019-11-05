@@ -95,7 +95,7 @@ private:
     std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
 };
 
-class SolarDynamicWallpaperModel : public DynamicWallpaperModel
+class SolarDynamicWallpaperModel final : public DynamicWallpaperModel
 {
 public:
     bool isExpired() const override;
@@ -117,7 +117,7 @@ private:
     QGeoCoordinate m_location;
 };
 
-class TimedDynamicWallpaperModel : public DynamicWallpaperModel
+class TimedDynamicWallpaperModel final : public DynamicWallpaperModel
 {
 public:
     void update() override;

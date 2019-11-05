@@ -21,7 +21,7 @@
 // KF
 #include <KPackage/PackageStructure>
 
-class DynamicWallpaperPackageStructure : public KPackage::PackageStructure
+class DynamicWallpaperPackageStructure final : public KPackage::PackageStructure
 {
     Q_OBJECT
 
