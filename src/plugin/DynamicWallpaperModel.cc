@@ -89,7 +89,7 @@ bool SolarDynamicWallpaperModel::isExpired() const
 {
     // Rebuild the model each hour.
     const QDateTime now = QDateTime::currentDateTime();
-    return qAbs(now.secsTo(m_dateTime)) > 3600;
+    return std::abs(now.secsTo(m_dateTime)) > 3600;
 }
 
 void SolarDynamicWallpaperModel::update()
