@@ -20,6 +20,7 @@
 
 // Qt
 #include <QDateTime>
+#include <QGeoCoordinate>
 #include <QVector3D>
 
 class SunPosition;
@@ -31,7 +32,7 @@ class SunPath
 {
 public:
     SunPath();
-    SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude);
+    SunPath(const QDateTime &dateTime, const QGeoCoordinate &location);
 
     /**
      * Returns @c true if the path of the Sun is valid; otherwise @c false.

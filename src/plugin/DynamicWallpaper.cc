@@ -81,14 +81,14 @@ void DynamicWallpaper::setWallpaperId(const QString &id)
 
 qreal DynamicWallpaper::latitude() const
 {
-    return m_latitude;
+    return m_location.latitude();
 }
 
 void DynamicWallpaper::setLatitude(qreal latitude)
 {
-    if (m_latitude == latitude)
+    if (m_location.latitude() == latitude)
         return;
-    m_latitude = latitude;
+    m_location.setLatitude(latitude);
     emit latitudeChanged();
     reloadModel();
     scheduleUpdate();
@@ -96,14 +96,14 @@ void DynamicWallpaper::setLatitude(qreal latitude)
 
 qreal DynamicWallpaper::longitude() const
 {
-    return m_longitude;
+    return m_location.longitude();
 }
 
 void DynamicWallpaper::setLongitude(qreal longitude)
 {
-    if (m_longitude == longitude)
+    if (m_location.longitude() == longitude)
         return;
-    m_longitude = longitude;
+    m_location.setLongitude(longitude);
     emit longitudeChanged();
     reloadModel();
     scheduleUpdate();
@@ -174,7 +174,7 @@ void DynamicWallpaper::reloadModel()
 
     switch (m_wallpaper->type()) {
     case WallpaperType::Solar:
-        model.reset(new SolarDynamicWallpaperModel(m_wallpaper, m_latitude, m_longitude));
+        model.reset(new SolarDynamicWallpaperModel(m_wallpaper, m_location));
         break;
     case WallpaperType::Timed:
         model.reset(new TimedDynamicWallpaperModel(m_wallpaper));

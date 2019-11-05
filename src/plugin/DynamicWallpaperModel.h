@@ -23,6 +23,7 @@
 
 // Qt
 #include <QDateTime>
+#include <QGeoCoordinate>
 #include <QUrl>
 #include <QVector>
 
@@ -110,7 +111,7 @@ private:
 class SolarDynamicWallpaperModel : public DynamicWallpaperModel
 {
 public:
-    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, qreal latitude, qreal longitude);
+    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, const QGeoCoordinate &location);
 
     bool isExpired() const override;
     bool isValid() const override;
@@ -120,8 +121,7 @@ public:
 private:
     SunPath m_sunPath;
     QDateTime m_dateTime;
-    qreal m_latitude;
-    qreal m_longitude;
+    QGeoCoordinate m_location;
 };
 
 class TimedDynamicWallpaperModel : public DynamicWallpaperModel

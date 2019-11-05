@@ -19,6 +19,7 @@
 #pragma once
 
 // Qt
+#include <QGeoCoordinate>
 #include <QObject>
 #include <QTimer>
 #include <QUrl>
@@ -97,9 +98,8 @@ private:
     std::unique_ptr<DynamicWallpaperModel> m_model;
     QUrl m_bottomLayer;
     QUrl m_topLayer;
+    QGeoCoordinate m_location;
     qreal m_blendFactor = 0.0;
-    qreal m_latitude = 0.0;
-    qreal m_longitude = 0.0;
 
     Q_DISABLE_COPY(DynamicWallpaper)
 };

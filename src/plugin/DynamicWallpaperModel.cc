@@ -50,13 +50,12 @@ static qreal computeTime(const SunPath &path, const SunPosition &position)
     return angle / ARC_LENGTH;
 }
 
-SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, qreal latitude, qreal longitude)
+SolarDynamicWallpaperModel::SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper, const QGeoCoordinate &location)
     : DynamicWallpaperModel(wallpaper)
     , m_dateTime(QDateTime::currentDateTime())
-    , m_latitude(latitude)
-    , m_longitude(longitude)
+    , m_location(location)
 {
-    m_sunPath = SunPath(m_dateTime, latitude, longitude);
+    m_sunPath = SunPath(m_dateTime, location);
     if (!m_sunPath.isValid())
         return;
 
@@ -91,7 +90,7 @@ QString SolarDynamicWallpaperModel::errorText() const
 void SolarDynamicWallpaperModel::update()
 {
     const QDateTime now(QDateTime::currentDateTime());
-    const SunPosition position(now, m_latitude, m_longitude);
+    const SunPosition position(now, m_location);
     m_time = computeTime(m_sunPath, position);
 }
 

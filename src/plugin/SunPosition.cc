@@ -114,12 +114,12 @@ static qreal equationOfTime(qreal t)
     return qRadiansToDegrees(equation);
 }
 
-static qreal hourAngle(qreal t, qreal longitude)
+static qreal hourAngle(qreal t, const QGeoCoordinate &location)
 {
     const qreal jd = julianCenturiesToJulianDay(t);
     const qreal offset = (jd - std::round(jd) - 0.5) * 1440;
 
-    qreal angle = std::fmod(longitude + equationOfTime(t) - (720 - offset) / 4, 360);
+    qreal angle = std::fmod(location.longitude() + equationOfTime(t) - (720 - offset) / 4, 360);
     if (angle < -180)
         angle += 360;
     if (angle > 180)
@@ -128,29 +128,29 @@ static qreal hourAngle(qreal t, qreal longitude)
     return angle;
 }
 
-static qreal solarZenith(qreal t, qreal latitude, qreal longitude)
+static qreal solarZenith(qreal t, const QGeoCoordinate &location)
 {
-    const qreal angle = hourAngle(t, longitude);
+    const qreal angle = hourAngle(t, location);
     const qreal declination = solarDeclination(t);
 
-    const qreal zenith = std::acos(sind(latitude) * std::sin(declination)
-        + cosd(latitude) * std::cos(declination) * cosd(angle));
+    const qreal zenith = std::acos(sind(location.latitude()) * std::sin(declination)
+        + cosd(location.latitude()) * std::cos(declination) * cosd(angle));
 
     return qRadiansToDegrees(zenith);
 }
 
-static qreal solarAzimuth(qreal t, qreal latitude, qreal longitude, qreal zenith)
+static qreal solarAzimuth(qreal t, const QGeoCoordinate &location, qreal zenith)
 {
-    const qreal denominator = cosd(latitude) * sind(zenith);
+    const qreal denominator = cosd(location.latitude()) * sind(zenith);
     if (qFuzzyIsNull(denominator))
         return std::numeric_limits<qreal>::quiet_NaN();
 
     const qreal declination = solarDeclination(t);
-    const qreal numerator = sind(latitude) * cosd(zenith) - std::sin(declination);
+    const qreal numerator = sind(location.latitude()) * cosd(zenith) - std::sin(declination);
 
     qreal azimuth = std::acos(qBound(-1.0, numerator / denominator, 1.0));
 
-    if (hourAngle(t, longitude) < 0)
+    if (hourAngle(t, location) < 0)
         azimuth = M_PI - azimuth;
     else
         azimuth = azimuth + M_PI;
@@ -187,12 +187,12 @@ SunPosition::SunPosition(qreal elevation, qreal azimuth)
 {
 }
 
-SunPosition::SunPosition(const QDateTime &dateTime, qreal latitude, qreal longitude)
+SunPosition::SunPosition(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
     const qreal jcent = julianCenturies(dateTime);
-    const qreal zenith = solarZenith(jcent, latitude, longitude);
+    const qreal zenith = solarZenith(jcent, location);
 
-    m_azimuth = solarAzimuth(jcent, latitude, longitude, zenith);
+    m_azimuth = solarAzimuth(jcent, location, zenith);
 
     m_elevation = 90 - zenith;
     m_elevation += atmosphericRefractionCorrection(m_elevation);

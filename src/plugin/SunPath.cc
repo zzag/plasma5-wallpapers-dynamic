@@ -41,7 +41,7 @@ SunPath::SunPath()
 {
 }
 
-SunPath::SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude)
+SunPath::SunPath(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
     const QDate date = dateTime.date();
     const int sampleCount = 24;
@@ -49,7 +49,7 @@ SunPath::SunPath(const QDateTime &dateTime, qreal latitude, qreal longitude)
     QVector<SunPosition> positions;
     positions.reserve(sampleCount);
     for (int i = 0; i < sampleCount; ++i)
-        positions << SunPosition(QDateTime(date, QTime(i, 0)), latitude, longitude);
+        positions << SunPosition(QDateTime(date, QTime(i, 0)), location);
 
     QVector<QVector3D> samples;
     samples.reserve(sampleCount);

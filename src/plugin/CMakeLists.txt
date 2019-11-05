@@ -24,6 +24,7 @@ add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})
 
 target_link_libraries(wallpaperplugin
     Qt5::Gui
+    Qt5::Positioning
     Qt5::Qml
 
     KF5::I18n

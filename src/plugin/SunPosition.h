@@ -20,6 +20,7 @@
 
 // Qt
 #include <QDateTime>
+#include <QGeoCoordinate>
 #include <QVector3D>
 
 /**
@@ -31,7 +32,7 @@ class SunPosition
 public:
     SunPosition();
     SunPosition(qreal elevation, qreal azimuth);
-    SunPosition(const QDateTime &dateTime, qreal latitude, qreal longitude);
+    SunPosition(const QDateTime &dateTime, const QGeoCoordinate &location);
 
     /**
      * Returns the elevation angle of the Sun, in decimal degrees.
