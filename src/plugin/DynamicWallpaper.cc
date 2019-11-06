@@ -182,7 +182,8 @@ void DynamicWallpaper::reloadModel()
     }
 
     if (!model) {
-        setError(i18n("Could not initialize dynamic wallpaper"));
+        setError(i18n("Not able to display the dynamic wallpaper. If you live close to the North or "
+                      "the South geographic pole, try using another dynamic wallpaper"));
         setStatus(Status::Error);
         return;
     }

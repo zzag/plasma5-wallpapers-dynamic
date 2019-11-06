@@ -4,10 +4,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
-"issues\n"
-"POT-Creation-Date: 2019-11-05 22:23+0200\n"
-"PO-Revision-Date: 2019-11-01 00:51+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issue"
+"s\n"
+"POT-Creation-Date: 2019-11-07 00:43+0200\n"
+"PO-Revision-Date: 2019-11-07 00:44+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language: uk\n"
@@ -20,50 +20,67 @@ msgstr ""
 
 #: plugin/DynamicWallpaperPackage.cc:67
 #, kde-format
-msgid "Could not find 'Wallpaper' object"
-msgstr "Неможливо знайти 'Wallpaper' об'єкт"
+msgid "Metadata has no object 'Wallpaper'."
+msgstr "Матедані не мають об'єкта 'Wallpaper'."
 
 #: plugin/DynamicWallpaperPackage.cc:85
 #, kde-format
-msgid "Unknown wallpaper type: %1"
-msgstr "Невідомий тип шпалер: %1"
+msgid "Unknown wallpaper type: '%1'. Supported wallpaper types: %2."
+msgstr "Невідомий тип шпалер: '%1'. Підтримувані типи шпалер: %2."
 
-#: plugin/DynamicWallpaperPackage.cc:102 plugin/DynamicWallpaperPackage.cc:139
+#: plugin/DynamicWallpaperPackage.cc:103 plugin/DynamicWallpaperPackage.cc:144
 #, kde-format
-msgid "Image %1 has no metadata associated with it"
-msgstr "Зображення %1 не має метаданих"
+msgid "Image with index %1 has no metadata associated with it."
+msgstr "Зображення з індексом %1 не має метаданих"
 
-#: plugin/DynamicWallpaperPackage.cc:108
+#: plugin/DynamicWallpaperPackage.cc:109
 #, kde-format
-msgid "Image %1 has invalid azimuth value: %2"
-msgstr "Зображення %1 має недійсне значення азимуту: %2"
+msgid ""
+"Image with index %1 has an invalid value for key 'Azimuth': '%2'. The "
+"azimuth must be a real number between 0 and 360 inclusive."
+msgstr ""
+"Зображення з індексом %1 має недійсне значення для ключа 'Azimuth': '%2'. "
+"Азимут має бути реальним числом від 0 до 360 включно."
 
-#: plugin/DynamicWallpaperPackage.cc:113
+#: plugin/DynamicWallpaperPackage.cc:116
 #, kde-format
-msgid "Image %1 has invalid elevation value: %2"
-msgstr "Зображення %1 має недійсне значення висоти Сонця: %2"
+msgid ""
+"Image with index %1 has an invalid value for key 'Elevation': '%2'. The "
+"elevation must be a real number between -90 and 90 inclusive."
+msgstr ""
+"Зображення з індексом %1 має недійсне значення для ключа 'Elevation': '%2'. "
+"Висота має бути дійсним числом від -90 до 90 включно."
 
-#: plugin/DynamicWallpaperPackage.cc:145 plugin/DynamicWallpaperPackage.cc:150
+#: plugin/DynamicWallpaperPackage.cc:150 plugin/DynamicWallpaperPackage.cc:157
 #, kde-format
-msgid "Image %1 has invalid time value: %2"
-msgstr "Зображення %1 має недійсне значення часу: %2"
+msgid ""
+"Image with index %1 has an invalid value for key 'Time': '%2'. The time must "
+"be a real number between 0 and 1 inclusive."
+msgstr ""
+"Зображення з індексом %1 має недійсне значення для ключа 'Time': '%2'. Час"
+" має "
+"бути дійсним числом від 0 до 1 включно."
 
-#: plugin/DynamicWallpaperPackage.cc:182
+#: plugin/DynamicWallpaperPackage.cc:191
 #, kde-format
-msgid "Could not load wallpaper package: %1"
+msgid "Could not load wallpaper package: %1."
 msgstr "Неможливо завантажити шпалери: %1"
 
-#: plugin/DynamicWallpaperPackage.cc:206
+#: plugin/DynamicWallpaperPackage.cc:215
 #, kde-format
-msgid "Wallpaper does not have enough images"
-msgstr "Шпалери не мають достатньо зображень"
+msgid "A dynamic wallpaper must have at least two images, %1 provided."
+msgstr "Динамічні шпалери мають мати якнайменше два зображення, %1 надано."
 
 #: plugin/DynamicWallpaper.cc:185
 #, kde-format
-msgid "Could not initialize dynamic wallpaper"
-msgstr "Неможливо ініціалізувати динамічні шпалери"
+msgid ""
+"Not able to display the dynamic wallpaper. If you live close to the North or "
+"the South geographic pole, try using another dynamic wallpaper"
+msgstr ""
+"Неможливо показати динамічні шпалери. Спробуйте інші динамічні шпалери, якщо "
+"ви живите близько до Північного або Південного географічного полюсу."
 
-#: plugin/DynamicWallpaper.cc:202
+#: plugin/DynamicWallpaper.cc:203
 #, kde-format
 msgid "Could not load dynamic wallpaper: %1"
 msgstr "Неможливо завантажити динамічні шпалери: %1"
@@ -168,3 +185,27 @@ msgstr "Файл з метаданими шпалер (metadata.json)"
 #, kde-format
 msgid "Add Wallpaper..."
 msgstr "Додати шпалери..."
+
+#, fuzzy, kde-format
+#~ msgid "Could not find 'Wallpaper' object."
+#~ msgstr "Неможливо знайти 'Wallpaper' об'єкт"
+
+#, kde-format
+#~ msgid "Image %1 has invalid azimuth value: %2"
+#~ msgstr "Зображення %1 має недійсне значення азимуту: %2"
+
+#, kde-format
+#~ msgid "Image %1 has invalid elevation value: %2"
+#~ msgstr "Зображення %1 має недійсне значення висоти Сонця: %2"
+
+#, kde-format
+#~ msgid "Image %1 has invalid time value: %2"
+#~ msgstr "Зображення %1 має недійсне значення часу: %2"
+
+#, kde-format
+#~ msgid "Wallpaper does not have enough images"
+#~ msgstr "Шпалери не мають достатньо зображень"
+
+#, kde-format
+#~ msgid "Could not initialize dynamic wallpaper"
+#~ msgstr "Неможливо ініціалізувати динамічні шпалери"
