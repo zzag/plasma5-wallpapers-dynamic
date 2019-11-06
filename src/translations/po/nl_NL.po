@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2019-11-07 00:55+0200\n"
+"POT-Creation-Date: 2019-11-07 01:05+0200\n"
 "PO-Revision-Date: 2019-04-05 20:03+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: Dutch <vistausss@outlook.com>\n"
@@ -57,7 +57,7 @@ msgstr ""
 
 #: plugin/DynamicWallpaperPackage.cc:191
 #, kde-format
-msgid "Could not load wallpaper package: %1."
+msgid "No such dynamic wallpaper or invalid metadata."
 msgstr ""
 
 #: plugin/DynamicWallpaperPackage.cc:215

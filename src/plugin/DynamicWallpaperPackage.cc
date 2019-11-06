@@ -188,7 +188,7 @@ bool DynamicWallpaperLoader::load(const QString &id)
 
     const KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Wallpaper/Dynamic"), id);
     if (!package.isValid()) {
-        m_errorText = i18n("Could not load wallpaper package: %1.", id);
+        m_errorText = i18n("No such dynamic wallpaper or invalid metadata.");
         return false;
     }
 
