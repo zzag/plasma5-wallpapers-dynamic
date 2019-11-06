@@ -179,7 +179,7 @@ ColumnLayout {
         id: wallpaperDialog
         title: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Open Wallpaper")
         folder: shortcuts.home
-        nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Wallpaper metadata file (metadata.json)")]
+        nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Metadata file (metadata.json)")]
         selectExisting: true
         selectFolder: false
         selectMultiple: false

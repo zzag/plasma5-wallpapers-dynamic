@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2019-11-07 01:05+0200\n"
+"POT-Creation-Date: 2019-11-07 01:11+0200\n"
 "PO-Revision-Date: 2019-03-27 22:05+0100\n"
 "Last-Translator: eogan <eogan@tutanota.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -166,7 +166,7 @@ msgstr ""
 
 #: package/contents/ui/config.qml:182
 #, kde-format
-msgid "Wallpaper metadata file (metadata.json)"
+msgid "Metadata file (metadata.json)"
 msgstr ""
 
 #: package/contents/ui/config.qml:194
