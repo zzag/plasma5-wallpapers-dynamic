@@ -39,6 +39,10 @@ static QVector3D positionToVector(const SunPosition &position)
 
 SunPath SunPath::create(const QDateTime &dateTime, const QGeoCoordinate &location)
 {
+    // I bet there is a nice formula to determine the normal and the center of
+    // the sun path. Sampling the position of the Sun is not that bad, however
+    // having the computed results as accurate as possible is still something we
+    // have to strive for.
     const int sampleCount = 24;
 
     const QDateTime utcDateTime = dateTime.toUTC();
