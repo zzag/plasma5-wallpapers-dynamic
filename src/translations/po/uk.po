@@ -7,7 +7,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issue"
 "s\n"
 "POT-Creation-Date: 2019-11-07 00:43+0200\n"
-"PO-Revision-Date: 2019-11-07 00:44+0200\n"
+"PO-Revision-Date: 2019-11-07 00:50+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language: uk\n"
@@ -31,7 +31,7 @@ msgstr "Невідомий тип шпалер: '%1'. Підтримувані �
 #: plugin/DynamicWallpaperPackage.cc:103 plugin/DynamicWallpaperPackage.cc:144
 #, kde-format
 msgid "Image with index %1 has no metadata associated with it."
-msgstr "Зображення з індексом %1 не має метаданих"
+msgstr "Зображення з індексом %1 не має метаданих."
 
 #: plugin/DynamicWallpaperPackage.cc:109
 #, kde-format
