@@ -22,6 +22,8 @@
 // Qt
 #include <QtMath>
 
+// TODO: Refactor this ugly mess.
+
 const static qreal s_midnightHourAngle = -180;
 
 static qreal julianCenturiesToJulianDay(qreal jcent)
