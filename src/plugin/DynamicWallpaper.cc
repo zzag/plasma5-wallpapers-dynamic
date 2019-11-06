@@ -200,7 +200,7 @@ void DynamicWallpaper::reloadWallpaper()
 
     DynamicWallpaperLoader loader;
     if (!loader.load(m_wallpaperId)) {
-        setError(i18n("Could not load dynamic wallpaper: %1", loader.errorText()));
+        setError(i18n("Could not load dynamic wallpaper '%1': %2", m_wallpaperId, loader.errorText()));
         setStatus(Status::Error);
         return;
     }

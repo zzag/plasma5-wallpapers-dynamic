@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issue"
 "s\n"
-"POT-Creation-Date: 2019-11-07 01:11+0200\n"
-"PO-Revision-Date: 2019-11-07 01:11+0200\n"
+"POT-Creation-Date: 2019-11-07 01:27+0200\n"
+"PO-Revision-Date: 2019-11-07 01:27+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language: ru\n"
@@ -83,8 +83,8 @@ msgstr ""
 
 #: plugin/DynamicWallpaper.cc:203
 #, kde-format
-msgid "Could not load dynamic wallpaper: %1"
-msgstr "Невозможно загрузить динамические обои: %1"
+msgid "Could not load dynamic wallpaper '%1': %2"
+msgstr "Невозможно загрузить динамические обои '%1': %2"
 
 #: kpackage-integration/DynamicWallpaperPackageStructure.cc:38
 #, kde-format
