@@ -19,8 +19,8 @@ BraceWrapping:
     BeforeElse: false
     IndentBraces: false
 
-# Break before operators that aren’t assignments.
-BreakBeforeBinaryOperators: NonAssignment
+# Break after operators.
+BreakBeforeBinaryOperators: None
 
 # Align pointers to the right.
 PointerAlignment: Right

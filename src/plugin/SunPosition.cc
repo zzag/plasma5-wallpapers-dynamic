@@ -22,8 +22,6 @@
 // Qt
 #include <QtMath>
 
-// TODO: Refactor this ugly mess.
-
 const static qreal s_midnightHourAngle = -180;
 
 static qreal julianCenturiesToJulianDay(qreal jcent)
@@ -51,11 +49,6 @@ static qreal cosd(qreal value)
     return std::cos(qDegreesToRadians(value));
 }
 
-static qreal tand(qreal value)
-{
-    return std::tan(qDegreesToRadians(value));
-}
-
 static qreal eccentricityEarthOrbit(qreal jcent)
 {
     return 0.016708634 - jcent * (0.000042037 + 0.0000001267 * jcent);
@@ -63,28 +56,37 @@ static qreal eccentricityEarthOrbit(qreal jcent)
 
 static qreal solarGeometricMeanAnomaly(qreal jcent)
 {
-    return 357.52911 + jcent * (35999.05029 - 0.0001537 * jcent);
+    return qDegreesToRadians(357.52911 + jcent * (35999.05029 - 0.0001537 * jcent));
+}
+
+static qreal solarMeanEclipticObliquity(const qreal jcent)
+{
+    const qreal seconds = 21.448 - jcent * (46.815 + jcent * (0.00059 - jcent * 0.001813));
+    return 23.0 + (26.0 + seconds / 60.0) / 60.0;
 }
 
 static qreal obliquityCorrection(qreal jcent)
 {
-    const qreal temp1 = 23 + (26 + (21.448 - jcent * (46.815 + jcent * (0.00059 - jcent * 0.001813))) / 60) / 60;
-    const qreal temp2 = 0.00256 * cosd(125.04 - jcent * 1934.136);
-    return temp1 + temp2;
+    const qreal meanEclipticObliquity = solarMeanEclipticObliquity(jcent);
+    const qreal omega = qDegreesToRadians(125.04 - jcent * 1934.136);
+    return qDegreesToRadians(meanEclipticObliquity + 0.00256 * std::cos(omega));
 }
 
 static qreal solarEquationOfCenter(qreal jcent)
 {
     const qreal anomaly = solarGeometricMeanAnomaly(jcent);
-    return sind(anomaly) * (1.914602 - jcent * (0.004817 + jcent * 0.000014))
-        + sind(2 * anomaly) * (0.019993 - jcent * 0.000101)
-        + sind(3 * anomaly) * 0.000289;
+    const qreal equation = std::sin(2 * anomaly) * (0.019993 - jcent * 0.000101) +
+        std::sin(anomaly) * (1.914602 - jcent * (0.004817 + jcent * 0.000014)) +
+        std::sin(3 * anomaly) * 0.000289;
+    return qDegreesToRadians(equation);
 }
 
 static qreal solarGeometricMeanLongitude(qreal jcent)
 {
-    const qreal l = std::fmod(280.46646 + jcent * (36000.76983 + jcent * 0.0003032), 360);
-    return l < 0 ? l + 360 : l;
+    qreal l = std::fmod(280.46646 + jcent * (36000.76983 + jcent * 0.0003032), 360);
+    if (l < 0)
+        l += 360;
+    return qDegreesToRadians(l);
 }
 
 static qreal solarTrueLongitude(qreal jcent)
@@ -94,12 +96,14 @@ static qreal solarTrueLongitude(qreal jcent)
 
 static qreal solarApparentLongitude(qreal jcent)
 {
-    return solarTrueLongitude(jcent) - 0.00569 - 0.00478 * sind(125.04 - jcent * 1934.136);
+    const qreal omega = qDegreesToRadians(125.04 - jcent * 1934.136);
+    const qreal correction = qDegreesToRadians(-0.00569 - 0.00478 * std::sin(omega));
+    return solarTrueLongitude(jcent) + correction;
 }
 
 static qreal solarDeclination(qreal jcent)
 {
-    return std::asin(sind(obliquityCorrection(jcent)) * sind(solarApparentLongitude(jcent)));
+    return std::asin(std::sin(obliquityCorrection(jcent)) * std::sin(solarApparentLongitude(jcent)));
 }
 
 static qreal equationOfTime(qreal jcent)
@@ -107,23 +111,29 @@ static qreal equationOfTime(qreal jcent)
     const qreal e = eccentricityEarthOrbit(jcent);
     const qreal m = solarGeometricMeanAnomaly(jcent);
     const qreal l = solarGeometricMeanLongitude(jcent);
-    const qreal y = std::pow(tand(0.5 * obliquityCorrection(jcent)), 2);
-    const qreal equation = y * sind(2 * l) - 2 * e * sind(m)
-        + 4 * e * y * sind(m) * cosd(2 * l) - 0.5 * y * y * sind(4 * l)
-        - 1.25 * e * e * sind(2 * m);
+    const qreal y = std::pow(std::tan(0.5 * obliquityCorrection(jcent)), 2);
+    const qreal equation = y * std::sin(2 * l) - 2 * e * std::sin(m) +
+        4 * e * y * std::sin(m) * std::cos(2 * l) - 0.5 * y * y * std::sin(4 * l) -
+        1.25 * e * e * std::sin(2 * m);
     return 4 * qRadiansToDegrees(equation);
+}
+
+static qreal julianCenturiesToMinutesFromMidnight(qreal jcent)
+{
+    const qreal jd = julianCenturiesToJulianDay(jcent);
+    const qreal minutes = jd - std::round(jd) - 0.5;
+    return minutes * 1440.0;
 }
 
 static qreal solarHourAngle(qreal jcent, const QGeoCoordinate &location)
 {
-    const qreal jd = julianCenturiesToJulianDay(jcent);
-    const qreal offset = (jd - std::round(jd) - 0.5) * 1440;
+    const qreal minutes = julianCenturiesToMinutesFromMidnight(jcent);
 
-    const qreal angle = std::fmod(location.longitude() + (equationOfTime(jcent) + offset - 720) / 4, 360);
-    if (angle < -180)
-        return angle + 360;
-    if (angle > 180)
-        return angle - 360;
+    const qreal angle = std::fmod(location.longitude() + (equationOfTime(jcent) + minutes - 720) / 4, 360);
+    if (angle < -180.0)
+        return angle + 360.0;
+    if (angle > 180.0)
+        return angle - 360.0;
 
     return angle;
 }
@@ -132,8 +142,8 @@ static qreal solarZenith(qreal jcent, const QGeoCoordinate &location, qreal hour
 {
     const qreal declination = solarDeclination(jcent);
 
-    const qreal zenith = std::acos(sind(location.latitude()) * std::sin(declination)
-        + cosd(location.latitude()) * std::cos(declination) * cosd(hourAngle));
+    const qreal zenith = std::acos(sind(location.latitude()) * std::sin(declination) +
+        cosd(location.latitude()) * std::cos(declination) * cosd(hourAngle));
 
     return qRadiansToDegrees(zenith);
 }
@@ -164,7 +174,7 @@ static qreal atmosphericRefractionCorrection(qreal e)
     if (e > 85)
         return 0;
 
-    const qreal te = tand(e);
+    const qreal te = std::tan(qDegreesToRadians(e));
     qreal correction = 0;
 
     if (e > 5)
@@ -174,7 +184,7 @@ static qreal atmosphericRefractionCorrection(qreal e)
     else
         correction = -20.774 / te;
 
-    return correction / 3600;
+    return correction / 3600.0;
 }
 
 SunPosition::SunPosition()
