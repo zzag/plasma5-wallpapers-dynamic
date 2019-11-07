@@ -63,10 +63,15 @@ SunPath SunPath::create(const QDateTime &dateTime, const QGeoCoordinate &locatio
     QVector<QVector3D> samples;
     samples.reserve(sampleCount);
     std::transform(positions.constBegin(), positions.constEnd(),
-        std::back_inserter(samples), positionToVector);
+                   std::back_inserter(samples), positionToVector);
 
     QVector3D center = std::accumulate(samples.constBegin(), samples.constEnd(), QVector3D());
     center /= sampleCount;
+
+    float radius = 0;
+    for (const QVector3D &sample : samples)
+        radius += (sample - center).length();
+    radius /= sampleCount;
 
     QVector3D normal;
     for (int i = 1; i < samples.count(); ++i) {
@@ -76,12 +81,13 @@ SunPath SunPath::create(const QDateTime &dateTime, const QGeoCoordinate &locatio
     }
     normal.normalize();
 
-    return SunPath(center, normal);
+    return SunPath(center, normal, radius);
 }
 
-SunPath::SunPath(const QVector3D &center, const QVector3D &normal)
+SunPath::SunPath(const QVector3D &center, const QVector3D &normal, float radius)
     : m_center(center)
     , m_normal(normal)
+    , m_radius(radius)
 {
 }
 
@@ -112,11 +118,12 @@ QVector3D SunPath::project(const SunPosition &position) const
         return QVector3D();
 
     const QVector3D direction = QVector3D::crossProduct(m_normal, normal).normalized();
-    const QVector3D point = QVector3D::crossProduct(normal, direction) * QVector3D::dotProduct(m_normal, m_center)
-        + QVector3D::crossProduct(direction, m_normal) * QVector3D::dotProduct(normal, origin);
+    const QVector3D point = QVector3D::crossProduct(normal, direction) * QVector3D::dotProduct(m_normal, m_center) +
+        QVector3D::crossProduct(direction, m_normal) * QVector3D::dotProduct(normal, origin);
 
-    const float dot = QVector3D::dotProduct(direction, point);
-    const float discriminator = dot * dot - point.lengthSquared() + 1;
+    const QVector3D delta = point - m_center;
+    const float dot = QVector3D::dotProduct(direction, delta);
+    const float discriminator = dot * dot - delta.lengthSquared() + m_radius * m_radius;
     if (discriminator < 0)
         return QVector3D();
 

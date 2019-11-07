@@ -33,8 +33,8 @@ static qreal computeTime(const SunPath &path, const SunPosition &midnight, const
     const QVector3D projectedMidnight = path.project(midnight);
     const QVector3D projectedPosition = path.project(position);
 
-    const QVector3D v1 = projectedMidnight - path.center();
-    const QVector3D v2 = projectedPosition - path.center();
+    const QVector3D v1 = (projectedMidnight - path.center()).normalized();
+    const QVector3D v2 = (projectedPosition - path.center()).normalized();
 
     const QVector3D cross = QVector3D::crossProduct(v1, v2);
     const float dot = QVector3D::dotProduct(v1, v2);

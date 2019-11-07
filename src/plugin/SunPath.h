@@ -59,8 +59,9 @@ public:
     static SunPath create(const QDateTime &dateTime, const QGeoCoordinate &location);
 
 private:
-    SunPath(const QVector3D &center, const QVector3D &normal);
+    SunPath(const QVector3D &center, const QVector3D &normal, float radius);
 
     QVector3D m_center;
     QVector3D m_normal;
+    float m_radius;
 };
