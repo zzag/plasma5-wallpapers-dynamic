@@ -19,4 +19,3 @@ X-KDE-PluginInfo-Name=com.github.zzag.wallpaper
 X-KDE-PluginInfo-License=GPLv2+
 X-KDE-PluginInfo-Version=1
 X-KDE-PluginInfo-Website=https://github.com/zzag/plasma5-wallpapers-dynamic/
-X-Plasma-MainScript=ui/main.qml
