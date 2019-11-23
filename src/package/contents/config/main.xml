@@ -60,7 +60,7 @@
       top layer, an image in the bottom layer, and a blend factor between the two.
     -->
     <entry name="UpdateInterval" type="UInt">
-      <default>60000</default>
+      <default>300000</default>
     </entry>
 
     <!--
