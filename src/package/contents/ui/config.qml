@@ -23,7 +23,7 @@ import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
 
 import org.kde.kcm 1.1 as KCM
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami 2.5 as Kirigami
 
 import com.github.zzag.private.wallpaper 1.2
 
