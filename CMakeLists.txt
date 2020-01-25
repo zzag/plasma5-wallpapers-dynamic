@@ -8,6 +8,7 @@ project(plasma5-wallpapers-dynamic)
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
+include(ECMQMLModules)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
@@ -16,6 +17,13 @@ include(FeatureSummary)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+ecm_find_qmlmodule(QtQuick 2.5)
+ecm_find_qmlmodule(QtQuick.Controls 2.3)
+ecm_find_qmlmodule(QtQuick.Layouts 1.0)
+ecm_find_qmlmodule(QtQuick.Window 2.2)
+ecm_find_qmlmodule(org.kde.kcm 1.1)
+ecm_find_qmlmodule(org.kde.kirigami 2.5)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     I18n
