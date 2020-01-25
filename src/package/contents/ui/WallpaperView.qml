@@ -125,11 +125,11 @@ StackView {
             root.__nextItem.statusChanged.disconnect(root.__swap);
 
         root.__nextItem = baseImage.createObject(root, {
-            bottomLayer,
-            topLayer,
-            blendFactor,
-            fillMode,
-            sourceSize
+            bottomLayer: bottomLayer,
+            topLayer: topLayer,
+            blendFactor: blendFactor,
+            fillMode: fillMode,
+            sourceSize: sourceSize
         });
 
         root.__nextItem.statusChanged.connect(root.__swap);
