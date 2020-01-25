@@ -19,7 +19,7 @@
 import QtQuick 2.1
 import QtQuick.Window 2.2
 
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami 2.5 as Kirigami
 
 import com.github.zzag.private.wallpaper 1.1
 
