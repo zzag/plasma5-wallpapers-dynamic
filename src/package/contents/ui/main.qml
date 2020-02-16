@@ -15,16 +15,6 @@ import com.github.zzag.private.wallpaper 1.3
 Item {
     id: root
 
-    readonly property int fillMode: wallpaper.configuration.FillMode
-    readonly property size sourceSize: Qt.size(root.width * Screen.devicePixelRatio, root.height * Screen.devicePixelRatio)
-    readonly property int updateInterval: wallpaper.configuration.UpdateInterval
-    readonly property string wallpaperId: wallpaper.configuration.WallpaperId
-
-    onFillModeChanged: wallpaperView.fillMode = fillMode
-    onSourceSizeChanged: wallpaperView.sourceSize = sourceSize
-    onUpdateIntervalChanged: timer.interval = updateInterval
-    onWallpaperIdChanged: dynamicWallpaperHandler.wallpaperId = wallpaperId
-
     PositionSource {
         id: automaticLocationProvider
         active: wallpaper.configuration.AutoDetectLocation
@@ -43,8 +33,8 @@ Item {
         anchors.fill: parent
         blendFactor: dynamicWallpaperHandler.blendFactor
         bottomLayer: dynamicWallpaperHandler.bottomLayer
-        fillMode: root.fillMode
-        sourceSize: root.sourceSize
+        fillMode: wallpaper.configuration.FillMode
+        sourceSize: Qt.size(root.width * Screen.devicePixelRatio, root.height * Screen.devicePixelRatio)
         topLayer: dynamicWallpaperHandler.topLayer
         visible: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
         onStatusChanged: if (status != Image.Loading) {
@@ -76,7 +66,7 @@ Item {
                 return automaticLocationProvider.position.coordinate;
             return manualLocationProvider.coordinate;
         }
-        wallpaperId: wallpaperId
+        wallpaperId: wallpaper.configuration.WallpaperId
         onStatusChanged: if (status != DynamicWallpaperHandler.Ok) {
             wallpaper.loading = false;
         }
@@ -89,7 +79,7 @@ Item {
 
     Timer {
         id: timer
-        interval: updateInterval
+        interval: wallpaper.configuration.UpdateInterval
         repeat: true
         running: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
         onTriggered: dynamicWallpaperHandler.update()
