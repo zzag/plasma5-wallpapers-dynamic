@@ -18,6 +18,7 @@
 
 import QtQuick 2.1
 import QtQuick.Window 2.2
+import QtPositioning 5.9
 
 import org.kde.kirigami 2.5 as Kirigami
 
@@ -27,18 +28,22 @@ Item {
     id: root
 
     readonly property int fillMode: wallpaper.configuration.FillMode
-    readonly property double latitude: wallpaper.configuration.Latitude
-    readonly property double longitude: wallpaper.configuration.Longitude
     readonly property size sourceSize: Qt.size(root.width * Screen.devicePixelRatio, root.height * Screen.devicePixelRatio)
     readonly property int updateInterval: wallpaper.configuration.UpdateInterval
     readonly property string wallpaperId: wallpaper.configuration.WallpaperId
 
     onFillModeChanged: wallpaperView.fillMode = fillMode
-    onLatitudeChanged: dynamicWallpaper.latitude = latitude
-    onLongitudeChanged: dynamicWallpaper.longitude = longitude
     onSourceSizeChanged: wallpaperView.sourceSize = sourceSize
     onUpdateIntervalChanged: timer.interval = updateInterval
     onWallpaperIdChanged: dynamicWallpaper.wallpaperId = wallpaperId
+
+    Location {
+        id: manualLocationProvider
+        coordinate {
+            latitude: wallpaper.configuration.Latitude
+            longitude: wallpaper.configuration.Longitude
+        }
+    }
 
     WallpaperView {
         id: wallpaperView
@@ -73,8 +78,7 @@ Item {
 
     DynamicWallpaper {
         id: dynamicWallpaper
-        latitude: latitude
-        longitude: longitude
+        location: manualLocationProvider.coordinate
         wallpaperId: wallpaperId
         onStatusChanged: if (status != DynamicWallpaper.Ok) {
             wallpaper.loading = false;

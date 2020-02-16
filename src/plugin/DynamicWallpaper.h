@@ -39,8 +39,7 @@ class DynamicWallpaper : public QObject
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
     Q_PROPERTY(QString wallpaperId READ wallpaperId WRITE setWallpaperId NOTIFY wallpaperIdChanged)
-    Q_PROPERTY(qreal latitude READ latitude WRITE setLatitude NOTIFY latitudeChanged)
-    Q_PROPERTY(qreal longitude READ longitude WRITE setLongitude NOTIFY longitudeChanged)
+    Q_PROPERTY(QGeoCoordinate location READ location WRITE setLocation NOTIFY locationChanged)
 
 public:
     enum Status {
@@ -61,11 +60,8 @@ public:
     QString wallpaperId() const;
     void setWallpaperId(const QString &id);
 
-    qreal latitude() const;
-    void setLatitude(qreal latitude);
-
-    qreal longitude() const;
-    void setLongitude(qreal longitude);
+    QGeoCoordinate location() const;
+    void setLocation(const QGeoCoordinate &location);
 
 Q_SIGNALS:
     void bottomLayerChanged();
@@ -74,8 +70,7 @@ Q_SIGNALS:
     void statusChanged();
     void errorChanged();
     void wallpaperIdChanged();
-    void latitudeChanged();
-    void longitudeChanged();
+    void locationChanged();
 
 public Q_SLOTS:
     void update();

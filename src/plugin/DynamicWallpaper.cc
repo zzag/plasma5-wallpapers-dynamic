@@ -79,32 +79,17 @@ void DynamicWallpaper::setWallpaperId(const QString &id)
     scheduleUpdate();
 }
 
-qreal DynamicWallpaper::latitude() const
+QGeoCoordinate DynamicWallpaper::location() const
 {
-    return m_location.latitude();
+    return m_location;
 }
 
-void DynamicWallpaper::setLatitude(qreal latitude)
+void DynamicWallpaper::setLocation(const QGeoCoordinate &location)
 {
-    if (m_location.latitude() == latitude)
+    if (m_location == location)
         return;
-    m_location.setLatitude(latitude);
-    emit latitudeChanged();
-    reloadModel();
-    scheduleUpdate();
-}
-
-qreal DynamicWallpaper::longitude() const
-{
-    return m_location.longitude();
-}
-
-void DynamicWallpaper::setLongitude(qreal longitude)
-{
-    if (m_location.longitude() == longitude)
-        return;
-    m_location.setLongitude(longitude);
-    emit longitudeChanged();
+    m_location = location;
+    emit locationChanged();
     reloadModel();
     scheduleUpdate();
 }
