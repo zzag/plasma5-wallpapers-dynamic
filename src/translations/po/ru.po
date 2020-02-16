@@ -1,13 +1,13 @@
 # This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
 #
-# Vlad Zahorodnii <vladzzag@gmail.com>, 2019.
+# Vlad Zahorodnii <vladzzag@gmail.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
-"issues\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issue"
+"s\n"
 "POT-Creation-Date: 2020-02-16 19:23+0200\n"
-"PO-Revision-Date: 2019-11-07 01:27+0200\n"
+"PO-Revision-Date: 2020-02-16 19:45+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language: ru\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 19.08.2\n"
+"X-Generator: Lokalize 19.12.2\n"
 
 #: package/contents/ui/config.qml:40
 #, kde-format
@@ -51,7 +51,7 @@ msgstr "Черепицей"
 #: package/contents/ui/config.qml:79
 #, kde-format
 msgid "Automatically detect location"
-msgstr ""
+msgstr "Автоматически определить местоположение"
 
 #: package/contents/ui/config.qml:83 package/contents/ui/config.qml:104
 #, kde-format
@@ -69,13 +69,13 @@ msgid "Update Every:"
 msgstr "Обновлять каждые:"
 
 #: package/contents/ui/config.qml:125
-#, fuzzy, kde-format
+#, kde-format
 msgid " minute"
 msgid_plural " minutes"
-msgstr[0] " мин"
-msgstr[1] " мин"
-msgstr[2] " мин"
-msgstr[3] " мин"
+msgstr[0] " минуту"
+msgstr[1] " минуты"
+msgstr[2] " минут"
+msgstr[3] " минуту"
 
 #: package/contents/ui/config.qml:159
 #, kde-format
