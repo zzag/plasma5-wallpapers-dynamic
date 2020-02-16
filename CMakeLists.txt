@@ -29,6 +29,7 @@ ecm_find_qmlmodule(org.kde.kirigami 2.5)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     I18n
+    KIO
     Package
     Plasma
 )
@@ -38,6 +39,7 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Gui
     Positioning
     Qml
+    Quick
 )
 
 find_package(Qt5Test ${QT_MIN_VERSION} CONFIG QUIET)

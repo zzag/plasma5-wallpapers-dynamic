@@ -140,6 +140,13 @@ static QString previewFromMetaData(const KPluginMetaData &metaData)
     return wallpaperObject.value(QLatin1String("Preview")).toString();
 }
 
+static QUrl previewUrlForFilePath(const QString &filePath)
+{
+    // Using base64 because I don't want to deal with file name/path conventions. :/
+    const QString base64 = filePath.toUtf8().toBase64();
+    return QStringLiteral("image://dynamicpreview/") + base64;
+}
+
 void WallpapersModel::reload()
 {
     const QString localWallpapersRoot = DynamicWallpaperInstaller::locatePackageRoot();
@@ -162,8 +169,10 @@ void WallpapersModel::reload()
             wallpaper.author = metaData.authors().first().name();
 
         const QString previewFileName = previewFromMetaData(metaData);
-        if (!previewFileName.isEmpty())
-            wallpaper.previewUrl = package.fileUrl(QByteArrayLiteral("images"), previewFileName);
+        if (!previewFileName.isEmpty()) {
+            const QString previewFilePath = package.filePath("images", previewFileName);
+            wallpaper.previewUrl = previewUrlForFilePath(previewFilePath);
+        }
 
         wallpapers << wallpaper;
     });

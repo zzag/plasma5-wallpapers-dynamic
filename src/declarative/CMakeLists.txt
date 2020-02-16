@@ -8,6 +8,7 @@ set(wallpaperplugin_SRCS
     dynamicwallpaperinstaller.cpp
     dynamicwallpapermodel.cpp
     dynamicwallpaperpackage.cpp
+    dynamicwallpaperpreviewprovider.cpp
     sunpath.cpp
     sunposition.cpp
     wallpapersmodel.cpp
@@ -25,11 +26,14 @@ add_library(wallpaperplugin SHARED ${wallpaperplugin_SRCS})
 target_compile_options(wallpaperplugin PRIVATE -fno-rtti)
 
 target_link_libraries(wallpaperplugin
+    Qt5::Core
     Qt5::Gui
     Qt5::Positioning
     Qt5::Qml
+    Qt5::Quick
 
     KF5::I18n
+    KF5::KIOWidgets
     KF5::Package
 )
 
