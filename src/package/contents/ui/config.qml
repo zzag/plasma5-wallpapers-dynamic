@@ -36,8 +36,8 @@ ColumnLayout {
     property string cfg_WallpaperId
 
     property alias cfg_AutoDetectLocation: autoDetectLocationCheckBox.checked
-    property alias cfg_Latitude: latitudeSpinbox.value
-    property alias cfg_Longitude: longitudeSpinbox.value
+    property alias cfg_Latitude: latitudeSpinBox.value
+    property alias cfg_Longitude: longitudeSpinBox.value
 
     function saveConfig() {
         // Uninstall all zombie wallpapers when the user clicks OK or Apply button.
@@ -112,7 +112,7 @@ ColumnLayout {
         }
 
         QtControls.SpinBox {
-            id: latitudeSpinbox
+            id: latitudeSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
             decimals: 2
             minimumValue: -90
@@ -121,7 +121,7 @@ ColumnLayout {
         }
 
         QtControls.SpinBox {
-            id: longitudeSpinbox
+            id: longitudeSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
             decimals: 2
             minimumValue: -180
@@ -130,7 +130,7 @@ ColumnLayout {
         }
 
         QtControls.SpinBox {
-            id: updateIntervalSpinbox
+            id: updateIntervalSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
             maximumValue: 59
             minimumValue: 1
