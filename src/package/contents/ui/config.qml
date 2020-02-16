@@ -50,33 +50,33 @@ ColumnLayout {
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Fill Mode:")
             model: [
                 {
-                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled and Cropped"),
-                    "fillMode": Image.PreserveAspectCrop
+                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled and Cropped"),
+                    "value": Image.PreserveAspectCrop
                 },
                 {
-                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled"),
-                    "fillMode": Image.Stretch
+                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled"),
+                    "value": Image.Stretch
                 },
                 {
-                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled, Keep Proportions"),
-                    "fillMode": Image.PreserveAspectFit
+                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled, Keep Proportions"),
+                    "value": Image.PreserveAspectFit
                 },
                 {
-                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Centered"),
-                    "fillMode": Image.Pad
+                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Centered"),
+                    "value": Image.Pad
                 },
                 {
-                    "label": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Tiled"),
-                    "fillMode": Image.Tile
+                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Tiled"),
+                    "value": Image.Tile
                 }
             ]
 
-            textRole: "label"
-            onCurrentIndexChanged: cfg_FillMode = model[currentIndex]["fillMode"]
+            textRole: "text"
+            onCurrentIndexChanged: cfg_FillMode = model[currentIndex]["value"]
 
             Component.onCompleted: {
                 for (var i = 0; i < model.length; i++) {
-                    if (model[i]["fillMode"] == wallpaper.configuration.FillMode) {
+                    if (model[i]["value"] == wallpaper.configuration.FillMode) {
                         positioningComboBox.currentIndex = i;
                         break;
                     }
