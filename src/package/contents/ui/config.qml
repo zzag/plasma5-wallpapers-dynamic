@@ -72,7 +72,7 @@ ColumnLayout {
             ]
 
             textRole: "text"
-            onCurrentIndexChanged: cfg_FillMode = model[currentIndex]["value"]
+            onActivated: cfg_FillMode = model[currentIndex]["value"]
 
             Component.onCompleted: {
                 for (var i = 0; i < model.length; i++) {
