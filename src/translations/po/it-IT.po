@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2019-11-07 01:27+0200\n"
+"POT-Creation-Date: 2020-02-16 19:23+0200\n"
 "PO-Revision-Date: 2019-10-26 15:00+0200\n"
 "Last-Translator: Federico Robin <bisio.97@gmail.com>\n"
 "Language: it\n"
@@ -15,162 +15,120 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: plugin/DynamicWallpaperPackage.cc:67
-#, kde-format
-msgid "Metadata has no object 'Wallpaper'."
-msgstr ""
-
-#: plugin/DynamicWallpaperPackage.cc:85
-#, fuzzy, kde-format
-msgid "Unknown wallpaper type: '%1'. Supported wallpaper types: %2."
-msgstr "Tipo di wallpaper sconosciuto: %1"
-
-#: plugin/DynamicWallpaperPackage.cc:103 plugin/DynamicWallpaperPackage.cc:144
-#, fuzzy, kde-format
-msgid "Image with index %1 has no metadata associated with it."
-msgstr "L'immagine %1 non ha metadati associati"
-
-#: plugin/DynamicWallpaperPackage.cc:109
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Azimuth': '%2'. The "
-"azimuth must be a real number between 0 and 360 inclusive."
-msgstr ""
-
-#: plugin/DynamicWallpaperPackage.cc:116
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Elevation': '%2'. The "
-"elevation must be a real number between -90 and 90 inclusive."
-msgstr ""
-
-#: plugin/DynamicWallpaperPackage.cc:150 plugin/DynamicWallpaperPackage.cc:157
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Time': '%2'. The time must "
-"be a real number between 0 and 1 inclusive."
-msgstr ""
-
-#: plugin/DynamicWallpaperPackage.cc:191
-#, kde-format
-msgid "No such dynamic wallpaper or invalid metadata."
-msgstr ""
-
-#: plugin/DynamicWallpaperPackage.cc:215
-#, kde-format
-msgid "A dynamic wallpaper must have at least two images, %1 provided."
-msgstr ""
-
-#: plugin/DynamicWallpaper.cc:185
-#, kde-format
-msgid ""
-"Not able to display the dynamic wallpaper. If you live close to the North or "
-"the South geographic pole, try using another dynamic wallpaper."
-msgstr ""
-
-#: plugin/DynamicWallpaper.cc:203
-#, fuzzy, kde-format
-msgid "Could not load dynamic wallpaper '%1': %2"
-msgstr "Non è stato possibile caricare il wallpaper dinamico: %1"
-
-#: kpackage-integration/DynamicWallpaperPackageStructure.cc:38
-#, kde-format
-msgid "Images"
-msgstr "Immagini"
-
-#: package/contents/ui/config.qml:50
+#: package/contents/ui/config.qml:40
 #, kde-format
 msgid "Fill Mode:"
 msgstr "Modalità di riempimento"
 
-#: package/contents/ui/config.qml:53
+#: package/contents/ui/config.qml:43
 #, kde-format
 msgid "Scaled and Cropped"
 msgstr "Scalato e Tagliato"
 
-#: package/contents/ui/config.qml:57
+#: package/contents/ui/config.qml:47
 #, kde-format
 msgid "Scaled"
 msgstr "Scalato"
 
-#: package/contents/ui/config.qml:61
+#: package/contents/ui/config.qml:51
 #, kde-format
 msgid "Scaled, Keep Proportions"
 msgstr "Scalato, Mantieni Proporzioni"
 
-#: package/contents/ui/config.qml:65
+#: package/contents/ui/config.qml:55
 #, kde-format
 msgid "Centered"
 msgstr "Centrato"
 
-#: package/contents/ui/config.qml:69
+#: package/contents/ui/config.qml:59
 #, kde-format
 msgid "Tiled"
 msgstr "Affiancato"
 
-#: package/contents/ui/config.qml:89
+#: package/contents/ui/config.qml:79
+#, kde-format
+msgid "Automatically detect location"
+msgstr ""
+
+#: package/contents/ui/config.qml:83 package/contents/ui/config.qml:104
 #, kde-format
 msgid "Latitude:"
 msgstr "Latitudine:"
 
-#: package/contents/ui/config.qml:97
+#: package/contents/ui/config.qml:93 package/contents/ui/config.qml:113
 #, kde-format
 msgid "Longitude:"
 msgstr "Longitudine:"
 
-#: package/contents/ui/config.qml:105
+#: package/contents/ui/config.qml:122
 #, kde-format
 msgid "Update Every:"
 msgstr "Aggiorna Ogni:"
 
-#: package/contents/ui/config.qml:108
-#, kde-format
-msgid " min"
-msgid_plural " min"
+#: package/contents/ui/config.qml:125
+#, fuzzy, kde-format
+msgid " minute"
+msgid_plural " minutes"
 msgstr[0] " minuto"
 msgstr[1] " minuti"
 
-#: package/contents/ui/config.qml:140
+#: package/contents/ui/config.qml:159
 #, kde-format
 msgctxt "<image> by <author> (<license>)"
 msgid "By %1 (%2)"
 msgstr "Da %1 (%2)"
 
-#: package/contents/ui/config.qml:142
+#: package/contents/ui/config.qml:161
 #, kde-format
 msgctxt "<image> (<license>)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: package/contents/ui/config.qml:149
+#: package/contents/ui/config.qml:167
 #, kde-format
 msgid "Open Containing Folder"
 msgstr "Mostra nel Gestore File"
 
-#: package/contents/ui/config.qml:154
+#: package/contents/ui/config.qml:172
 #, kde-format
 msgid "Restore Wallpaper"
 msgstr "Ripristina Wallpaper"
 
-#: package/contents/ui/config.qml:160
+#: package/contents/ui/config.qml:178
 #, kde-format
 msgid "Remove Wallpaper"
 msgstr "Rimuovi Wallpaper"
 
-#: package/contents/ui/config.qml:180
+#: package/contents/ui/config.qml:209
 #, kde-format
 msgid "Open Wallpaper"
 msgstr "Apri Wallpaper"
 
-#: package/contents/ui/config.qml:182
+#: package/contents/ui/config.qml:211
 #, kde-format
 msgid "Metadata file (metadata.json)"
 msgstr ""
 
-#: package/contents/ui/config.qml:194
+#: package/contents/ui/config.qml:223
 #, kde-format
 msgid "Add Wallpaper..."
 msgstr "Aggiungi Wallpaper..."
+
+#, fuzzy, kde-format
+#~ msgid "Unknown wallpaper type: '%1'. Supported wallpaper types: %2."
+#~ msgstr "Tipo di wallpaper sconosciuto: %1"
+
+#, fuzzy, kde-format
+#~ msgid "Image with index %1 has no metadata associated with it."
+#~ msgstr "L'immagine %1 non ha metadati associati"
+
+#, fuzzy, kde-format
+#~ msgid "Could not load dynamic wallpaper '%1': %2"
+#~ msgstr "Non è stato possibile caricare il wallpaper dinamico: %1"
+
+#, kde-format
+#~ msgid "Images"
+#~ msgstr "Immagini"
 
 #, fuzzy, kde-format
 #~ msgid "Could not load wallpaper package: %1."

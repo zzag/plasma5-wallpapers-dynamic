@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
-"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/issue"
-"s\n"
-"POT-Creation-Date: 2019-11-07 01:27+0200\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
+"issues\n"
+"POT-Creation-Date: 2020-02-16 19:23+0200\n"
 "PO-Revision-Date: 2019-11-07 01:27+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -18,172 +18,166 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 19.08.2\n"
 
-#: plugin/DynamicWallpaperPackage.cc:67
-#, kde-format
-msgid "Metadata has no object 'Wallpaper'."
-msgstr "Матедані не мають об'єкта 'Wallpaper'."
-
-#: plugin/DynamicWallpaperPackage.cc:85
-#, kde-format
-msgid "Unknown wallpaper type: '%1'. Supported wallpaper types: %2."
-msgstr "Невідомий тип шпалер: '%1'. Підтримувані типи шпалер: %2."
-
-#: plugin/DynamicWallpaperPackage.cc:103 plugin/DynamicWallpaperPackage.cc:144
-#, kde-format
-msgid "Image with index %1 has no metadata associated with it."
-msgstr "Зображення з індексом %1 не має метаданих."
-
-#: plugin/DynamicWallpaperPackage.cc:109
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Azimuth': '%2'. The "
-"azimuth must be a real number between 0 and 360 inclusive."
-msgstr ""
-"Зображення з індексом %1 має недійсне значення для ключа 'Azimuth': '%2'. "
-"Азимут має бути реальним числом від 0 до 360 включно."
-
-#: plugin/DynamicWallpaperPackage.cc:116
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Elevation': '%2'. The "
-"elevation must be a real number between -90 and 90 inclusive."
-msgstr ""
-"Зображення з індексом %1 має недійсне значення для ключа 'Elevation': '%2'. "
-"Висота має бути дійсним числом від -90 до 90 включно."
-
-#: plugin/DynamicWallpaperPackage.cc:150 plugin/DynamicWallpaperPackage.cc:157
-#, kde-format
-msgid ""
-"Image with index %1 has an invalid value for key 'Time': '%2'. The time must "
-"be a real number between 0 and 1 inclusive."
-msgstr ""
-"Зображення з індексом %1 має недійсне значення для ключа 'Time': '%2'. Час "
-"має бути дійсним числом від 0 до 1 включно."
-
-#: plugin/DynamicWallpaperPackage.cc:191
-#, kde-format
-msgid "No such dynamic wallpaper or invalid metadata."
-msgstr "Таких динамічних шпалер не існує або недійсні метадані."
-
-#: plugin/DynamicWallpaperPackage.cc:215
-#, kde-format
-msgid "A dynamic wallpaper must have at least two images, %1 provided."
-msgstr "Динамічні шпалери мають мати якнайменше два зображення, %1 надано."
-
-#: plugin/DynamicWallpaper.cc:185
-#, kde-format
-msgid ""
-"Not able to display the dynamic wallpaper. If you live close to the North or "
-"the South geographic pole, try using another dynamic wallpaper."
-msgstr ""
-"Неможливо показати динамічні шпалери. Спробуйте інші динамічні шпалери, якщо "
-"ви живите близько до Північного або Південного географічного полюсу."
-
-#: plugin/DynamicWallpaper.cc:203
-#, kde-format
-msgid "Could not load dynamic wallpaper '%1': %2"
-msgstr "Неможливо завантажити динамічні шпалери '%1': %2"
-
-#: kpackage-integration/DynamicWallpaperPackageStructure.cc:38
-#, kde-format
-msgid "Images"
-msgstr "Зображення"
-
-#: package/contents/ui/config.qml:50
+#: package/contents/ui/config.qml:40
 #, kde-format
 msgid "Fill Mode:"
 msgstr "Розташування:"
 
-#: package/contents/ui/config.qml:53
+#: package/contents/ui/config.qml:43
 #, kde-format
 msgid "Scaled and Cropped"
 msgstr "Масштабоване та обрізане"
 
-#: package/contents/ui/config.qml:57
+#: package/contents/ui/config.qml:47
 #, kde-format
 msgid "Scaled"
 msgstr "Масштабоване"
 
-#: package/contents/ui/config.qml:61
+#: package/contents/ui/config.qml:51
 #, kde-format
 msgid "Scaled, Keep Proportions"
 msgstr "Масштабоване, зі збереженням пропорцій"
 
-#: package/contents/ui/config.qml:65
+#: package/contents/ui/config.qml:55
 #, kde-format
 msgid "Centered"
 msgstr "За центром"
 
-#: package/contents/ui/config.qml:69
+#: package/contents/ui/config.qml:59
 #, kde-format
 msgid "Tiled"
 msgstr "Плиткою"
 
-#: package/contents/ui/config.qml:89
+#: package/contents/ui/config.qml:79
+#, kde-format
+msgid "Automatically detect location"
+msgstr ""
+
+#: package/contents/ui/config.qml:83 package/contents/ui/config.qml:104
 #, kde-format
 msgid "Latitude:"
 msgstr "Широта:"
 
-#: package/contents/ui/config.qml:97
+#: package/contents/ui/config.qml:93 package/contents/ui/config.qml:113
 #, kde-format
 msgid "Longitude:"
 msgstr "Довгота:"
 
-#: package/contents/ui/config.qml:105
+#: package/contents/ui/config.qml:122
 #, kde-format
 msgid "Update Every:"
 msgstr "Обновлювати кожні:"
 
-#: package/contents/ui/config.qml:108
-#, kde-format
-msgid " min"
-msgid_plural " min"
+#: package/contents/ui/config.qml:125
+#, fuzzy, kde-format
+msgid " minute"
+msgid_plural " minutes"
 msgstr[0] " хв"
 msgstr[1] " хв"
 msgstr[2] " хв"
 msgstr[3] " хв"
 
-#: package/contents/ui/config.qml:140
+#: package/contents/ui/config.qml:159
 #, kde-format
 msgctxt "<image> by <author> (<license>)"
 msgid "By %1 (%2)"
 msgstr "Автор - %1 (%2)"
 
-#: package/contents/ui/config.qml:142
+#: package/contents/ui/config.qml:161
 #, kde-format
 msgctxt "<image> (<license>)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: package/contents/ui/config.qml:149
+#: package/contents/ui/config.qml:167
 #, kde-format
 msgid "Open Containing Folder"
 msgstr "Відкрити теку об'єкта"
 
-#: package/contents/ui/config.qml:154
+#: package/contents/ui/config.qml:172
 #, kde-format
 msgid "Restore Wallpaper"
 msgstr "Відновити початкові шпалери"
 
-#: package/contents/ui/config.qml:160
+#: package/contents/ui/config.qml:178
 #, kde-format
 msgid "Remove Wallpaper"
 msgstr "Вилучити шпалери"
 
-#: package/contents/ui/config.qml:180
+#: package/contents/ui/config.qml:209
 #, kde-format
 msgid "Open Wallpaper"
 msgstr "Відкрити шпалери"
 
-#: package/contents/ui/config.qml:182
+#: package/contents/ui/config.qml:211
 #, kde-format
 msgid "Metadata file (metadata.json)"
 msgstr "Файл з метаданими (metadata.json)"
 
-#: package/contents/ui/config.qml:194
+#: package/contents/ui/config.qml:223
 #, kde-format
 msgid "Add Wallpaper..."
 msgstr "Додати шпалери..."
+
+#, kde-format
+#~ msgid "Metadata has no object 'Wallpaper'."
+#~ msgstr "Матедані не мають об'єкта 'Wallpaper'."
+
+#, kde-format
+#~ msgid "Unknown wallpaper type: '%1'. Supported wallpaper types: %2."
+#~ msgstr "Невідомий тип шпалер: '%1'. Підтримувані типи шпалер: %2."
+
+#, kde-format
+#~ msgid "Image with index %1 has no metadata associated with it."
+#~ msgstr "Зображення з індексом %1 не має метаданих."
+
+#, kde-format
+#~ msgid ""
+#~ "Image with index %1 has an invalid value for key 'Azimuth': '%2'. The "
+#~ "azimuth must be a real number between 0 and 360 inclusive."
+#~ msgstr ""
+#~ "Зображення з індексом %1 має недійсне значення для ключа 'Azimuth': '%2'. "
+#~ "Азимут має бути реальним числом від 0 до 360 включно."
+
+#, kde-format
+#~ msgid ""
+#~ "Image with index %1 has an invalid value for key 'Elevation': '%2'. The "
+#~ "elevation must be a real number between -90 and 90 inclusive."
+#~ msgstr ""
+#~ "Зображення з індексом %1 має недійсне значення для ключа 'Elevation': "
+#~ "'%2'. Висота має бути дійсним числом від -90 до 90 включно."
+
+#, kde-format
+#~ msgid ""
+#~ "Image with index %1 has an invalid value for key 'Time': '%2'. The time "
+#~ "must be a real number between 0 and 1 inclusive."
+#~ msgstr ""
+#~ "Зображення з індексом %1 має недійсне значення для ключа 'Time': '%2'. "
+#~ "Час має бути дійсним числом від 0 до 1 включно."
+
+#, kde-format
+#~ msgid "No such dynamic wallpaper or invalid metadata."
+#~ msgstr "Таких динамічних шпалер не існує або недійсні метадані."
+
+#, kde-format
+#~ msgid "A dynamic wallpaper must have at least two images, %1 provided."
+#~ msgstr "Динамічні шпалери мають мати якнайменше два зображення, %1 надано."
+
+#, kde-format
+#~ msgid ""
+#~ "Not able to display the dynamic wallpaper. If you live close to the North "
+#~ "or the South geographic pole, try using another dynamic wallpaper."
+#~ msgstr ""
+#~ "Неможливо показати динамічні шпалери. Спробуйте інші динамічні шпалери, "
+#~ "якщо ви живите близько до Північного або Південного географічного полюсу."
+
+#, kde-format
+#~ msgid "Could not load dynamic wallpaper '%1': %2"
+#~ msgstr "Неможливо завантажити динамічні шпалери '%1': %2"
+
+#, kde-format
+#~ msgid "Images"
+#~ msgstr "Зображення"
 
 #, kde-format
 #~ msgid "Could not load wallpaper package: %1."
