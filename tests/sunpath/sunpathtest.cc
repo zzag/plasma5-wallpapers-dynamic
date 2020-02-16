@@ -18,8 +18,8 @@
 
 #include <QtTest>
 
-#include "../../src/plugin/SunPath.h"
-#include "../../src/plugin/SunPosition.h"
+#include "../../src/declarative/SunPath.h"
+#include "../../src/declarative/SunPosition.h"
 
 class SunPathTest : public QObject
 {

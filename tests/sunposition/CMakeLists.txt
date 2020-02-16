@@ -1,5 +1,5 @@
 set(sunpositiontest_SRCS
-    ../../src/plugin/SunPosition.cc
+    ../../src/declarative/SunPosition.cc
     sunpositiontest.cc
 )
 

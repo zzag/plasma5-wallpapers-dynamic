@@ -1,6 +1,6 @@
 set(sunpathtest_SRCS
-    ../../src/plugin/SunPath.cc
-    ../../src/plugin/SunPosition.cc
+    ../../src/declarative/SunPath.cc
+    ../../src/declarative/SunPosition.cc
     sunpathtest.cc
 )
 

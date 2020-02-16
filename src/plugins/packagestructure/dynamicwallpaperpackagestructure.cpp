@@ -16,10 +16,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-// Own
-#include "DynamicWallpaperPackageStructure.h"
+#include "dynamicwallpaperpackagestructure.h"
 
-// KF
 #include <KLocalizedString>
 
 DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject *parent, const QVariantList &args)
@@ -40,6 +38,6 @@ void DynamicWallpaperPackageStructure::initPackage(KPackage::Package *package)
     package->setRequired(QByteArrayLiteral("images"), true);
 }
 
-K_EXPORT_KPACKAGE_PACKAGE_WITH_JSON(DynamicWallpaperPackageStructure, "packagestructure-dynamicwallpaper.json")
+K_EXPORT_KPACKAGE_PACKAGE_WITH_JSON(DynamicWallpaperPackageStructure, "dynamicwallpaperpackagestructure.json")
 
-#include "DynamicWallpaperPackageStructure.moc"
+#include "dynamicwallpaperpackagestructure.moc"
