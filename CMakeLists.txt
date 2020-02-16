@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(KF5_MIN_VERSION "5.42.0")
-set(QT_MIN_VERSION "5.9.0")
+set(KF5_MIN_VERSION "5.58.0")
+set(QT_MIN_VERSION "5.12.0")
 
 project(plasma5-wallpapers-dynamic)
 
