@@ -38,6 +38,9 @@ static qreal computeTime(const SunPath &path, const SunPosition &midnight, const
 SolarDynamicWallpaperModel *SolarDynamicWallpaperModel::create(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
                                                                const QGeoCoordinate &location)
 {
+    if (!location.isValid())
+        return nullptr;
+
     const QDateTime dateTime = QDateTime::currentDateTime();
 
     const SunPosition midnight = SunPosition::midnight(dateTime, location);
