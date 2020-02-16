@@ -29,6 +29,13 @@
     </entry>
 
     <!--
+      Whether user's location must be detected automatically.
+    -->
+    <entry name="AutoDetectLocation" type="Bool">
+      <default>true</default>
+    </entry>
+
+    <!--
       The latitude of the user, in decimal degrees.
 
       Notice that the latitude value doesn't matter that much with timed dynamic

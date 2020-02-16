@@ -37,6 +37,11 @@ Item {
     onUpdateIntervalChanged: timer.interval = updateInterval
     onWallpaperIdChanged: dynamicWallpaper.wallpaperId = wallpaperId
 
+    PositionSource {
+        id: automaticLocationProvider
+        active: wallpaper.configuration.AutoDetectLocation
+    }
+
     Location {
         id: manualLocationProvider
         coordinate {
@@ -78,7 +83,11 @@ Item {
 
     DynamicWallpaper {
         id: dynamicWallpaper
-        location: manualLocationProvider.coordinate
+        location: {
+            if (wallpaper.configuration.AutoDetectLocation)
+                return automaticLocationProvider.position.coordinate;
+            return manualLocationProvider.coordinate;
+        }
         wallpaperId: wallpaperId
         onStatusChanged: if (status != DynamicWallpaper.Ok) {
             wallpaper.loading = false;

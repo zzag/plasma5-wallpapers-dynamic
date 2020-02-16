@@ -21,6 +21,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
+import QtPositioning 5.9
 
 import org.kde.kcm 1.1 as KCM
 import org.kde.kirigami 2.5 as Kirigami
@@ -34,6 +35,7 @@ ColumnLayout {
     property int cfg_UpdateInterval
     property string cfg_WallpaperId
 
+    property alias cfg_AutoDetectLocation: autoDetectLocationCheckBox.checked
     property alias cfg_Latitude: latitudeSpinbox.value
     property alias cfg_Longitude: longitudeSpinbox.value
 
@@ -84,12 +86,38 @@ ColumnLayout {
             }
         }
 
+        QtControls2.CheckBox {
+            id: autoDetectLocationCheckBox
+            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Automatically detect location")
+        }
+
+        QtControls.SpinBox {
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
+            enabled: !autoDetectLocationCheckBox.checked
+            visible: autoDetectLocationCheckBox.checked
+            decimals: 2
+            minimumValue: -90
+            maximumValue: 90
+            value: automaticLocationProvider.position.coordinate.latitude
+        }
+
+        QtControls.SpinBox {
+            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
+            enabled: !autoDetectLocationCheckBox.checked
+            visible: autoDetectLocationCheckBox.checked
+            decimals: 2
+            minimumValue: -180
+            maximumValue: 180
+            value: automaticLocationProvider.position.coordinate.longitude
+        }
+
         QtControls.SpinBox {
             id: latitudeSpinbox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
             decimals: 2
             minimumValue: -90
             maximumValue: 90
+            visible: !autoDetectLocationCheckBox.checked
         }
 
         QtControls.SpinBox {
@@ -98,6 +126,7 @@ ColumnLayout {
             decimals: 2
             minimumValue: -180
             maximumValue: 180
+            visible: !autoDetectLocationCheckBox.checked
         }
 
         QtControls.SpinBox {
@@ -217,6 +246,11 @@ ColumnLayout {
         onInstalled: Qt.callLater(wallpapersModel.reload)
         onUninstalled: Qt.callLater(wallpapersModel.reload)
         onErrorChanged: installerErrorMessage.visible = true
+    }
+
+    PositionSource {
+        id: automaticLocationProvider
+        active: autoDetectLocationCheckBox.checked
     }
 
     Component.onCompleted: wallpapersModel.reload()
