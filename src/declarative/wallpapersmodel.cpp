@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "WallpapersModel.h"
-#include "DynamicWallpaperInstaller.h"
+#include "wallpapersmodel.h"
+#include "dynamicwallpaperinstaller.h"
 
 #include <KAboutData>
 #include <KPackage/PackageLoader>

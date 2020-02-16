@@ -5,8 +5,8 @@
  */
 
 // Own
-#include "SunPath.h"
-#include "SunPosition.h"
+#include "sunpath.h"
+#include "sunposition.h"
 
 // Qt
 #include <QVector>

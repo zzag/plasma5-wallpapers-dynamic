@@ -1,7 +1,7 @@
 set(sunpathtest_SRCS
-    ../../src/declarative/SunPath.cc
-    ../../src/declarative/SunPosition.cc
-    sunpathtest.cc
+    ../../src/declarative/sunpath.cpp
+    ../../src/declarative/sunposition.cpp
+    sunpathtest.cpp
 )
 
 add_executable(sunpathtest ${sunpathtest_SRCS})

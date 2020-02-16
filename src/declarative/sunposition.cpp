@@ -5,7 +5,7 @@
  */
 
 // Own
-#include "SunPosition.h"
+#include "sunposition.h"
 
 // Qt
 #include <QtMath>

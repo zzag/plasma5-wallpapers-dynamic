@@ -1,6 +1,6 @@
 set(sunpositiontest_SRCS
-    ../../src/declarative/SunPosition.cc
-    sunpositiontest.cc
+    ../../src/declarative/sunposition.cpp
+    sunpositiontest.cpp
 )
 
 add_executable(sunpositiontest ${sunpositiontest_SRCS})

@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "ClockSkewNotifierEngine.h"
+#include "clockskewnotifierengine.h"
 #if defined(Q_OS_LINUX)
-#include "ClockSkewNotifierEngine_linux.h"
+#include "clockskewnotifierengine_linux.h"
 #endif
 
 ClockSkewNotifierEngine *ClockSkewNotifierEngine::create(QObject *parent)

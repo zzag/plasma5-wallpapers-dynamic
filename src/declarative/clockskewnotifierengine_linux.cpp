@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "ClockSkewNotifierEngine_linux.h"
+#include "clockskewnotifierengine_linux.h"
 
 #include <QSocketNotifier>
 

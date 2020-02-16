@@ -6,17 +6,14 @@
 
 #pragma once
 
-// Own
-#include "SunPath.h"
-#include "SunPosition.h"
+#include "sunpath.h"
+#include "sunposition.h"
 
-// Qt
 #include <QDateTime>
 #include <QGeoCoordinate>
 #include <QUrl>
 #include <QVector>
 
-// std
 #include <memory>
 
 class DynamicWallpaperPackage;

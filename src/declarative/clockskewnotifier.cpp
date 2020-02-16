@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "ClockSkewNotifier.h"
-#include "ClockSkewNotifierEngine.h"
+#include "clockskewnotifier.h"
+#include "clockskewnotifierengine.h"
 
 class ClockSkewNotifier::Private
 {

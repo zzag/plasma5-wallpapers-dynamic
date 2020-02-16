@@ -6,14 +6,11 @@
 
 #pragma once
 
-// Own
-#include "SunPosition.h"
+#include "sunposition.h"
 
-// Qt
 #include <QUrl>
 #include <QVector>
 
-// std
 #include <memory>
 
 /**

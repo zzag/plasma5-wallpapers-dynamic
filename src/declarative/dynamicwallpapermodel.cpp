@@ -5,8 +5,8 @@
  */
 
 // Own
-#include "DynamicWallpaperModel.h"
-#include "DynamicWallpaperPackage.h"
+#include "dynamicwallpapermodel.h"
+#include "dynamicwallpaperpackage.h"
 
 // Qt
 #include <QtMath>

@@ -6,13 +6,11 @@
 
 #pragma once
 
-// Qt
 #include <QGeoCoordinate>
 #include <QObject>
 #include <QTimer>
 #include <QUrl>
 
-// std
 #include <memory>
 
 class DynamicWallpaperModel;

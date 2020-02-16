@@ -6,8 +6,8 @@
 
 #include <QtTest>
 
-#include "../../src/declarative/SunPath.h"
-#include "../../src/declarative/SunPosition.h"
+#include "../../src/declarative/sunpath.h"
+#include "../../src/declarative/sunposition.h"
 
 class SunPathTest : public QObject
 {

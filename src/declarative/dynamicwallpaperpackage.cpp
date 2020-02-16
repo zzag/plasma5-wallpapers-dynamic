@@ -5,7 +5,7 @@
  */
 
 // Own
-#include "DynamicWallpaperPackage.h"
+#include "dynamicwallpaperpackage.h"
 
 // KF
 #include <KLocalizedString>

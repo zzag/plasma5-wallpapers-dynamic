@@ -6,7 +6,7 @@
 
 #include <QtTest>
 
-#include "../../src/declarative/SunPosition.h"
+#include "../../src/declarative/sunposition.h"
 
 const static qreal s_precision = 0.01;
 

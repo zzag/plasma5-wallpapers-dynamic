@@ -4,14 +4,11 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// Own
-#include "DynamicWallpaperInstaller.h"
+#include "dynamicwallpaperinstaller.h"
 
-// KF
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
 
-// Qt
 #include <QDir>
 #include <QStandardPaths>
 

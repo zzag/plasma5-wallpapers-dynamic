@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// Own
-#include "DynamicWallpaper.h"
-#include "DynamicWallpaperModel.h"
-#include "DynamicWallpaperPackage.h"
+#include "dynamicwallpaper.h"
+#include "dynamicwallpapermodel.h"
+#include "dynamicwallpaperpackage.h"
 
-// KF
 #include <KLocalizedString>
 
 DynamicWallpaper::DynamicWallpaper(QObject *parent)

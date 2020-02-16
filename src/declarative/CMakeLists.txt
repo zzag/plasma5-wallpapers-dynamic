@@ -1,21 +1,21 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.wallpaper\")
 
 set(wallpaperplugin_SRCS
-    ClockSkewNotifier.cc
-    ClockSkewNotifierEngine.cc
-    DynamicWallpaper.cc
-    DynamicWallpaperInstaller.cc
-    DynamicWallpaperModel.cc
-    DynamicWallpaperPackage.cc
-    SunPath.cc
-    SunPosition.cc
-    WallpapersModel.cc
-    plugin.cc
+    clockskewnotifier.cpp
+    clockskewnotifierengine.cpp
+    dynamicwallpaper.cpp
+    dynamicwallpaperextensionplugin.cpp
+    dynamicwallpaperinstaller.cpp
+    dynamicwallpapermodel.cpp
+    dynamicwallpaperpackage.cpp
+    sunpath.cpp
+    sunposition.cpp
+    wallpapersmodel.cpp
 )
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(wallpaperplugin_SRCS
-        ClockSkewNotifierEngine_linux.cc
+        clockskewnotifierengine_linux.cpp
         ${wallpaperplugin_SRCS}
     )
 endif()

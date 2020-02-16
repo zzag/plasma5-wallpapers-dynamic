@@ -6,10 +6,8 @@
 
 #pragma once
 
-// KF
 #include <KJob>
 
-// Qt
 #include <QObject>
 
 class DynamicWallpaperInstaller : public QObject
