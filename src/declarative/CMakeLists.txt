@@ -3,8 +3,8 @@ add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.wallpape
 set(wallpaperplugin_SRCS
     clockskewnotifier.cpp
     clockskewnotifierengine.cpp
-    dynamicwallpaper.cpp
     dynamicwallpaperextensionplugin.cpp
+    dynamicwallpaperhandler.cpp
     dynamicwallpaperinstaller.cpp
     dynamicwallpapermodel.cpp
     dynamicwallpaperpackage.cpp

@@ -6,7 +6,7 @@
 
 #include "dynamicwallpaperextensionplugin.h"
 #include "clockskewnotifier.h"
-#include "dynamicwallpaper.h"
+#include "dynamicwallpaperhandler.h"
 #include "dynamicwallpaperinstaller.h"
 #include "dynamicwallpaperpreviewprovider.h"
 #include "wallpapersmodel.h"
@@ -15,10 +15,11 @@
 
 void Plugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<DynamicWallpaper>(uri, 1, 0, "DynamicWallpaper");
+    qmlRegisterType<DynamicWallpaperHandler>(uri, 1, 0, "DynamicWallpaper");
     qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
     qmlRegisterType<ClockSkewNotifier>(uri, 1, 1, "ClockSkewNotifier");
     qmlRegisterType<DynamicWallpaperInstaller>(uri, 1, 2, "DynamicWallpaperInstaller");
+    qmlRegisterType<DynamicWallpaperHandler>(uri, 1, 3, "DynamicWallpaperHandler");
 }
 
 void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)

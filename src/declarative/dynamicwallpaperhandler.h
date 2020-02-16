@@ -16,7 +16,7 @@
 class DynamicWallpaperModel;
 class DynamicWallpaperPackage;
 
-class DynamicWallpaper : public QObject
+class DynamicWallpaperHandler : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QUrl bottomLayer READ bottomLayer NOTIFY bottomLayerChanged)
@@ -34,8 +34,8 @@ public:
     };
     Q_ENUM(Status)
 
-    explicit DynamicWallpaper(QObject *parent = nullptr);
-    ~DynamicWallpaper() override;
+    explicit DynamicWallpaperHandler(QObject *parent = nullptr);
+    ~DynamicWallpaperHandler() override;
 
     QUrl bottomLayer() const;
     QUrl topLayer() const;
@@ -82,5 +82,5 @@ private:
     QGeoCoordinate m_location;
     qreal m_blendFactor = 0.0;
 
-    Q_DISABLE_COPY(DynamicWallpaper)
+    Q_DISABLE_COPY(DynamicWallpaperHandler)
 };

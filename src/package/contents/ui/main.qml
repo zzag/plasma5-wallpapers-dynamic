@@ -10,7 +10,7 @@ import QtPositioning 5.9
 
 import org.kde.kirigami 2.5 as Kirigami
 
-import com.github.zzag.private.wallpaper 1.1
+import com.github.zzag.private.wallpaper 1.3
 
 Item {
     id: root
@@ -23,7 +23,7 @@ Item {
     onFillModeChanged: wallpaperView.fillMode = fillMode
     onSourceSizeChanged: wallpaperView.sourceSize = sourceSize
     onUpdateIntervalChanged: timer.interval = updateInterval
-    onWallpaperIdChanged: dynamicWallpaper.wallpaperId = wallpaperId
+    onWallpaperIdChanged: dynamicWallpaperHandler.wallpaperId = wallpaperId
 
     PositionSource {
         id: automaticLocationProvider
@@ -41,12 +41,12 @@ Item {
     WallpaperView {
         id: wallpaperView
         anchors.fill: parent
-        blendFactor: dynamicWallpaper.blendFactor
-        bottomLayer: dynamicWallpaper.bottomLayer
+        blendFactor: dynamicWallpaperHandler.blendFactor
+        bottomLayer: dynamicWallpaperHandler.bottomLayer
         fillMode: root.fillMode
         sourceSize: root.sourceSize
-        topLayer: dynamicWallpaper.topLayer
-        visible: dynamicWallpaper.status == DynamicWallpaper.Ok
+        topLayer: dynamicWallpaperHandler.topLayer
+        visible: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
         onStatusChanged: if (status != Image.Loading) {
             wallpaper.loading = false;
         }
@@ -56,7 +56,7 @@ Item {
         anchors.fill: parent
         Kirigami.Theme.colorSet: Kirigami.Theme.View
         color: Kirigami.Theme.backgroundColor
-        visible: dynamicWallpaper.status == DynamicWallpaper.Error
+        visible: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Error
 
         Text {
             anchors.left: parent.left
@@ -64,35 +64,35 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize: 24
             horizontalAlignment: Text.AlignHCenter
-            text: dynamicWallpaper.error
+            text: dynamicWallpaperHandler.error
             wrapMode: Text.Wrap
         }
     }
 
-    DynamicWallpaper {
-        id: dynamicWallpaper
+    DynamicWallpaperHandler {
+        id: dynamicWallpaperHandler
         location: {
             if (wallpaper.configuration.AutoDetectLocation)
                 return automaticLocationProvider.position.coordinate;
             return manualLocationProvider.coordinate;
         }
         wallpaperId: wallpaperId
-        onStatusChanged: if (status != DynamicWallpaper.Ok) {
+        onStatusChanged: if (status != DynamicWallpaperHandler.Ok) {
             wallpaper.loading = false;
         }
     }
 
     ClockSkewNotifier {
-        active: dynamicWallpaper.status == DynamicWallpaper.Ok
-        onClockSkewed: dynamicWallpaper.update()
+        active: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
+        onClockSkewed: dynamicWallpaperHandler.update()
     }
 
     Timer {
         id: timer
         interval: updateInterval
         repeat: true
-        running: dynamicWallpaper.status == DynamicWallpaper.Ok
-        onTriggered: dynamicWallpaper.update()
+        running: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
+        onTriggered: dynamicWallpaperHandler.update()
     }
 
     Component.onCompleted: {

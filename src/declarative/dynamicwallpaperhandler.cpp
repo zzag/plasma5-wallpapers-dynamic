@@ -4,57 +4,57 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "dynamicwallpaper.h"
+#include "dynamicwallpaperhandler.h"
 #include "dynamicwallpapermodel.h"
 #include "dynamicwallpaperpackage.h"
 
 #include <KLocalizedString>
 
-DynamicWallpaper::DynamicWallpaper(QObject *parent)
+DynamicWallpaperHandler::DynamicWallpaperHandler(QObject *parent)
     : QObject(parent)
 {
     // The purpose of this timer is to compress multiple scheduled update requests.
     m_scheduleTimer = new QTimer(this);
     m_scheduleTimer->setSingleShot(true);
     m_scheduleTimer->setInterval(0);
-    connect(m_scheduleTimer, &QTimer::timeout, this, &DynamicWallpaper::update);
+    connect(m_scheduleTimer, &QTimer::timeout, this, &DynamicWallpaperHandler::update);
 }
 
-DynamicWallpaper::~DynamicWallpaper()
+DynamicWallpaperHandler::~DynamicWallpaperHandler()
 {
 }
 
-QUrl DynamicWallpaper::bottomLayer() const
+QUrl DynamicWallpaperHandler::bottomLayer() const
 {
     return m_bottomLayer;
 }
 
-QUrl DynamicWallpaper::topLayer() const
+QUrl DynamicWallpaperHandler::topLayer() const
 {
     return m_topLayer;
 }
 
-qreal DynamicWallpaper::blendFactor() const
+qreal DynamicWallpaperHandler::blendFactor() const
 {
     return m_blendFactor;
 }
 
-DynamicWallpaper::Status DynamicWallpaper::status() const
+DynamicWallpaperHandler::Status DynamicWallpaperHandler::status() const
 {
     return m_status;
 }
 
-QString DynamicWallpaper::error() const
+QString DynamicWallpaperHandler::error() const
 {
     return m_error;
 }
 
-QString DynamicWallpaper::wallpaperId() const
+QString DynamicWallpaperHandler::wallpaperId() const
 {
     return m_wallpaperId;
 }
 
-void DynamicWallpaper::setWallpaperId(const QString &id)
+void DynamicWallpaperHandler::setWallpaperId(const QString &id)
 {
     if (m_wallpaperId == id)
         return;
@@ -65,12 +65,12 @@ void DynamicWallpaper::setWallpaperId(const QString &id)
     scheduleUpdate();
 }
 
-QGeoCoordinate DynamicWallpaper::location() const
+QGeoCoordinate DynamicWallpaperHandler::location() const
 {
     return m_location;
 }
 
-void DynamicWallpaper::setLocation(const QGeoCoordinate &location)
+void DynamicWallpaperHandler::setLocation(const QGeoCoordinate &location)
 {
     if (m_location == location)
         return;
@@ -80,7 +80,7 @@ void DynamicWallpaper::setLocation(const QGeoCoordinate &location)
     scheduleUpdate();
 }
 
-void DynamicWallpaper::update()
+void DynamicWallpaperHandler::update()
 {
     if (m_status == Status::Error)
         return;
@@ -94,7 +94,7 @@ void DynamicWallpaper::update()
     setBlendFactor(m_model->blendFactor());
 }
 
-void DynamicWallpaper::setBottomLayer(const QUrl &url)
+void DynamicWallpaperHandler::setBottomLayer(const QUrl &url)
 {
     if (m_bottomLayer == url)
         return;
@@ -102,7 +102,7 @@ void DynamicWallpaper::setBottomLayer(const QUrl &url)
     emit bottomLayerChanged();
 }
 
-void DynamicWallpaper::setTopLayer(const QUrl &url)
+void DynamicWallpaperHandler::setTopLayer(const QUrl &url)
 {
     if (m_topLayer == url)
         return;
@@ -110,7 +110,7 @@ void DynamicWallpaper::setTopLayer(const QUrl &url)
     emit topLayerChanged();
 }
 
-void DynamicWallpaper::setBlendFactor(qreal factor)
+void DynamicWallpaperHandler::setBlendFactor(qreal factor)
 {
     if (m_blendFactor == factor)
         return;
@@ -118,7 +118,7 @@ void DynamicWallpaper::setBlendFactor(qreal factor)
     emit blendFactorChanged();
 }
 
-void DynamicWallpaper::setStatus(Status status)
+void DynamicWallpaperHandler::setStatus(Status status)
 {
     if (m_status == status)
         return;
@@ -126,7 +126,7 @@ void DynamicWallpaper::setStatus(Status status)
     emit statusChanged();
 }
 
-void DynamicWallpaper::setError(const QString &error)
+void DynamicWallpaperHandler::setError(const QString &error)
 {
     if (m_error == error)
         return;
@@ -134,7 +134,7 @@ void DynamicWallpaper::setError(const QString &error)
     emit errorChanged();
 }
 
-void DynamicWallpaper::reloadModel()
+void DynamicWallpaperHandler::reloadModel()
 {
     m_model.reset();
 
@@ -165,7 +165,7 @@ void DynamicWallpaper::reloadModel()
     setStatus(Status::Ok);
 }
 
-void DynamicWallpaper::reloadWallpaper()
+void DynamicWallpaperHandler::reloadWallpaper()
 {
     m_wallpaper.reset();
 
@@ -180,7 +180,7 @@ void DynamicWallpaper::reloadWallpaper()
     setStatus(Status::Ok);
 }
 
-void DynamicWallpaper::scheduleUpdate()
+void DynamicWallpaperHandler::scheduleUpdate()
 {
     m_scheduleTimer->start();
 }
