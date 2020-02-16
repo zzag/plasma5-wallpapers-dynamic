@@ -165,6 +165,7 @@ ColumnLayout {
 
             thumbnail: Image {
                 anchors.fill: parent
+                fillMode: cfg_FillMode
                 source: model.previewUrl
             }
 
