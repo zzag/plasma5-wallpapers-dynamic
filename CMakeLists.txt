@@ -20,6 +20,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 ecm_find_qmlmodule(QtQuick 2.5)
 ecm_find_qmlmodule(QtQuick.Controls 2.3)
+ecm_find_qmlmodule(QtQuick.Dialogs 1.2)
 ecm_find_qmlmodule(QtQuick.Layouts 1.0)
 ecm_find_qmlmodule(QtQuick.Window 2.2)
 ecm_find_qmlmodule(org.kde.kcm 1.1)

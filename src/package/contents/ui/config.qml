@@ -17,7 +17,7 @@
  */
 
 import QtQuick 2.5
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
