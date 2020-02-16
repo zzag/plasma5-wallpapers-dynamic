@@ -105,7 +105,7 @@ ColumnLayout {
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
             maximumValue: 59
             minimumValue: 1
-            suffix: i18ndp("plasma_wallpaper_com.github.zzag.wallpaper", " min", " min", value)
+            suffix: i18ndp("plasma_wallpaper_com.github.zzag.wallpaper", " minute", " minutes", value)
             onValueChanged: cfg_UpdateInterval = value * 60000
             Component.onCompleted: value = wallpaper.configuration.UpdateInterval / 60000
         }
