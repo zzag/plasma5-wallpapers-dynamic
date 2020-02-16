@@ -128,13 +128,15 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        view.currentIndex: wallpapersModel.indexOf(cfg_WallpaperId)
+        function resetCurrentIndex() {
+            view.currentIndex = wallpapersModel.indexOf(cfg_WallpaperId);
+        }
+
         view.model: wallpapersModel
         view.delegate: KCM.GridDelegate {
             hoverEnabled: true
             text: model.name
             opacity: model.zombie ? 0.5 : 1
-
             toolTip: {
                 if (model.author && model.license)
                     return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
@@ -142,7 +144,6 @@ ColumnLayout {
                     return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> (<license>)", "%1 (%2)", model.name, model.license);
                 return model.name;
             }
-
             actions: [
                 Kirigami.Action {
                     icon.name: "document-open-folder"
@@ -162,17 +163,25 @@ ColumnLayout {
                     onTriggered: model.zombie = true
                 }
             ]
-
             thumbnail: Image {
                 anchors.fill: parent
                 fillMode: cfg_FillMode
                 source: model.previewUrl
             }
-
             onClicked: {
                 cfg_WallpaperId = model.id;
                 wallpapersGrid.forceActiveFocus();
             }
+        }
+
+        Connections {
+            target: wallpapersModel
+            onRowsInserted: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+            onRowsRemoved: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+        }
+        Connections {
+            target: root
+            onCfg_WallpaperIdChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
         }
     }
 
