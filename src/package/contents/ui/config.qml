@@ -183,6 +183,8 @@ ColumnLayout {
             target: root
             onCfg_WallpaperIdChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
         }
+
+        Component.onCompleted: resetCurrentIndex()
     }
 
     FileDialog {
@@ -216,4 +218,6 @@ ColumnLayout {
         onUninstalled: Qt.callLater(wallpapersModel.reload)
         onErrorChanged: installerErrorMessage.visible = true
     }
+
+    Component.onCompleted: wallpapersModel.reload()
 }

@@ -30,7 +30,6 @@
 WallpapersModel::WallpapersModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    reload();
 }
 
 QHash<int, QByteArray> WallpapersModel::roleNames() const
