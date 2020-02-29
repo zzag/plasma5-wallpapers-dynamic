@@ -29,14 +29,16 @@ Fedora:
 
 ```sh
 sudo dnf install cmake extra-cmake-modules git kf5-kpackage-devel kf5-plasma-devel \
-    kf5-ki18n-devel qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtlocation-devel
+    kf5-ki18n-devel qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtlocation-devel \
+    kf5-kio-devel
 ```
 
 Ubuntu:
 
 ```sh
 sudo apt install cmake extra-cmake-modules git libkf5package-dev libkf5plasma-dev \
-    libkf5i18n-dev qtbase5-dev qtdeclarative5-dev qtpositioning5-dev gettext
+    libkf5i18n-dev libkf5kio-dev qtbase5-dev qtdeclarative5-dev qtpositioning5-dev \
+    gettext
 ```
 
 Once all prerequisites are installed, you need to grab the source code
