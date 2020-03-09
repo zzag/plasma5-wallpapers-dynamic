@@ -1,35 +1,32 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import QtQuick 2.5
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
-import QtPositioning 5.9
+import QtPositioning 5.12
 
 import org.kde.kcm 1.1 as KCM
-import org.kde.kirigami 2.5 as Kirigami
-
-import com.github.zzag.private.wallpaper 1.2
+import org.kde.kirigami 2.10 as Kirigami
+import com.github.zzag.plasma.wallpapers.dynamic 1.0
 
 ColumnLayout {
     id: root
 
     property int cfg_FillMode
+    property string cfg_Image
     property int cfg_UpdateInterval
-    property string cfg_WallpaperId
-
     property alias cfg_AutoDetectLocation: autoDetectLocationCheckBox.checked
-    property alias cfg_Latitude: latitudeSpinBox.value
-    property alias cfg_Longitude: longitudeSpinBox.value
+    property alias cfg_ManualLatitude: latitudeSpinBox.value
+    property alias cfg_ManualLongitude: longitudeSpinBox.value
 
     function saveConfig() {
-        // Uninstall all zombie wallpapers when the user clicks OK or Apply button.
-        installer.uninstall(wallpapersModel.zombies());
+        wallpapersModel.purge();
     }
 
     Kirigami.FormLayout {
@@ -37,36 +34,36 @@ ColumnLayout {
 
         QtControls2.ComboBox {
             id: positioningComboBox
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Fill Mode:")
+            Kirigami.FormData.label: i18n("Fill Mode:")
+            textRole: "text"
             model: [
                 {
-                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled and Cropped"),
+                    "text": i18n("Scaled and Cropped"),
                     "value": Image.PreserveAspectCrop
                 },
                 {
-                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled"),
+                    "text": i18n("Scaled"),
                     "value": Image.Stretch
                 },
                 {
-                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Scaled, Keep Proportions"),
+                    "text": i18n("Scaled, Keep Proportions"),
                     "value": Image.PreserveAspectFit
                 },
                 {
-                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Centered"),
+                    "text": i18n("Centered"),
                     "value": Image.Pad
                 },
                 {
-                    "text": i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Tiled"),
+                    "text": i18n("Tiled"),
                     "value": Image.Tile
                 }
             ]
 
-            textRole: "text"
             onActivated: cfg_FillMode = model[currentIndex]["value"]
 
             Component.onCompleted: {
                 for (var i = 0; i < model.length; i++) {
-                    if (model[i]["value"] == wallpaper.configuration.FillMode) {
+                    if (model[i]["value"] === wallpaper.configuration.FillMode) {
                         positioningComboBox.currentIndex = i;
                         break;
                     }
@@ -76,11 +73,11 @@ ColumnLayout {
 
         QtControls2.CheckBox {
             id: autoDetectLocationCheckBox
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Automatically detect location")
+            text: i18n("Automatically detect location")
         }
 
         QtControls.SpinBox {
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
+            Kirigami.FormData.label: i18n("Latitude:")
             enabled: !autoDetectLocationCheckBox.checked
             visible: autoDetectLocationCheckBox.checked
             decimals: 2
@@ -90,7 +87,7 @@ ColumnLayout {
         }
 
         QtControls.SpinBox {
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
+            Kirigami.FormData.label: i18n("Longitude:")
             enabled: !autoDetectLocationCheckBox.checked
             visible: autoDetectLocationCheckBox.checked
             decimals: 2
@@ -101,7 +98,7 @@ ColumnLayout {
 
         QtControls.SpinBox {
             id: latitudeSpinBox
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Latitude:")
+            Kirigami.FormData.label: i18n("Latitude:")
             decimals: 2
             minimumValue: -90
             maximumValue: 90
@@ -110,7 +107,7 @@ ColumnLayout {
 
         QtControls.SpinBox {
             id: longitudeSpinBox
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Longitude:")
+            Kirigami.FormData.label: i18n("Longitude:")
             decimals: 2
             minimumValue: -180
             maximumValue: 180
@@ -119,74 +116,62 @@ ColumnLayout {
 
         QtControls.SpinBox {
             id: updateIntervalSpinBox
-            Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Update Every:")
-            maximumValue: 59
+            Kirigami.FormData.label: i18n("Update Every:")
+            maximumValue: 360
             minimumValue: 1
-            suffix: i18ndp("plasma_wallpaper_com.github.zzag.wallpaper", " minute", " minutes", value)
+            suffix: i18np(" minute", " minutes", value)
             onValueChanged: cfg_UpdateInterval = value * 60000
             Component.onCompleted: value = wallpaper.configuration.UpdateInterval / 60000
         }
     }
 
-    RowLayout {
-        Kirigami.InlineMessage {
-            id: installerErrorMessage
-            Layout.fillWidth: true
-            showCloseButton: true
-            type: Kirigami.MessageType.Error
-            text: installer.error
-            visible: false
-        }
-    }
-
     KCM.GridView {
         id: wallpapersGrid
-
         Layout.fillWidth: true
         Layout.fillHeight: true
 
         function resetCurrentIndex() {
-            view.currentIndex = wallpapersModel.indexOf(cfg_WallpaperId);
+            view.currentIndex = wallpapersModel.find(cfg_Image);
         }
 
         view.model: wallpapersModel
         view.delegate: KCM.GridDelegate {
             hoverEnabled: true
-            text: model.name
             opacity: model.zombie ? 0.5 : 1
+            text: model.name
             toolTip: {
                 if (model.author && model.license)
-                    return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
+                    return i18nc("<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
                 if (model.license)
-                    return i18ndc("plasma_wallpaper_com.github.zzag.wallpaper", "<image> (<license>)", "%1 (%2)", model.name, model.license);
+                    return i18nc("<image> (<license>)", "%1 (%2)", model.name, model.license);
                 return model.name;
             }
             actions: [
                 Kirigami.Action {
                     icon.name: "document-open-folder"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Open Containing Folder")
+                    tooltip: i18n("Open Containing Folder")
                     onTriggered: Qt.openUrlExternally(model.folder)
                 },
                 Kirigami.Action {
                     icon.name: "edit-undo"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Restore Wallpaper")
+                    tooltip: i18n("Restore Wallpaper")
                     visible: model.zombie
-                    onTriggered: model.zombie = false
+                    onTriggered: wallpapersModel.unscheduleRemove(wallpapersModel.modelIndex(index))
                 },
                 Kirigami.Action {
                     icon.name: "edit-delete"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Remove Wallpaper")
+                    tooltip: i18n("Remove Wallpaper")
                     visible: !model.zombie && model.removable
-                    onTriggered: model.zombie = true
+                    onTriggered: wallpapersModel.scheduleRemove(wallpapersModel.modelIndex(index))
                 }
             ]
             thumbnail: Image {
                 anchors.fill: parent
                 fillMode: cfg_FillMode
-                source: model.previewUrl
+                source: model.preview
             }
             onClicked: {
-                cfg_WallpaperId = model.id;
+                cfg_Image = model.image;
                 wallpapersGrid.forceActiveFocus();
             }
         }
@@ -198,21 +183,26 @@ ColumnLayout {
         }
         Connections {
             target: root
-            onCfg_WallpaperIdChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+            onCfg_ImageChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
         }
-
-        Component.onCompleted: resetCurrentIndex()
     }
 
-    FileDialog {
-        id: wallpaperDialog
-        title: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Open Wallpaper")
-        folder: shortcuts.home
-        nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Metadata file (metadata.json)")]
-        selectExisting: true
-        selectFolder: false
-        selectMultiple: false
-        onAccepted: installer.install(wallpaperDialog.fileUrl)
+    Loader {
+        id: wallpaperDialogLoader
+        active: false
+        sourceComponent: FileDialog {
+            title: i18n("Open Wallpaper")
+            folder: shortcuts.home
+            nameFilters: [i18n("HEIF Image Files (*.heic *.heif)")]
+            onAccepted: {
+                wallpapersModel.add(fileUrl);
+                wallpaperDialogLoader.active = false;
+            }
+            onRejected: {
+                wallpaperDialogLoader.active = false;
+            }
+            Component.onCompleted: open()
+        }
     }
 
     RowLayout {
@@ -220,25 +210,18 @@ ColumnLayout {
 
         QtControls2.Button {
             icon.name: "list-add"
-            text: i18nd("plasma_wallpaper_com.github.zzag.wallpaper", "Add Wallpaper...")
-            onClicked: wallpaperDialog.open()
+            text: i18n("Add Wallpaper...")
+            onClicked: wallpaperDialogLoader.active = true
         }
-    }
-
-    WallpapersModel {
-        id: wallpapersModel
-    }
-
-    DynamicWallpaperInstaller {
-        id: installer
-        onInstalled: Qt.callLater(wallpapersModel.reload)
-        onUninstalled: Qt.callLater(wallpapersModel.reload)
-        onErrorChanged: installerErrorMessage.visible = true
     }
 
     PositionSource {
         id: automaticLocationProvider
         active: autoDetectLocationCheckBox.checked
+    }
+
+    DynamicWallpaperModel {
+        id: wallpapersModel
     }
 
     Component.onCompleted: wallpapersModel.reload()

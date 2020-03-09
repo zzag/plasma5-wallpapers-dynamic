@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -9,17 +9,17 @@ import QtQuick 2.5
 Item {
     id: root
 
-    /**
+    /*!
      * The image being displayed in the bottom layer.
      */
     property url bottomLayer
 
-    /**
+    /*!
      * The image being displayed in the top layer.
      */
     property url topLayer
 
-    /**
+    /*!
      * The blend factor between the bottom layer and the top layer.
      *
      * The blend factor varies between 0 and 1. 0 means that only the bottom
@@ -29,23 +29,15 @@ Item {
      */
     property real blendFactor: 0
 
-    /**
+    /*!
      * Set this property to define what happens when the source image has a
      * different size than the item.
      *
-     * Defaults to @c Image.Stretch.
+     * Defaults to \c Image.Stretch.
      */
     property int fillMode: Image.Stretch
 
-    /**
-     * The actual width and height of the loaded image.
-     *
-     * This property sets the actual number of pixels stored for the loaded
-     * image so that large images do not use more memory than necessary.
-     */
-    property size sourceSize: undefined
-
-    /**
+    /*!
      * This property holds the status of image loading.
      */
     readonly property int status: {
@@ -53,7 +45,7 @@ Item {
             return Image.Error;
         if (bottom.status == Image.Loading || top.status == Image.Loading)
             return Image.Loading;
-        if (bottom.status == Image.Ready && top.status == Image.Ready)
+        if (bottom.status == Image.Ready || top.status == Image.Ready)
             return Image.Ready;
         return Image.Null;
     }
@@ -66,7 +58,6 @@ Item {
         cache: false
         fillMode: root.fillMode
         source: root.bottomLayer
-        sourceSize: root.sourceSize
     }
 
     Image {
@@ -78,7 +69,6 @@ Item {
         fillMode: root.fillMode
         opacity: root.blendFactor
         source: root.topLayer
-        sourceSize: root.sourceSize
     }
 
     Behavior on blendFactor {

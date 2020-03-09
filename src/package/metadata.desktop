@@ -1,21 +1,15 @@
 [Desktop Entry]
+Icon=preferences-desktop-wallpaper
 Name=Dynamic
-Name[fr]=Dynamique
-Name[it]=Dinamico
-Name[nl]=Dynamisch
-Name[ru]=Динамический
-Name[uk]=Динамічний
-Comment=Dynamic wallpaper
-Comment[ru]=Динамические обои
-Comment[uk]=Динамічні шпалери
-
+Comment=Dynamic wallpaper engine
 Type=Service
-Icon=plasma
-X-KDE-ServiceTypes=Plasma/Wallpaper
 
+X-KDE-ServiceTypes=Plasma/Wallpaper
+X-KDE-ParentApp=org.kde.plasmashell
 X-KDE-PluginInfo-Author=Vlad Zahorodnii
-X-KDE-PluginInfo-Email=vladzzag@gmail.com
-X-KDE-PluginInfo-Name=com.github.zzag.wallpaper
-X-KDE-PluginInfo-License=GPLv2+
-X-KDE-PluginInfo-Version=1
-X-KDE-PluginInfo-Website=https://github.com/zzag/plasma5-wallpapers-dynamic/
+X-KDE-PluginInfo-Category=
+X-KDE-PluginInfo-Email=vlad.zahorodnii@kde.org
+X-KDE-PluginInfo-License=GPLv3+
+X-KDE-PluginInfo-Name=com.github.zzag.dynamic
+X-KDE-PluginInfo-Version=
+X-KDE-PluginInfo-Website=https://github.com/zzag/plasma5-wallpapers-dynamic

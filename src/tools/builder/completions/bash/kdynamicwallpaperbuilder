@@ -1,0 +1,27 @@
+_kdynamicwallpaperbuilder_module()
+{
+    local cur prev OPTS
+    _init_completion || return
+
+    case $prev in
+        '-h'|'--help'|'--help-all'|'-v'|'--version')
+            return
+            ;;
+    esac
+
+    case $cur in
+        -*)
+            OPTS="
+                --output
+                --quality
+                --discard-color-profile
+                --lossless
+            "
+            COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
+            return
+            ;;
+    esac
+}
+complete -F _kdynamicwallpaperbuilder_module kdynamicwallpaperbuilder
+
+# ex: filetype=sh

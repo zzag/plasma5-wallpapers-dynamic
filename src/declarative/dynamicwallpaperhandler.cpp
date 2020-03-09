@@ -1,68 +1,43 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "dynamicwallpaperhandler.h"
-#include "dynamicwallpapermodel.h"
-#include "dynamicwallpaperpackage.h"
+#include "config-dynamicwallpaper.h"
 
+#include "dynamicwallpaperhandler.h"
+#include "dynamicwallpaperdescription.h"
+#include "dynamicwallpaperengine_solar.h"
+#include "dynamicwallpaperengine_timed.h"
+
+#include <KConfigGroup>
 #include <KLocalizedString>
+#include <KPackage/PackageLoader>
+#include <KSharedConfig>
 
 DynamicWallpaperHandler::DynamicWallpaperHandler(QObject *parent)
     : QObject(parent)
+    , m_updateTimer(new QTimer(this))
 {
-    // The purpose of this timer is to compress multiple scheduled update requests.
-    m_scheduleTimer = new QTimer(this);
-    m_scheduleTimer->setSingleShot(true);
-    m_scheduleTimer->setInterval(0);
-    connect(m_scheduleTimer, &QTimer::timeout, this, &DynamicWallpaperHandler::update);
+    m_updateTimer->setInterval(0);
+    m_updateTimer->setSingleShot(true);
+    connect(m_updateTimer, &QTimer::timeout, this, &DynamicWallpaperHandler::update);
 }
 
 DynamicWallpaperHandler::~DynamicWallpaperHandler()
 {
+    delete m_engine;
 }
 
-QUrl DynamicWallpaperHandler::bottomLayer() const
+void DynamicWallpaperHandler::setLocation(const QGeoCoordinate &coordinate)
 {
-    return m_bottomLayer;
-}
-
-QUrl DynamicWallpaperHandler::topLayer() const
-{
-    return m_topLayer;
-}
-
-qreal DynamicWallpaperHandler::blendFactor() const
-{
-    return m_blendFactor;
-}
-
-DynamicWallpaperHandler::Status DynamicWallpaperHandler::status() const
-{
-    return m_status;
-}
-
-QString DynamicWallpaperHandler::error() const
-{
-    return m_error;
-}
-
-QString DynamicWallpaperHandler::wallpaperId() const
-{
-    return m_wallpaperId;
-}
-
-void DynamicWallpaperHandler::setWallpaperId(const QString &id)
-{
-    if (m_wallpaperId == id)
+    if (m_location == coordinate)
         return;
-    m_wallpaperId = id;
-    emit wallpaperIdChanged();
-    reloadWallpaper();
-    reloadModel();
+    m_location = coordinate;
+    reloadEngine();
     scheduleUpdate();
+    emit locationChanged();
 }
 
 QGeoCoordinate DynamicWallpaperHandler::location() const
@@ -70,36 +45,75 @@ QGeoCoordinate DynamicWallpaperHandler::location() const
     return m_location;
 }
 
-void DynamicWallpaperHandler::setLocation(const QGeoCoordinate &location)
+static QUrl locateWallpaper(const QString &name)
 {
-    if (m_location == location)
+    const QString packagePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
+                                                       QStringLiteral("wallpapers/") + name,
+                                                       QStandardPaths::LocateDirectory);
+
+    KPackage::PackageLoader *packageLoader = KPackage::PackageLoader::self();
+    KPackage::Package package = packageLoader->loadPackage(QStringLiteral("Wallpaper/Dynamic"));
+    package.setPath(packagePath);
+    if (package.isValid())
+        return package.fileUrl(QByteArrayLiteral("dynamic"));
+
+    const QString filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
+                                                    QStringLiteral("wallpapers/") + name,
+                                                    QStandardPaths::LocateFile);
+
+    return QUrl::fromLocalFile(filePath);
+}
+
+static QUrl defaultLookAndFeelWallpaper()
+{
+    KConfigGroup kdeConfigGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), "KDE");
+    const QString lookAndFeelPackageName = kdeConfigGroup.readEntry("LookAndFeelPackage");
+
+    KPackage::PackageLoader *packageLoader = KPackage::PackageLoader::self();
+    KPackage::Package lookAndFeelPackage =
+            packageLoader->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+    if (!lookAndFeelPackageName.isEmpty())
+        lookAndFeelPackage.setPath(lookAndFeelPackageName);
+
+    KSharedConfigPtr lookAndFeelConfig =
+            KSharedConfig::openConfig(lookAndFeelPackage.filePath("defaults"));
+    KConfigGroup wallpaperConfigGroup = KConfigGroup(lookAndFeelConfig, "Dynamic Wallpaper");
+
+    const QString wallpaperName = wallpaperConfigGroup.readEntry("Image");
+    if (wallpaperName.isEmpty())
+        return QUrl();
+
+    return locateWallpaper(wallpaperName);
+}
+
+static QUrl defaultFallbackWallpaper()
+{
+    return locateWallpaper(QStringLiteral(FALLBACK_WALLPAPER));
+}
+
+static QUrl defaultWallpaper()
+{
+    QUrl fileUrl = defaultLookAndFeelWallpaper();
+    if (fileUrl.isValid())
+        return fileUrl;
+    return defaultFallbackWallpaper();
+}
+
+void DynamicWallpaperHandler::setSource(const QUrl &url)
+{
+    const QUrl source = url.isValid() ? url : defaultWallpaper();
+    if (m_source == source)
         return;
-    m_location = location;
-    emit locationChanged();
-    reloadModel();
+    m_source = source;
+    reloadDescription();
+    reloadEngine();
     scheduleUpdate();
+    emit sourceChanged();
 }
 
-void DynamicWallpaperHandler::update()
+QUrl DynamicWallpaperHandler::source() const
 {
-    if (m_status == Status::Error)
-        return;
-    if (m_model->isExpired())
-        reloadModel();
-    if (m_status == Status::Error)
-        return;
-    m_model->update();
-    setBottomLayer(m_model->bottomLayer());
-    setTopLayer(m_model->topLayer());
-    setBlendFactor(m_model->blendFactor());
-}
-
-void DynamicWallpaperHandler::setBottomLayer(const QUrl &url)
-{
-    if (m_bottomLayer == url)
-        return;
-    m_bottomLayer = url;
-    emit bottomLayerChanged();
+    return m_source;
 }
 
 void DynamicWallpaperHandler::setTopLayer(const QUrl &url)
@@ -110,12 +124,35 @@ void DynamicWallpaperHandler::setTopLayer(const QUrl &url)
     emit topLayerChanged();
 }
 
-void DynamicWallpaperHandler::setBlendFactor(qreal factor)
+QUrl DynamicWallpaperHandler::topLayer() const
 {
-    if (m_blendFactor == factor)
+    return m_topLayer;
+}
+
+void DynamicWallpaperHandler::setBottomLayer(const QUrl &url)
+{
+    if (m_bottomLayer == url)
         return;
-    m_blendFactor = factor;
+    m_bottomLayer = url;
+    emit bottomLayerChanged();
+}
+
+QUrl DynamicWallpaperHandler::bottomLayer() const
+{
+    return m_bottomLayer;
+}
+
+void DynamicWallpaperHandler::setBlendFactor(qreal blendFactor)
+{
+    if (m_blendFactor == blendFactor)
+        return;
+    m_blendFactor = blendFactor;
     emit blendFactorChanged();
+}
+
+qreal DynamicWallpaperHandler::blendFactor() const
+{
+    return m_blendFactor;
 }
 
 void DynamicWallpaperHandler::setStatus(Status status)
@@ -126,61 +163,67 @@ void DynamicWallpaperHandler::setStatus(Status status)
     emit statusChanged();
 }
 
-void DynamicWallpaperHandler::setError(const QString &error)
+DynamicWallpaperHandler::Status DynamicWallpaperHandler::status() const
 {
-    if (m_error == error)
-        return;
-    m_error = error;
-    emit errorChanged();
+    return m_status;
 }
 
-void DynamicWallpaperHandler::reloadModel()
+void DynamicWallpaperHandler::setErrorString(const QString &text)
 {
-    m_model.reset();
-
-    if (!m_wallpaper)
+    if (m_errorString == text)
         return;
-
-    std::unique_ptr<DynamicWallpaperModel> model;
-
-    switch (m_wallpaper->type()) {
-    case WallpaperType::Solar:
-        model.reset(SolarDynamicWallpaperModel::create(m_wallpaper, m_location));
-        break;
-    case WallpaperType::Timed:
-        model.reset(TimedDynamicWallpaperModel::create(m_wallpaper));
-        break;
-    }
-
-    if (!model) {
-        setError(i18n("Not able to display the dynamic wallpaper. If you live close to the North or "
-                      "the South geographic pole, try using another dynamic wallpaper."));
-        setStatus(Status::Error);
-        return;
-    }
-
-    m_model = std::move(model);
-    m_model->update();
-
-    setStatus(Status::Ok);
+    m_errorString = text;
+    emit errorStringChanged();
 }
 
-void DynamicWallpaperHandler::reloadWallpaper()
+QString DynamicWallpaperHandler::errorString() const
 {
-    m_wallpaper.reset();
-
-    DynamicWallpaperLoader loader;
-    if (!loader.load(m_wallpaperId)) {
-        setError(i18n("Could not load dynamic wallpaper '%1': %2", m_wallpaperId, loader.errorText()));
-        setStatus(Status::Error);
-        return;
-    }
-
-    m_wallpaper = loader.wallpaper();
-    setStatus(Status::Ok);
+    return m_errorString;
 }
 
 void DynamicWallpaperHandler::scheduleUpdate()
 {
-    m_scheduleTimer->start();
+    m_updateTimer->start();
+}
+
+void DynamicWallpaperHandler::update()
+{
+    if (m_status != Ready)
+        return;
+    if (!m_engine || m_engine->isExpired())
+        reloadEngine();
+    m_engine->update();
+    setTopLayer(m_engine->topLayer());
+    setBottomLayer(m_engine->bottomLayer());
+    setBlendFactor(m_engine->blendFactor());
+}
+
+void DynamicWallpaperHandler::reloadDescription()
+{
+    const QString fileName = m_source.toLocalFile();
+
+    m_description = DynamicWallpaperDescription::fromFile(fileName);
+
+    if (m_description.isValid()) {
+        setStatus(Ready);
+    } else {
+        setErrorString(i18n("%1 is not a dynamic wallpaper", fileName));
+        setStatus(Error);
+    }
+}
+
+void DynamicWallpaperHandler::reloadEngine()
+{
+    delete m_engine;
+    m_engine = nullptr;
+
+    if (!m_description.isValid())
+        return;
+
+    if (m_description.supportedEngines() & DynamicWallpaperDescription::SolarEngine)
+        m_engine = SolarDynamicWallpaperEngine::create(m_location);
+    if (!m_engine)
+        m_engine = TimedDynamicWallpaperEngine::create();
+
+    m_engine->setDescription(m_description);
 }
