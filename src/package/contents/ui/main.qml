@@ -1,16 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.1
+import QtQuick 2.5
 import QtQuick.Window 2.2
-import QtPositioning 5.9
+import QtPositioning 5.12
 
-import org.kde.kirigami 2.5 as Kirigami
-
-import com.github.zzag.private.wallpaper 1.3
+import org.kde.kirigami 2.10 as Kirigami
+import com.github.zzag.plasma.wallpapers.dynamic 1.0
 
 Item {
     id: root
@@ -23,20 +22,19 @@ Item {
     Location {
         id: manualLocationProvider
         coordinate {
-            latitude: wallpaper.configuration.Latitude
-            longitude: wallpaper.configuration.Longitude
+            latitude: wallpaper.configuration.ManualLatitude
+            longitude: wallpaper.configuration.ManualLongitude
         }
     }
 
     WallpaperView {
-        id: wallpaperView
+        id: view
         anchors.fill: parent
-        blendFactor: dynamicWallpaperHandler.blendFactor
-        bottomLayer: dynamicWallpaperHandler.bottomLayer
+        blendFactor: handler.blendFactor
+        bottomLayer: handler.bottomLayer
         fillMode: wallpaper.configuration.FillMode
-        sourceSize: Qt.size(root.width * Screen.devicePixelRatio, root.height * Screen.devicePixelRatio)
-        topLayer: dynamicWallpaperHandler.topLayer
-        visible: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
+        topLayer: handler.topLayer
+        visible: handler.status == DynamicWallpaperHandler.Ready
         onStatusChanged: if (status != Image.Loading) {
             wallpaper.loading = false;
         }
@@ -46,7 +44,7 @@ Item {
         anchors.fill: parent
         Kirigami.Theme.colorSet: Kirigami.Theme.View
         color: Kirigami.Theme.backgroundColor
-        visible: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Error
+        visible: handler.status == DynamicWallpaperHandler.Error
 
         Text {
             anchors.left: parent.left
@@ -54,39 +52,37 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize: 24
             horizontalAlignment: Text.AlignHCenter
-            text: dynamicWallpaperHandler.error
+            text: handler.errorString
             wrapMode: Text.Wrap
         }
     }
 
     DynamicWallpaperHandler {
-        id: dynamicWallpaperHandler
+        id: handler
         location: {
             if (wallpaper.configuration.AutoDetectLocation)
                 return automaticLocationProvider.position.coordinate;
             return manualLocationProvider.coordinate;
         }
-        wallpaperId: wallpaper.configuration.WallpaperId
-        onStatusChanged: if (status != DynamicWallpaperHandler.Ok) {
+        source: wallpaper.configuration.Image
+        onStatusChanged: if (status == DynamicWallpaperHandler.Error) {
             wallpaper.loading = false;
         }
     }
 
-    ClockSkewNotifier {
-        active: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
-        onClockSkewed: dynamicWallpaperHandler.update()
+    SystemClockMonitor {
+        active: handler.status == DynamicWallpaperHandler.Ready
+        onSystemClockChanged: handler.scheduleUpdate()
     }
 
     Timer {
-        id: timer
         interval: wallpaper.configuration.UpdateInterval
         repeat: true
-        running: dynamicWallpaperHandler.status == DynamicWallpaperHandler.Ok
-        onTriggered: dynamicWallpaperHandler.update()
+        running: handler.status == DynamicWallpaperHandler.Ready
+        onTriggered: handler.scheduleUpdate()
     }
 
     Component.onCompleted: {
-        // Delay KSplash until the dynamic wallpaper is loaded.
-        wallpaper.loading = true;
+        wallpaper.loading = handler.status == DynamicWallpaperHandler.Ready;
     }
 }

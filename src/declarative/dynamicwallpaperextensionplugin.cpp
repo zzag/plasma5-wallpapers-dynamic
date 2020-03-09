@@ -1,29 +1,29 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 #include "dynamicwallpaperextensionplugin.h"
-#include "clockskewnotifier.h"
 #include "dynamicwallpaperhandler.h"
-#include "dynamicwallpaperinstaller.h"
+#include "dynamicwallpaperimageprovider.h"
+#include "dynamicwallpapermodel.h"
 #include "dynamicwallpaperpreviewprovider.h"
-#include "wallpapersmodel.h"
+
+#include <KSystemClockMonitor>
 
 #include <QQmlEngine>
 
-void Plugin::registerTypes(const char *uri)
+void DynamicWallpaperExtensionPlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<DynamicWallpaperHandler>(uri, 1, 0, "DynamicWallpaper");
-    qmlRegisterType<WallpapersModel>(uri, 1, 0, "WallpapersModel");
-    qmlRegisterType<ClockSkewNotifier>(uri, 1, 1, "ClockSkewNotifier");
-    qmlRegisterType<DynamicWallpaperInstaller>(uri, 1, 2, "DynamicWallpaperInstaller");
-    qmlRegisterType<DynamicWallpaperHandler>(uri, 1, 3, "DynamicWallpaperHandler");
+    qmlRegisterType<DynamicWallpaperHandler>(uri, 1, 0, "DynamicWallpaperHandler");
+    qmlRegisterType<DynamicWallpaperModel>(uri, 1, 0, "DynamicWallpaperModel");
+    qmlRegisterType<KSystemClockMonitor>(uri, 1, 0, "SystemClockMonitor");
 }
 
-void Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void DynamicWallpaperExtensionPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri)
+    engine->addImageProvider(QLatin1String("dynamic"), new DynamicWallpaperImageProvider);
     engine->addImageProvider(QLatin1String("dynamicpreview"), new DynamicWallpaperPreviewProvider);
 }

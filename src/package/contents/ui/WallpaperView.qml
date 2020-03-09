@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -10,17 +10,17 @@ import QtQuick.Controls 2.0
 StackView {
     id: root
 
-    /**
+    /*!
      * The image being displayed in the bottom layer.
      */
     property url bottomLayer
 
-    /**
+    /*!
      * The image being displayed in the top layer.
      */
     property url topLayer
 
-    /**
+    /*!
      * The blend factor between the bottom layer and the top layer.
      *
      * The blend factor varies between 0 and 1. 0 means that only the bottom
@@ -28,26 +28,18 @@ StackView {
      */
     property real blendFactor
 
-    /**
+    /*!
      * Set this property to define what happens when the source image has a
      * different size than the item.
      */
     property int fillMode
 
-    /**
-     * The actual width and height of the loaded image.
-     *
-     * This property sets the actual number of pixels stored for the loaded
-     * image so that large images do not use more memory than necessary.
-     */
-    property size sourceSize
-
-    /**
+    /*!
      * This property holds the wallpaper image about to be presented.
      */
     property WallpaperImage __nextItem: null
 
-    /**
+    /*!
      * This property holds the status of image loading.
      */
     readonly property int status: __nextItem ? __nextItem.status : Image.Null
@@ -56,7 +48,6 @@ StackView {
     onTopLayerChanged: Qt.callLater(reload)
     onBlendFactorChanged: Qt.callLater(reblend)
     onFillModeChanged: Qt.callLater(reload)
-    onSourceSizeChanged: Qt.callLater(reload)
 
     Component {
         id: baseImage
@@ -93,14 +84,14 @@ StackView {
         var operation;
         if (!root.currentItem)
             operation = StackView.Immediate;
-        else if (root.currentItem.bottomLayer != bottomLayer)
+        else if (root.currentItem.bottomLayer !== bottomLayer)
             operation = StackView.Transition;
-        else if (root.currentItem.topLayer != topLayer)
+        else if (root.currentItem.topLayer !== topLayer)
             operation = StackView.Transition;
         else
             operation = StackView.Immediate;
 
-        if (operation == StackView.Transition)
+        if (operation === StackView.Transition)
             root.__nextItem.opacity = 0;
         else
             root.__nextItem.opacity = 1;
@@ -116,8 +107,7 @@ StackView {
             bottomLayer: bottomLayer,
             topLayer: topLayer,
             blendFactor: blendFactor,
-            fillMode: fillMode,
-            sourceSize: sourceSize
+            fillMode: fillMode
         });
 
         root.__nextItem.statusChanged.connect(root.__swap);
@@ -126,9 +116,9 @@ StackView {
     function reblend() {
         if (!root.currentItem)
             return;
-        if (root.currentItem.bottomLayer != bottomLayer)
+        if (root.currentItem.bottomLayer !== bottomLayer)
             return;
-        if (root.currentItem.topLayer != topLayer)
+        if (root.currentItem.topLayer !== topLayer)
             return;
         root.currentItem.blendFactor = blendFactor;
     }

@@ -1,0 +1,10 @@
+#compdef kdynamicwallpaperbuilder
+
+_arguments -s \
+    {-v,--version}'[Show the version information and quit]' \
+    {-h,--help}'[Show help message and quit]' \
+    '--help-all[Show help message including Qt specific options and quit]' \
+    '--quality[Specify the quality of the encoded images (from 0 to 100)]:number' \
+    '--output[Specify the file where the output will be written]:files:_files' \
+    '--discard-color-profile[Discard embedded color profile]' \
+    '--lossless[Use lossless coding]'

@@ -1,86 +1,83 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 #pragma once
 
+#include "dynamicwallpaperdescription.h"
+
 #include <QGeoCoordinate>
-#include <QObject>
 #include <QTimer>
 #include <QUrl>
 
-#include <memory>
-
-class DynamicWallpaperModel;
-class DynamicWallpaperPackage;
+class DynamicWallpaperEngine;
 
 class DynamicWallpaperHandler : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QUrl bottomLayer READ bottomLayer NOTIFY bottomLayerChanged)
-    Q_PROPERTY(QUrl topLayer READ topLayer NOTIFY topLayerChanged)
-    Q_PROPERTY(qreal blendFactor READ blendFactor NOTIFY blendFactorChanged)
-    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
-    Q_PROPERTY(QString error READ error NOTIFY errorChanged)
-    Q_PROPERTY(QString wallpaperId READ wallpaperId WRITE setWallpaperId NOTIFY wallpaperIdChanged)
     Q_PROPERTY(QGeoCoordinate location READ location WRITE setLocation NOTIFY locationChanged)
+    Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(QUrl topLayer READ topLayer WRITE setTopLayer NOTIFY topLayerChanged)
+    Q_PROPERTY(QUrl bottomLayer READ bottomLayer WRITE setBottomLayer NOTIFY bottomLayerChanged)
+    Q_PROPERTY(qreal blendFactor READ blendFactor WRITE setBlendFactor NOTIFY blendFactorChanged)
+    Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
+    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
 
 public:
-    enum Status {
-        Ok,
-        Error
-    };
+    enum Status { Null, Ready, Error };
     Q_ENUM(Status)
 
     explicit DynamicWallpaperHandler(QObject *parent = nullptr);
     ~DynamicWallpaperHandler() override;
 
-    QUrl bottomLayer() const;
-    QUrl topLayer() const;
-    qreal blendFactor() const;
-    Status status() const;
-    QString error() const;
-
-    QString wallpaperId() const;
-    void setWallpaperId(const QString &id);
-
+    void setLocation(const QGeoCoordinate &coordinate);
     QGeoCoordinate location() const;
-    void setLocation(const QGeoCoordinate &location);
 
-Q_SIGNALS:
-    void bottomLayerChanged();
-    void topLayerChanged();
-    void blendFactorChanged();
-    void statusChanged();
-    void errorChanged();
-    void wallpaperIdChanged();
-    void locationChanged();
+    void setSource(const QUrl &url);
+    QUrl source() const;
+
+    void setTopLayer(const QUrl &url);
+    QUrl topLayer() const;
+
+    void setBottomLayer(const QUrl &url);
+    QUrl bottomLayer() const;
+
+    void setBlendFactor(qreal blendFactor);
+    qreal blendFactor() const;
+
+    void setStatus(Status status);
+    Status status() const;
+
+    void setErrorString(const QString &text);
+    QString errorString() const;
 
 public Q_SLOTS:
+    void scheduleUpdate();
     void update();
 
+Q_SIGNALS:
+    void locationChanged();
+    void sourceChanged();
+    void topLayerChanged();
+    void bottomLayerChanged();
+    void blendFactorChanged();
+    void statusChanged();
+    void errorStringChanged();
+
 private:
-    void setBottomLayer(const QUrl &url);
-    void setTopLayer(const QUrl &url);
-    void setBlendFactor(qreal factor);
-    void setStatus(Status status);
-    void setError(const QString &error);
-    void reloadModel();
-    void reloadWallpaper();
-    void scheduleUpdate();
+    void reloadDescription();
+    void reloadEngine();
 
-    QTimer *m_scheduleTimer = nullptr;
-    Status m_status = Status::Ok;
-    QString m_error;
-    QString m_wallpaperId;
-    std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
-    std::unique_ptr<DynamicWallpaperModel> m_model;
-    QUrl m_bottomLayer;
-    QUrl m_topLayer;
+    DynamicWallpaperDescription m_description;
+    DynamicWallpaperEngine *m_engine = nullptr;
+    QTimer *m_updateTimer;
     QGeoCoordinate m_location;
-    qreal m_blendFactor = 0.0;
-
-    Q_DISABLE_COPY(DynamicWallpaperHandler)
+    QString m_errorString;
+    QUrl m_source;
+    QUrl m_topLayer;
+    QUrl m_bottomLayer;
+    qreal m_blendFactor = 0;
+    Status m_status = Null;
 };

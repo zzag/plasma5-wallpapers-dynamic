@@ -1,114 +1,54 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 #pragma once
 
-#include "sunpath.h"
-#include "sunposition.h"
-
-#include <QDateTime>
-#include <QGeoCoordinate>
+#include <QAbstractListModel>
 #include <QUrl>
-#include <QVector>
 
-#include <memory>
+class DynamicWallpaperModelPrivate;
 
-class DynamicWallpaperPackage;
-
-class DynamicWallpaperModel
+class DynamicWallpaperModel : public QAbstractListModel
 {
+    Q_OBJECT
+
 public:
-    explicit DynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
-    virtual ~DynamicWallpaperModel();
-
-    /**
-     * Returns whether the model is no longer actual and must be destroyed.
-     *
-     * Default implementation returns @c false.
-     */
-    virtual bool isExpired() const;
-
-    /**
-     * Returns the path to image that has to be displayed in the bottom layer.
-     */
-    QUrl bottomLayer() const;
-
-    /**
-     * Returns the path to image that has to be displayed in the top layer.
-     */
-    QUrl topLayer() const;
-
-    /**
-     * Returns the blend factor between the bottom and the top layer.
-     *
-     * A value of 0.0 is equivalent to displaying only the bottom layer.
-     *
-     * A value of 1.0 is equivalent to displaying only the top layer.
-     */
-    qreal blendFactor() const;
-
-    /**
-     * Updates the internal state of the dynamic wallpaper model.
-     */
-    virtual void update() = 0;
-
-    /**
-     * Returns the dynamic wallpaper package associated with this model.
-     */
-    DynamicWallpaperPackage *wallpaper() const;
-
-protected:
-    struct Knot
-    {
-        bool operator<(const Knot &other) const { return time < other.time; }
-        bool operator<=(const Knot &other) const { return time <= other.time; }
-
-        qreal time;
-        QUrl url;
+    enum Roles {
+        WallpaperNameRole = Qt::UserRole + 1,
+        WallpaperFolderRole = Qt::UserRole + 2,
+        WallpaperLicenseRole = Qt::UserRole + 3,
+        WallpaperAuthorRole = Qt::UserRole + 4,
+        WallpaperIsPackageRole = Qt::UserRole + 5,
+        WallpaperIsCustomRole = Qt::UserRole + 6,
+        WallpaperIsRemovableRole = Qt::UserRole + 7,
+        WallpaperIsZombieRole = Qt::UserRole + 8,
+        WallpaperImageRole = Qt::UserRole + 9,
+        WallpaperPreviewRole = Qt::UserRole + 10,
     };
 
-    QVector<Knot> m_knots;
-    qreal m_time = 0;
+    explicit DynamicWallpaperModel(QObject *parent = nullptr);
+    ~DynamicWallpaperModel() override;
+
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    Q_INVOKABLE int find(const QUrl &url) const;
+    Q_INVOKABLE QModelIndex modelIndex(int index) const;
+
+public Q_SLOTS:
+    void reload();
+    void purge();
+
+    void add(const QUrl &fileUrl);
+    void scheduleRemove(const QModelIndex &index);
+    void unscheduleRemove(const QModelIndex &index);
+    void remove(const QModelIndex &index);
 
 private:
-    Knot currentBottomKnot() const;
-    Knot currentTopKnot() const;
-
-    std::shared_ptr<DynamicWallpaperPackage> m_wallpaper;
-};
-
-class SolarDynamicWallpaperModel final : public DynamicWallpaperModel
-{
-public:
-    bool isExpired() const override;
-    void update() override;
-
-    static SolarDynamicWallpaperModel *create(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
-                                              const QGeoCoordinate &location);
-
-private:
-    SolarDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper,
-                               const QDateTime &dateTime,
-                               const QGeoCoordinate &location,
-                               const SunPath &path,
-                               const SunPosition &midnight);
-
-    SunPath m_sunPath;
-    SunPosition m_midnight;
-    QDateTime m_dateTime;
-    QGeoCoordinate m_location;
-};
-
-class TimedDynamicWallpaperModel final : public DynamicWallpaperModel
-{
-public:
-    void update() override;
-
-    static TimedDynamicWallpaperModel *create(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
-
-private:
-    TimedDynamicWallpaperModel(std::shared_ptr<DynamicWallpaperPackage> wallpaper);
+    friend class DynamicWallpaperModelPrivate;
+    QScopedPointer<DynamicWallpaperModelPrivate> d;
 };

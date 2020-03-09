@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/kdynamicwallpaper/xmp">
+        <file>metadata.xml</file>
+    </qresource>
+</RCC>

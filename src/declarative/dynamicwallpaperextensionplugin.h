@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vladzzag@gmail.com>
+ * SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -8,7 +8,7 @@
 
 #include <QQmlExtensionPlugin>
 
-class Plugin : public QQmlExtensionPlugin
+class DynamicWallpaperExtensionPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")

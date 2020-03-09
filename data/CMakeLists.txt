@@ -1,1 +1,1 @@
-install(DIRECTORY default DESTINATION ${KDE_INSTALL_DATADIR}/dynamicwallpapers)
+install(DIRECTORY "Dynamic Numbers" DESTINATION ${WALLPAPER_INSTALL_DIR})

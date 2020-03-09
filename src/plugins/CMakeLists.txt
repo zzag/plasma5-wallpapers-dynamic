@@ -1,1 +1,1 @@
-add_subdirectory(packagestructure)
+add_subdirectory(kpackage-integration)

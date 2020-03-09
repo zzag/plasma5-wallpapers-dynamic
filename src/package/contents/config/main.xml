@@ -5,81 +5,34 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
   <group name="General">
-    <!--
-      The id of the displayed dynamic wallpaper.
-    -->
-    <entry name="WallpaperId" type="String">
-      <default>default</default>
+    <entry name="Image" type="String">
+      <default></default>
     </entry>
 
-    <!--
-      The fill mode specifies what happens when an image has a different size than
-      the screen.
-
-      0 - the image is scaled to fit the screen
-      1 - the image is scaled to fit the screen without cropping
-      2 - the image is scaled to fit the screen, with cropping if necessary
-      3 - the image is tiled horizontally and vertically
-      4 - the image is stretched horizontally and tiled vertically
-      5 - the image is stretched vertically and tiled horizontally
-      6 - the image is not transformed
-    -->
     <entry name="FillMode" type="UInt">
-      <default>0</default>
+      <default>2</default>
     </entry>
 
-    <!--
-      Whether user's location must be detected automatically.
-    -->
     <entry name="AutoDetectLocation" type="Bool">
       <default>true</default>
     </entry>
 
-    <!--
-      The latitude of the user, in decimal degrees.
-
-      Notice that the latitude value doesn't matter that much with timed dynamic
-      wallpapers as they rely on the system clock to determine what images reflect
-      the user's light situation most accurately.
-    -->
-    <entry name="Latitude" type="Double">
+    <entry name="ManualLatitude" type="Double">
       <default>0</default>
       <min>-90</min>
       <max>90</max>
     </entry>
 
-    <!--
-      The longitude of the user, in decimal degrees.
-
-      Notice that the longitude value doesn't matter that much with timed dynamic
-      wallpapers as they rely on the system clock to determine what images reflect
-      the user's light situation most accurately.
-    -->
-    <entry name="Longitude" type="Double">
+    <entry name="ManualLongitude" type="Double">
       <default>0</default>
       <min>-180</min>
       <max>180</max>
     </entry>
 
-    <!--
-      The update interval specifies the time in milliseconds between each time the
-      wallpaper plugin updates its state. The state is composed of an image in the
-      top layer, an image in the bottom layer, and a blend factor between the two.
-    -->
     <entry name="UpdateInterval" type="UInt">
       <default>300000</default>
     </entry>
 
-    <!--
-      The transition duration specifies the number of milliseconds a transition
-      between two states should take to complete.
-
-      Just to remind, a state contains an image in the bottom layer, an image in
-      the top layer, and the blend factor between the two. If any of those state
-      components is modified, an animation will be started to smoothly transition
-      from the old state to the new state. This field specifies the duration of
-      the animation.
-    -->
     <entry name="TransitionDuration" type="UInt">
       <default>330</default>
       <min>100</min>

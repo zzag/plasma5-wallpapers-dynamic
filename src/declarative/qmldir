@@ -1,2 +1,2 @@
-module com.github.zzag.private.wallpaper
-plugin wallpaperplugin
+module com.github.zzag.plasma.wallpapers.dynamic
+plugin plasma_wallpaper_dynamicplugin
