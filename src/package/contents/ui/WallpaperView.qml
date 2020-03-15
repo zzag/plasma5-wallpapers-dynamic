@@ -62,7 +62,7 @@ StackView {
         id: baseImage
 
         WallpaperImage {
-            // We have to manually destroy any item pushed onto a StackView.
+            layer.enabled: root.replaceEnter.running
             StackView.onRemoved: destroy()
         }
     }
