@@ -48,7 +48,7 @@ msgstr "Affiancato"
 #: package/contents/ui/config.qml:79
 #, kde-format
 msgid "Automatically detect location"
-msgstr ""
+msgstr "Rileva posizione automaticamente"
 
 #: package/contents/ui/config.qml:83 package/contents/ui/config.qml:104
 #, kde-format
