@@ -14,12 +14,15 @@ set(dynamicwallpaperplugin_SOURCES
     dynamicwallpaperimagehandle.cpp
     dynamicwallpaperimageprovider.cpp
     dynamicwallpapermodel.cpp
+    dynamicwallpaperpreviewcache.cpp
+    dynamicwallpaperpreviewjob.cpp
     dynamicwallpaperpreviewprovider.cpp
 )
 
 add_library(plasma_wallpaper_dynamicplugin ${dynamicwallpaperplugin_SOURCES})
 
 target_link_libraries(plasma_wallpaper_dynamicplugin
+    Qt5::Concurrent
     Qt5::Core
     Qt5::Gui
     Qt5::Positioning
@@ -27,7 +30,6 @@ target_link_libraries(plasma_wallpaper_dynamicplugin
 
     KF5::ConfigCore
     KF5::I18n
-    KF5::KIOWidgets
     KF5::Package
 
     KDynamicWallpaper::KDynamicWallpaper

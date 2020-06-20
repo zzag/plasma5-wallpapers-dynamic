@@ -5,8 +5,7 @@
  */
 
 #include "dynamicwallpaperpreviewprovider.h"
-
-#include <KIO/PreviewJob>
+#include "dynamicwallpaperpreviewjob.h"
 
 #include <QGuiApplication>
 
@@ -19,8 +18,8 @@ public:
     QQuickTextureFactory *textureFactory() const override;
 
 private Q_SLOTS:
-    void handleResult(const KFileItem &fileItem, const QPixmap &pixmap);
-    void handleError();
+    void handleFinished(const QImage &image);
+    void handleFailed(const QString &errorString);
 
 private:
     QString m_errorString;
@@ -29,20 +28,14 @@ private:
 
 AsyncImageResponse::AsyncImageResponse(const QString &fileName, const QSize &requestedSize)
 {
-    KFileItemList fileItems;
-    fileItems << QUrl::fromLocalFile(fileName);
-
-    const QStringList enabledPlugins = KIO::PreviewJob::availablePlugins();
-
     QSize desiredSize = requestedSize;
     if (desiredSize.isEmpty())
         desiredSize = QSize(400, 250) * qApp->devicePixelRatio();
 
-    KIO::PreviewJob *jerb = KIO::filePreview(fileItems, desiredSize, &enabledPlugins);
-    jerb->setIgnoreMaximumSize(true);
+    DynamicWallpaperPreviewJob *job = new DynamicWallpaperPreviewJob(fileName, desiredSize);
 
-    connect(jerb, &KIO::PreviewJob::gotPreview, this, &AsyncImageResponse::handleResult);
-    connect(jerb, &KIO::PreviewJob::failed, this, &AsyncImageResponse::handleError);
+    connect(job, &DynamicWallpaperPreviewJob::finished, this, &AsyncImageResponse::handleFinished);
+    connect(job, &DynamicWallpaperPreviewJob::failed, this, &AsyncImageResponse::handleFailed);
 }
 
 QString AsyncImageResponse::errorString() const
@@ -55,16 +48,15 @@ QQuickTextureFactory *AsyncImageResponse::textureFactory() const
     return QQuickTextureFactory::textureFactoryForImage(m_image);
 }
 
-void AsyncImageResponse::handleResult(const KFileItem &fileItem, const QPixmap &pixmap)
+void AsyncImageResponse::handleFinished(const QImage &image)
 {
-    Q_UNUSED(fileItem)
-    m_image = pixmap.toImage();
+    m_image = image;
     emit finished();
 }
 
-void AsyncImageResponse::handleError()
+void AsyncImageResponse::handleFailed(const QString &errorString)
 {
-    m_errorString = QStringLiteral("Unknown error");
+    m_errorString = errorString;
     emit finished();
 }
 
