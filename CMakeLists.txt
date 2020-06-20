@@ -39,12 +39,12 @@ find_package(libheif ${LIBHEIF_MIN_VERSION} REQUIRED)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Config
     I18n
-    KIO
     Package
     Plasma
 )
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+    Concurrent
     Core
     DBus
     Gui
