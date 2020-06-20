@@ -1,7 +1,13 @@
 [Desktop Entry]
 Icon=preferences-desktop-wallpaper
-Name=Dynamic
-Comment=Dynamic wallpaper engine
+Name[fr]=Dynamique
+Name[it]=Dinamico
+Name[nl]=Dynamisch
+Name[ru]=Динамический
+Name[uk]=Динамічний
+Comment=Dynamic wallpaper
+Comment[ru]=Динамические обои
+Comment[uk]=Динамічні шпалери
 Type=Service
 
 X-KDE-ServiceTypes=Plasma/Wallpaper

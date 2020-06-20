@@ -1,0 +1,240 @@
+# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
+#
+# Federico Robin <bisio.97@gmail.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma5-wallpapers-dynamic\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
+"issues\n"
+"POT-Creation-Date: 2020-06-20 12:58+0300\n"
+"PO-Revision-Date: 2019-10-26 15:00+0200\n"
+"Last-Translator: Federico Robin <bisio.97@gmail.com>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: declarative/dynamicwallpaperhandler.cpp:210
+#, fuzzy, kde-format
+msgid "%1 is not a dynamic wallpaper"
+msgstr "Non è stato possibile inizializzare il wallpaper dinamico: %1"
+
+#: plugins/kpackage-integration/dynamicwallpaperpackagestructure.cpp:22
+#, kde-format
+msgid "Dynamic wallpaper files"
+msgstr ""
+
+#: plugins/kpackage-integration/dynamicwallpaperpackagestructure.cpp:38
+#, kde-format
+msgid "Dynamic wallpaper file"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:99
+#, kde-format
+msgid "The device is not open for writing"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:113 lib/kdynamicwallpaperreader.cpp:134
+#, kde-format
+msgid "Failed to allocate HEIF context"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:121
+#, kde-format
+msgid "No suitable encoder"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:128
+#, kde-format
+msgid "Failed to set the lossless parameter: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:135
+#, kde-format
+msgid "Failed to set the quality parameter: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:217
+#, kde-format
+msgid "Failed to create a heif_image: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:224
+#, kde-format
+msgid "Failed to add a color plane: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:233
+#, kde-format
+msgid "Failed to set ICC profile: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:249
+#, kde-format
+msgid "Failed to encode image: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:257
+#, kde-format
+msgid "Failed to add XMP metadata: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:265
+#, kde-format
+msgid "Failed to set the primary image: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperwriter.cpp:437 lib/kdynamicwallpaperreader.cpp:416
+#, kde-format
+msgid "No error"
+msgstr ""
+
+#: lib/kdynamicwallpaperreader.cpp:113
+#, kde-format
+msgid "No assigned device"
+msgstr ""
+
+#: lib/kdynamicwallpaperreader.cpp:120
+#, kde-format
+msgid "The device is not open for reading"
+msgstr ""
+
+#: lib/kdynamicwallpaperreader.cpp:141
+#, kde-format
+msgid "Invalid HEIF file: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperreader.cpp:179 lib/kdynamicwallpaperreader.cpp:248
+#, kde-format
+msgid "Failed to get image handle: %1"
+msgstr ""
+
+#: lib/kdynamicwallpaperreader.cpp:260
+#, kde-format
+msgid "Failed to decode image: %1"
+msgstr ""
+
+#: package/contents/ui/config.qml:37
+#, kde-format
+msgid "Fill Mode:"
+msgstr "Modalità di riempimento"
+
+#: package/contents/ui/config.qml:41
+#, kde-format
+msgid "Scaled and Cropped"
+msgstr "Scalato e Tagliato"
+
+#: package/contents/ui/config.qml:45
+#, kde-format
+msgid "Scaled"
+msgstr "Scalato"
+
+#: package/contents/ui/config.qml:49
+#, kde-format
+msgid "Scaled, Keep Proportions"
+msgstr "Scalato, Mantieni Proporzioni"
+
+#: package/contents/ui/config.qml:53
+#, kde-format
+msgid "Centered"
+msgstr "Centrato"
+
+#: package/contents/ui/config.qml:57
+#, kde-format
+msgid "Tiled"
+msgstr "Affiancato"
+
+#: package/contents/ui/config.qml:76
+#, kde-format
+msgid "Automatically detect location"
+msgstr ""
+
+#: package/contents/ui/config.qml:80 package/contents/ui/config.qml:101
+#, kde-format
+msgid "Latitude:"
+msgstr "Latitudine:"
+
+#: package/contents/ui/config.qml:90 package/contents/ui/config.qml:110
+#, kde-format
+msgid "Longitude:"
+msgstr "Longitudine:"
+
+#: package/contents/ui/config.qml:119
+#, kde-format
+msgid "Update Every:"
+msgstr "Aggiorna Ogni:"
+
+#: package/contents/ui/config.qml:122
+#, fuzzy, kde-format
+msgid " minute"
+msgid_plural " minutes"
+msgstr[0] " minuto"
+msgstr[1] " minuti"
+
+#: package/contents/ui/config.qml:144
+#, kde-format
+msgctxt "<image> by <author> (<license>)"
+msgid "By %1 (%2)"
+msgstr "Da %1 (%2)"
+
+#: package/contents/ui/config.qml:146
+#, kde-format
+msgctxt "<image> (<license>)"
+msgid "%1 (%2)"
+msgstr "%1 (%2)"
+
+#: package/contents/ui/config.qml:152
+#, kde-format
+msgid "Open Containing Folder"
+msgstr "Mostra nel Gestore File"
+
+#: package/contents/ui/config.qml:157
+#, kde-format
+msgid "Restore Wallpaper"
+msgstr "Ripristina Wallpaper"
+
+#: package/contents/ui/config.qml:163
+#, kde-format
+msgid "Remove Wallpaper"
+msgstr "Rimuovi Wallpaper"
+
+#: package/contents/ui/config.qml:194
+#, kde-format
+msgid "Open Wallpaper"
+msgstr "Apri Wallpaper"
+
+#: package/contents/ui/config.qml:196
+#, kde-format
+msgid "HEIF Image Files (*.heic *.heif)"
+msgstr ""
+
+#: package/contents/ui/config.qml:213
+#, kde-format
+msgid "Add Wallpaper..."
+msgstr "Aggiungi Wallpaper..."
+
+#: tools/builder/main.cpp:26
+#, kde-format
+msgid "Quality of the encoded images (from 0 to 100)"
+msgstr ""
+
+#: tools/builder/main.cpp:30
+#, kde-format
+msgid "Write output to <file>"
+msgstr ""
+
+#: tools/builder/main.cpp:34
+#, kde-format
+msgid "Discard embedded color profile"
+msgstr ""
+
+#: tools/builder/main.cpp:37
+#, kde-format
+msgid "Use lossless coding"
+msgstr ""
+
+#: tools/builder/main.cpp:42
+#, kde-format
+msgid "Description file to use"
+msgstr ""
