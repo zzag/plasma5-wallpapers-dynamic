@@ -6,6 +6,8 @@
 
 #include "dynamicwallpaperdescriptionreader.h"
 
+#include <KLocalizedString>
+
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -106,19 +108,19 @@ bool DynamicWallpaperDescriptionReader::readFile()
 {
     QFile file(m_fileName);
     if (!file.open(QFile::ReadOnly)) {
-        setError(QStringLiteral("Failed to open %1: %2").arg(file.fileName(), file.errorString()));
+        setError(i18n("Failed to open %1: %2", file.fileName(), file.errorString()));
         return false;
     }
 
     QJsonDocument document = QJsonDocument::fromJson(file.readAll());
     if (document.isNull()) {
-        setError(QStringLiteral("Invalid JSON file"));
+        setError(i18n("Invalid JSON file"));
         return false;
     }
 
     m_descriptors = document.array();
     if (m_descriptors.isEmpty()) {
-        setError(QStringLiteral("JSON document is empty"));
+        setError(i18n("JSON document is empty"));
         return false;
     }
 
@@ -129,7 +131,7 @@ bool DynamicWallpaperDescriptionReader::readImage(const QJsonObject &descriptor)
 {
     const QJsonValue fileName = descriptor[QLatin1String("FileName")];
     if (!fileName.isString()) {
-        setError(QStringLiteral("FileName must be a string"));
+        setError(i18n("FileName must be a string"));
         return false;
     }
 
@@ -139,7 +141,7 @@ bool DynamicWallpaperDescriptionReader::readImage(const QJsonObject &descriptor)
 
     QImageReader reader(absoluteFileName);
     if (!reader.read(&m_currentImage))
-        setError(QStringLiteral("Failed to read %1: %2").arg(reader.fileName(), reader.errorString()));
+        setError(i18n("Failed to read %1: %2", reader.fileName(), reader.errorString()));
 
     return !hasError();
 }
@@ -162,15 +164,15 @@ bool DynamicWallpaperDescriptionReader::readMetaData(const QJsonObject &descript
 
     if (solarAzimuth.isUndefined() ^ solarElevation.isUndefined()) {
         if (solarAzimuth.isUndefined())
-            setError(QStringLiteral("SolarElevation was specified but SolarAzimuth was not"));
+            setError(i18n("SolarElevation was specified but SolarAzimuth was not"));
         else
-            setError(QStringLiteral("SolarAzimuth was specified but SolarElevation was not"));
+            setError(i18n("SolarAzimuth was specified but SolarElevation was not"));
         return false;
     }
 
     if (!solarElevation.isUndefined()) {
         if (!solarElevation.isDouble()) {
-            setError(QStringLiteral("SolarElevation must be a real number"));
+            setError(i18n("SolarElevation must be a real number"));
             return false;
         }
         m_currentMetaData.setSolarElevation(solarElevation.toDouble());
@@ -178,7 +180,7 @@ bool DynamicWallpaperDescriptionReader::readMetaData(const QJsonObject &descript
 
     if (!solarAzimuth.isUndefined()) {
         if (!solarAzimuth.isDouble()) {
-            setError(QStringLiteral("SolarAzimuth must be a real number"));
+            setError(i18n("SolarAzimuth must be a real number"));
             return false;
         }
         m_currentMetaData.setSolarAzimuth(solarAzimuth.toDouble());
@@ -186,7 +188,7 @@ bool DynamicWallpaperDescriptionReader::readMetaData(const QJsonObject &descript
 
     if (!crossFadeMode.isUndefined()) {
         if (!crossFadeMode.isBool()) {
-            setError(QStringLiteral("CrossFade must be a boolean"));
+            setError(i18n("CrossFade must be a boolean"));
             return false;
         }
         if (crossFadeMode.toBool())
@@ -197,17 +199,17 @@ bool DynamicWallpaperDescriptionReader::readMetaData(const QJsonObject &descript
 
     if (!time.isUndefined()) {
         if (!time.isString()) {
-            setError(QStringLiteral("Time must be a string"));
+            setError(i18n("Time must be a string"));
             return false;
         }
         const QTime parsedTime = QTime::fromString(time.toString());
         if (!parsedTime.isValid()) {
-            setError(QStringLiteral("Failed to parse Time"));
+            setError(i18n("Failed to parse Time"));
             return false;
         }
         m_currentMetaData.setTime(parsedTime.msecsSinceStartOfDay() / 86400000.0);
     } else {
-        setError(QStringLiteral("Missing Time"));
+        setError(i18n("Missing Time"));
         return false;
     }
 
