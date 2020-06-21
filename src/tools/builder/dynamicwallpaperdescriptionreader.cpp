@@ -106,7 +106,7 @@ bool DynamicWallpaperDescriptionReader::readFile()
 {
     QFile file(m_fileName);
     if (!file.open(QFile::ReadOnly)) {
-        setError(file.errorString());
+        setError(QStringLiteral("Failed to open %1: %2").arg(file.fileName(), file.errorString()));
         return false;
     }
 
@@ -139,7 +139,7 @@ bool DynamicWallpaperDescriptionReader::readImage(const QJsonObject &descriptor)
 
     QImageReader reader(absoluteFileName);
     if (!reader.read(&m_currentImage))
-        setError(reader.errorString());
+        setError(QStringLiteral("Failed to read %1: %2").arg(reader.fileName(), reader.errorString()));
 
     return !hasError();
 }

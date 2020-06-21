@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 
     if (reader.hasError() || writer.error() != KDynamicWallpaperWriter::NoError) {
         if (reader.hasError())
-            qWarning() << reader.errorString();
+            qWarning() << qPrintable(reader.errorString());
         if (writer.error() != KDynamicWallpaperWriter::NoError)
             qWarning() << writer.errorString();
         QFile::remove(targetFileName);
