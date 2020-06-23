@@ -6,12 +6,10 @@
 
 #pragma once
 
-#include <QQuickImageProvider>
+#include <QQuickAsyncImageProvider>
 
-class DynamicWallpaperImageProvider : public QQuickImageProvider
+class DynamicWallpaperImageProvider : public QQuickAsyncImageProvider
 {
 public:
-    DynamicWallpaperImageProvider();
-
-    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
 };
