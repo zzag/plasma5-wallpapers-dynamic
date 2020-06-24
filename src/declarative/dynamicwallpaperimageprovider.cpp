@@ -5,37 +5,13 @@
  */
 
 #include "dynamicwallpaperimageprovider.h"
+#include "dynamicwallpaperglobals.h"
 #include "dynamicwallpaperimagehandle.h"
 
 #include <KDynamicWallpaperReader>
 
 #include <QtConcurrent>
 #include <QFutureWatcher>
-
-class DynamicWallpaperImageAsyncResult
-{
-public:
-    DynamicWallpaperImageAsyncResult();
-    explicit DynamicWallpaperImageAsyncResult(const QImage &image);
-    explicit DynamicWallpaperImageAsyncResult(const QString &text);
-
-    QImage image;
-    QString errorString;
-};
-
-DynamicWallpaperImageAsyncResult::DynamicWallpaperImageAsyncResult()
-{
-}
-
-DynamicWallpaperImageAsyncResult::DynamicWallpaperImageAsyncResult(const QImage &image)
-    : image(image)
-{
-}
-
-DynamicWallpaperImageAsyncResult::DynamicWallpaperImageAsyncResult(const QString &text)
-    : errorString(text)
-{
-}
 
 static DynamicWallpaperImageAsyncResult load(const QString &fileName, int index, const QSize &requestedSize)
 {

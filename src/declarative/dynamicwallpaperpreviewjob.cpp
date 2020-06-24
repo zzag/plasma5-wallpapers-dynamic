@@ -5,6 +5,7 @@
  */
 
 #include "dynamicwallpaperpreviewjob.h"
+#include "dynamicwallpaperglobals.h"
 #include "dynamicwallpaperpreviewcache.h"
 
 #include <KDynamicWallpaperMetaData>
@@ -31,35 +32,10 @@
  * be destroyed automatically.
  */
 
-class DynamicWallpaperPreviewAsyncResponse
-{
-public:
-    DynamicWallpaperPreviewAsyncResponse();
-    explicit DynamicWallpaperPreviewAsyncResponse(const QImage &image);
-    explicit DynamicWallpaperPreviewAsyncResponse(const QString &text);
-
-    QImage image;
-    QString errorString;
-};
-
-DynamicWallpaperPreviewAsyncResponse::DynamicWallpaperPreviewAsyncResponse()
-{
-}
-
-DynamicWallpaperPreviewAsyncResponse::DynamicWallpaperPreviewAsyncResponse(const QImage &image)
-    : image(image)
-{
-}
-
-DynamicWallpaperPreviewAsyncResponse::DynamicWallpaperPreviewAsyncResponse(const QString &text)
-    : errorString(text)
-{
-}
-
 class DynamicWallpaperPreviewJobPrivate
 {
 public:
-    QFutureWatcher<DynamicWallpaperPreviewAsyncResponse> *watcher;
+    QFutureWatcher<DynamicWallpaperImageAsyncResult> *watcher;
 };
 
 static QRgb blend(QRgb a, QRgb b, qreal blendFactor)
@@ -134,7 +110,7 @@ static bool score_compare(const KDynamicWallpaperMetaData &a, const KDynamicWall
  *
  * Note that this function runs off the main thread.
  */
-static DynamicWallpaperPreviewAsyncResponse makePreview(const QString &fileName, const QSize &size)
+static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, const QSize &size)
 {
     QImage preview = DynamicWallpaperPreviewCache::load(fileName);
 
@@ -142,9 +118,9 @@ static DynamicWallpaperPreviewAsyncResponse makePreview(const QString &fileName,
         // The cache has no preview for the specified wallpaper yet, so generate one...
         KDynamicWallpaperReader reader(fileName);
         if (reader.error() != KDynamicWallpaperReader::NoError)
-            return DynamicWallpaperPreviewAsyncResponse(reader.errorString());
+            return DynamicWallpaperImageAsyncResult(reader.errorString());
         if (reader.imageCount() < 2)
-            return DynamicWallpaperPreviewAsyncResponse(i18n("Not enough images"));
+            return DynamicWallpaperImageAsyncResult(i18n("Not enough images"));
 
         QVector<KDynamicWallpaperMetaData> metadata;
         for (int i = 0; i < reader.imageCount(); ++i)
@@ -161,7 +137,7 @@ static DynamicWallpaperPreviewAsyncResponse makePreview(const QString &fileName,
         DynamicWallpaperPreviewCache::store(preview, fileName);
     }
 
-    return DynamicWallpaperPreviewAsyncResponse(preview.scaled(size, Qt::KeepAspectRatio));
+    return DynamicWallpaperImageAsyncResult(preview.scaled(size, Qt::KeepAspectRatio));
 }
 
 /*!
@@ -170,10 +146,10 @@ static DynamicWallpaperPreviewAsyncResponse makePreview(const QString &fileName,
 DynamicWallpaperPreviewJob::DynamicWallpaperPreviewJob(const QString &fileName, const QSize &requestedSize)
     : d(new DynamicWallpaperPreviewJobPrivate)
 {
-    d->watcher = new QFutureWatcher<DynamicWallpaperPreviewAsyncResponse>(this);
+    d->watcher = new QFutureWatcher<DynamicWallpaperImageAsyncResult>(this);
     d->watcher->setFuture(QtConcurrent::run(makePreview, fileName, requestedSize));
 
-    connect(d->watcher, &QFutureWatcher<DynamicWallpaperPreviewAsyncResponse>::finished,
+    connect(d->watcher, &QFutureWatcher<DynamicWallpaperImageAsyncResult>::finished,
             this, &DynamicWallpaperPreviewJob::handleFinished);
 }
 
@@ -205,7 +181,7 @@ DynamicWallpaperPreviewJob::~DynamicWallpaperPreviewJob()
 
 void DynamicWallpaperPreviewJob::handleFinished()
 {
-    const DynamicWallpaperPreviewAsyncResponse response = d->watcher->result();
+    const DynamicWallpaperImageAsyncResult response = d->watcher->result();
     if (response.errorString.isNull())
         emit finished(response.image);
     else
