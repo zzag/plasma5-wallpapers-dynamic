@@ -1,4 +1,5 @@
 # Dynamic Wallpaper Engine
+![AUR version](https://img.shields.io/aur/version/plasma5-wallpapers-dynamic)
 
 A wallpaper plugin for KDE Plasma that continuously updates the desktop background
 based on the current time in your location.
