@@ -11,8 +11,8 @@ In order to create a dynamic wallpaper, you need to provide a json file with the
 ```json
 [
     {
-        "SolarAzimuth": 270,
-        "SolarElevation": 0,
+        "SolarAzimuth": "*",
+        "SolarElevation": "*",
         "CrossFade": true,
         "Time": "18:00",
         "FileName": "0.png"
@@ -49,6 +49,9 @@ the picture was taken. If the user is not located near the North or the South Po
 wallpaper engine will try to show images based on the current position of the Sun; otherwise it will
 fallback to using time metadata. Note that only the `Time` field is required, the position of the
 Sun is optional.
+
+If `SolarAzimuth` or `SolarElevation` has a special value of `"*"`, then the position of the Sun
+will be computed based on GPS coordinates and the time when the picture was taken.
 
 The `CrossFade` field indicates whether the current image can be blended with the next one. The
 cross-fading is used to make transitions between images smooth. By default, the `CrossFade` field is

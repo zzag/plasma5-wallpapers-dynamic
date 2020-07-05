@@ -35,6 +35,7 @@ ecm_find_qmlmodule(org.kde.kcm 1.1)
 ecm_find_qmlmodule(org.kde.kirigami 2.10)
 
 find_package(libheif ${LIBHEIF_MIN_VERSION} REQUIRED)
+find_package(libexif REQUIRED)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     Config
