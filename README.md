@@ -73,3 +73,23 @@ Right-click a blank area of the desktop and choose "Configure Desktop...", selec
 
 This engine ships with a command-line tool that one could use to create a dynamic wallpaper from a
 collection of jpeg or png images. See [kdynamicwallpaperbuilder](src/tools/builder/README.md).
+
+
+## How to Use Dynamic Wallpapers for macOS
+
+Since dynamic wallpapers for macOS and this plugin are incompatible, you need to use a script to
+convert dynamic wallpapers.
+
+```sh
+curl https://git.io/JJkjd -sL > dynamicwallpaperconverter
+chmod +x dynamicwallpaperconverter
+```
+
+Once you've downloaded the dynamicwallpaperconverter script, you can start converting wallpapers
+
+```sh
+./dynamicwallpaperconverter --crossfade file.heic
+```
+
+After the command above has finished its execution, you should see a file in the current working
+directory named 'wallpaper.heic', which can be fed into this plugin.
