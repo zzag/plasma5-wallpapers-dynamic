@@ -9,7 +9,9 @@
 
 #include <KLocalizedString>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 #include <QColorSpace>
+#endif
 #include <QFile>
 #include <QImage>
 
@@ -214,6 +216,7 @@ KDynamicWallpaperMetaData KDynamicWallpaperReaderPrivate::metaDataAt(int imageIn
     return metaData;
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 static QColorSpace colorProfileForImage(heif_image *image)
 {
     QColorSpace colorSpace;
@@ -234,6 +237,7 @@ static QColorSpace colorProfileForImage(heif_image *image)
 
     return colorSpace;
 }
+#endif
 
 QImage KDynamicWallpaperReaderPrivate::imageAt(int imageIndex)
 {
@@ -274,9 +278,11 @@ QImage KDynamicWallpaperReaderPrivate::imageAt(int imageIndex)
     auto cleanupFunc = [](void *data) { heif_image_release(static_cast<heif_image *>(data)); };
     QImage decodedImage(data, width, height, stride, format, cleanupFunc, image);
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     const QColorSpace colorSpace = colorProfileForImage(image);
     if (colorSpace.isValid())
         decodedImage.setColorSpace(colorSpace);
+#endif
 
     heif_image_handle_release(handle); // heif_image will be destroyed by QImage
 
