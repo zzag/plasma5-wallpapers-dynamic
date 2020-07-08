@@ -9,7 +9,9 @@
 
 #include <KLocalizedString>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
 #include <QColorSpace>
+#endif
 #include <QFile>
 #include <QImage>
 
@@ -226,6 +228,7 @@ bool KDynamicWallpaperWriterPrivate::write(const QImage &image, const KDynamicWa
     }
 
     if (options & KDynamicWallpaperWriter::PreserveColorProfile) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
         const QByteArray iccProfile = image.colorSpace().iccProfile();
         error = heif_image_set_raw_color_profile(heifImage, "prof", iccProfile.data(), iccProfile.size());
         if (error.code != heif_error_Ok) {
@@ -233,6 +236,9 @@ bool KDynamicWallpaperWriterPrivate::write(const QImage &image, const KDynamicWa
             errorString = i18n("Failed to set ICC profile: %1", error.message);
             goto error_image;
         }
+#else
+        qWarning() << "You need at least Qt 5.14 to preserve color profiles";
+#endif
     }
 
     data = heif_image_get_plane(heifImage, heif_channel_interleaved, &stride);
