@@ -105,7 +105,11 @@ DynamicWallpaperImageHandle DynamicWallpaperImageHandle::fromString(const QStrin
 {
     DynamicWallpaperImageHandle handle;
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
     const QVector<QStringRef> parts = string.splitRef('#', Qt::SkipEmptyParts);
+#else
+    const QVector<QStringRef> parts = string.splitRef('#', QString::SkipEmptyParts);
+#endif
     if (parts.count() != 2)
         return handle;
 
