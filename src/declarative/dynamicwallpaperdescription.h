@@ -10,6 +10,7 @@
 
 #include <QString>
 #include <QUrl>
+#include <QVector>
 
 class DynamicWallpaperDescription
 {
