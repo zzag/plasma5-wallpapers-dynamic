@@ -119,8 +119,6 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         KDynamicWallpaperReader reader(fileName);
         if (reader.error() != KDynamicWallpaperReader::NoError)
             return DynamicWallpaperImageAsyncResult(reader.errorString());
-        if (reader.imageCount() < 2)
-            return DynamicWallpaperImageAsyncResult(i18n("Not enough images"));
 
         QVector<KDynamicWallpaperMetaData> metadata;
         for (int i = 0; i < reader.imageCount(); ++i) {
