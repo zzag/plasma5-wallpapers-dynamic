@@ -123,8 +123,14 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
             return DynamicWallpaperImageAsyncResult(i18n("Not enough images"));
 
         QVector<KDynamicWallpaperMetaData> metadata;
-        for (int i = 0; i < reader.imageCount(); ++i)
-            metadata.append(reader.metaDataAt(i));
+        for (int i = 0; i < reader.imageCount(); ++i) {
+            const KDynamicWallpaperMetaData imageMetadata = reader.metaDataAt(i);
+            if (imageMetadata.isValid())
+                metadata.append(imageMetadata);
+        }
+
+        if (metadata.isEmpty())
+            return DynamicWallpaperImageAsyncResult(i18n("Not a dynamic wallpaper"));
 
         auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
         auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
