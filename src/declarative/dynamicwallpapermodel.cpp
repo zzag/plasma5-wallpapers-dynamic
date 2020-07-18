@@ -6,9 +6,11 @@
 
 #include "dynamicwallpapermodel.h"
 #include "dynamicwallpapercrawler.h"
+#include "dynamicwallpaperprober.h"
 
 #include <KAboutData>
 #include <KConfigGroup>
+#include <KLocalizedString>
 #include <KPackage/PackageLoader>
 #include <KSharedConfig>
 
@@ -489,7 +491,22 @@ void DynamicWallpaperModel::purge()
  */
 void DynamicWallpaperModel::add(const QUrl &fileUrl)
 {
+    DynamicWallpaperProber *prober = new DynamicWallpaperProber(fileUrl, this);
+    connect(prober, &DynamicWallpaperProber::finished,
+            this, &DynamicWallpaperModel::handleProberFinished);
+    connect(prober, &DynamicWallpaperProber::failed,
+            this, &DynamicWallpaperModel::handleProberFailed);
+    prober->start(QThread::LowestPriority);
+}
+
+void DynamicWallpaperModel::handleProberFinished(const QUrl &fileUrl)
+{
     d->addCustomWallpaper(fileUrl);
+}
+
+void DynamicWallpaperModel::handleProberFailed(const QUrl &fileUrl)
+{
+    emit errorOccurred(i18n("%1 is not a dynamic wallpaper", fileUrl.toLocalFile()));
 }
 
 /*!

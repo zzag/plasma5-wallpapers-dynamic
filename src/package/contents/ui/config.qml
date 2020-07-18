@@ -125,6 +125,14 @@ ColumnLayout {
         }
     }
 
+    Kirigami.InlineMessage {
+        id: errorContainer
+        Layout.fillWidth: true
+        showCloseButton: true
+        type: Kirigami.MessageType.Error
+        visible: false
+    }
+
     KCM.GridView {
         id: wallpapersGrid
         Layout.fillWidth: true
@@ -224,5 +232,13 @@ ColumnLayout {
         id: wallpapersModel
     }
 
-    Component.onCompleted: wallpapersModel.reload()
+    function showErrorMessage(message) {
+        errorContainer.text = message;
+        errorContainer.visible = true;
+    }
+
+    Component.onCompleted: {
+        wallpapersModel.errorOccurred.connect(showErrorMessage);
+        wallpapersModel.reload()
+    }
 }

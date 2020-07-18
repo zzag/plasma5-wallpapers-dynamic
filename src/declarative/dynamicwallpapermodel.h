@@ -48,6 +48,13 @@ public Q_SLOTS:
     void unscheduleRemove(const QModelIndex &index);
     void remove(const QModelIndex &index);
 
+private Q_SLOTS:
+    void handleProberFinished(const QUrl &fileUrl);
+    void handleProberFailed(const QUrl &fileUrl);
+
+Q_SIGNALS:
+    void errorOccurred(const QString &text);
+
 private:
     friend class DynamicWallpaperModelPrivate;
     QScopedPointer<DynamicWallpaperModelPrivate> d;

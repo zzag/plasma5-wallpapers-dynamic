@@ -17,6 +17,7 @@ set(dynamicwallpaperplugin_SOURCES
     dynamicwallpaperpreviewcache.cpp
     dynamicwallpaperpreviewjob.cpp
     dynamicwallpaperpreviewprovider.cpp
+    dynamicwallpaperprober.cpp
 )
 
 add_library(plasma_wallpaper_dynamicplugin ${dynamicwallpaperplugin_SOURCES})
