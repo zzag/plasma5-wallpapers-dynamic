@@ -53,7 +53,7 @@ void KLinuxSystemClockMonitorEngine::handleTimerCancelled()
 {
     uint64_t expirationCount;
     const ssize_t readCount = read(m_fd, &expirationCount, sizeof(expirationCount));
-    if (readCount == -1) {
+    if (readCount == -1 && errno != ECANCELED) {
         qWarning("Failed to read the timerfd expiration count: %s", strerror(errno));
         return;
     }
