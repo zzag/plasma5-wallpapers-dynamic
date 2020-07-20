@@ -52,7 +52,11 @@ KLinuxSystemClockMonitorEngine::~KLinuxSystemClockMonitorEngine()
 void KLinuxSystemClockMonitorEngine::handleTimerCancelled()
 {
     uint64_t expirationCount;
-    read(m_fd, &expirationCount, sizeof(expirationCount));
+    const ssize_t readCount = read(m_fd, &expirationCount, sizeof(expirationCount));
+    if (readCount == -1) {
+        qWarning("Failed to read the timerfd expiration count: %s", strerror(errno));
+        return;
+    }
 
     emit systemClockChanged();
 }
