@@ -6,6 +6,11 @@ A wallpaper plugin for KDE Plasma that continuously updates the desktop backgrou
 based on the current time in your location.
 
 
+## Additional Wallpapers
+
+More dynamic wallpapers can be found at https://github.com/karmanyaahm/awesome-plasma5-dynamic-wallpapers.
+
+
 ## Building From Git
 
 In order to build this wallpaper plugin from source code, you need to install a
