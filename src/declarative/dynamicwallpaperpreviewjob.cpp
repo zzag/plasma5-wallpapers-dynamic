@@ -151,10 +151,9 @@ DynamicWallpaperPreviewJob::DynamicWallpaperPreviewJob(const QString &fileName, 
     : d(new DynamicWallpaperPreviewJobPrivate)
 {
     d->watcher = new QFutureWatcher<DynamicWallpaperImageAsyncResult>(this);
-    d->watcher->setFuture(QtConcurrent::run(makePreview, fileName, requestedSize));
-
     connect(d->watcher, &QFutureWatcher<DynamicWallpaperImageAsyncResult>::finished,
             this, &DynamicWallpaperPreviewJob::handleFinished);
+    d->watcher->setFuture(QtConcurrent::run(makePreview, fileName, requestedSize));
 }
 
 /*!

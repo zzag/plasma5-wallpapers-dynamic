@@ -56,10 +56,9 @@ DynamicWallpaperAsyncImageResponse::DynamicWallpaperAsyncImageResponse(const QSt
                                                                        const QSize &requestedSize)
 {
     m_watcher = new QFutureWatcher<DynamicWallpaperImageAsyncResult>(this);
-    m_watcher->setFuture(QtConcurrent::run(load, fileName, index, requestedSize));
-
     connect(m_watcher, &QFutureWatcher<DynamicWallpaperImageAsyncResult>::finished,
             this, &DynamicWallpaperAsyncImageResponse::handleFinished);
+    m_watcher->setFuture(QtConcurrent::run(load, fileName, index, requestedSize));
 }
 
 void DynamicWallpaperAsyncImageResponse::handleFinished()
