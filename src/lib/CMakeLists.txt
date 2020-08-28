@@ -80,6 +80,11 @@ install(TARGETS kdynamicwallpaper
     EXPORT KDynamicWallpaperTargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 )
 
+install(EXPORT KDynamicWallpaperTargets
+    NAMESPACE KDynamicWallpaper::
+    DESTINATION ${CMAKECONFIG_INSTALL_DIR}
+    FILE KDynamicWallpaperTargets.cmake)
+
 install(FILES ${dynamicwallpaperlib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/kdynamicwallpaper_export.h
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KDynamicWallpaper
     COMPONENT Devel
