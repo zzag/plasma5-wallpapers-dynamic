@@ -28,6 +28,7 @@ target_link_libraries(plasma_wallpaper_dynamicplugin
     Qt5::Gui
     Qt5::Positioning
     Qt5::Qml
+    Qt5::Quick
 
     KF5::ConfigCore
     KF5::I18n

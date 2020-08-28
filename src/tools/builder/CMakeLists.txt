@@ -9,6 +9,7 @@ set(builder_SOURCES
 )
 
 set(builder_LIBRARIES
+    KF5::I18n
     libexif::libexif
     KDynamicWallpaper::KDynamicWallpaper
 )

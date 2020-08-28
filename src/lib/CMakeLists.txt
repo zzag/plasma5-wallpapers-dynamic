@@ -50,13 +50,15 @@ target_include_directories(kdynamicwallpaper PUBLIC
 )
 
 target_link_libraries(kdynamicwallpaper
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Positioning
-    Qt5::Quick
-    Qt5::Xml
-    KF5::I18n
-    libheif::libheif
+    PUBLIC
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Positioning
+
+    PRIVATE
+        Qt5::Xml
+        KF5::I18n
+        libheif::libheif
 )
 
 set(CMAKECONFIG_INSTALL_DIR ${KDE_INSTALL_LIBDIR}/cmake/KDynamicWallpaper)
