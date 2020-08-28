@@ -63,22 +63,18 @@ set(CMAKECONFIG_INSTALL_DIR ${KDE_INSTALL_LIBDIR}/cmake/KDynamicWallpaper)
 
 write_basic_config_version_file(${CMAKE_CURRENT_BINARY_DIR}/KDynamicWallpaperConfigVersion.cmake
     VERSION "${PROJECT_VERSION}"
-    COMPATIBILITY AnyNewerVersion
-)
+    COMPATIBILITY AnyNewerVersion)
+
 configure_package_config_file(KDynamicWallpaperConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/KDynamicWallpaperConfig.cmake"
-    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
-)
+    INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR})
+
+install(TARGETS kdynamicwallpaper EXPORT KDynamicWallpaperTargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/KDynamicWallpaperConfig.cmake
-    DESTINATION ${CMAKECONFIG_INSTALL_DIR}
-)
+    DESTINATION ${CMAKECONFIG_INSTALL_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/KDynamicWallpaperConfigVersion.cmake
-    DESTINATION ${CMAKECONFIG_INSTALL_DIR}
-)
-install(TARGETS kdynamicwallpaper
-    EXPORT KDynamicWallpaperTargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
-)
+    DESTINATION ${CMAKECONFIG_INSTALL_DIR})
 
 install(EXPORT KDynamicWallpaperTargets
     NAMESPACE KDynamicWallpaper::
@@ -87,5 +83,4 @@ install(EXPORT KDynamicWallpaperTargets
 
 install(FILES ${dynamicwallpaperlib_HEADERS} ${CMAKE_CURRENT_BINARY_DIR}/kdynamicwallpaper_export.h
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KDynamicWallpaper
-    COMPONENT Devel
-)
+    COMPONENT Devel)
