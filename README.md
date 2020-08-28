@@ -68,6 +68,16 @@ To install run
 sudo make install
 ```
 
+
+## Components
+
+This project consists of the following components:
+
+* A C++ library that provides an easy way to read and write dynamic wallpapers
+* A command line tool for creating dynamic wallpapers
+* A plugin for KDE Plasma 5 that is responsible for displaying dynamic wallpapers
+
+
 ## How to Use It
 
 Right-click a blank area of the desktop and choose "Configure Desktop...", select
