@@ -36,7 +36,7 @@ Ubuntu:
 ```sh
 sudo apt install cmake extra-cmake-modules git libkf5package-dev libkf5plasma-dev \
     libkf5i18n-dev qtbase5-dev qtdeclarative5-dev qtpositioning5-dev gettext \
-    qml-module-qtpositioning libexif-dev libheif-dev
+    qml-module-qtpositioning libexif-dev libheif-dev build-essential
 ```
 
 Once all prerequisites are installed, you need to grab the source code
