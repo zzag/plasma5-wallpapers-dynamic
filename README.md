@@ -1,7 +1,5 @@
 # Dynamic Wallpaper Engine
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/plasma5-wallpapers-dynamic.svg)](https://repology.org/project/plasma5-wallpapers-dynamic/versions)
-
 A wallpaper plugin for KDE Plasma that continuously updates the desktop background
 based on the current time in your location.
 
@@ -9,6 +7,21 @@ based on the current time in your location.
 ## Additional Wallpapers
 
 More dynamic wallpapers can be found at https://github.com/karmanyaahm/awesome-plasma5-dynamic-wallpapers.
+
+
+## Installation
+
+Arch Linux
+
+```
+yay -S plasma5-wallpapers-dynamic
+```
+
+Ubuntu 20.10
+
+```
+sudo apt install plasma-wallpaper-dynamic
+```
 
 
 ## Building From Git
