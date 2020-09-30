@@ -55,7 +55,6 @@ Item {
         anchors.fill: parent
         asynchronous: true
         autoTransform: true
-        cache: false
         fillMode: root.fillMode
         source: root.bottomLayer
     }
@@ -65,7 +64,6 @@ Item {
         anchors.fill: parent
         asynchronous: true
         autoTransform: true
-        cache: false
         fillMode: root.fillMode
         opacity: root.blendFactor
         source: root.topLayer

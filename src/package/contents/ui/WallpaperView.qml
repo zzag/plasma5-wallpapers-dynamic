@@ -110,7 +110,10 @@ StackView {
             fillMode: fillMode
         });
 
-        root.__nextItem.statusChanged.connect(root.__swap);
+        if (root.__nextItem.status == Image.Loading)
+            root.__nextItem.statusChanged.connect(root.__swap);
+        else
+            root.__swap();
     }
 
     function reblend() {
