@@ -55,6 +55,7 @@ Item {
         anchors.fill: parent
         asynchronous: true
         autoTransform: true
+        cache: wallpaper.configuration.Cache
         fillMode: root.fillMode
         source: root.bottomLayer
     }
@@ -64,6 +65,7 @@ Item {
         anchors.fill: parent
         asynchronous: true
         autoTransform: true
+        cache: wallpaper.configuration.Cache
         fillMode: root.fillMode
         opacity: root.blendFactor
         source: root.topLayer

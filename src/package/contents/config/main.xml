@@ -38,5 +38,9 @@
       <min>100</min>
       <max>1000</max>
     </entry>
+
+    <entry name="Cache" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 </kcfg>
