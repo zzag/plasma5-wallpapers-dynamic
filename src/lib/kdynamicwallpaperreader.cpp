@@ -227,7 +227,7 @@ static QColorSpace colorProfileForImage(heif_image *image)
         break;
     case heif_color_profile_type_prof:
     case heif_color_profile_type_rICC: {
-        const size_t iccProfileSize = heif_image_get_color_profile_type(image);
+        const size_t iccProfileSize = heif_image_get_raw_color_profile_size(image);
         QByteArray iccProfile(iccProfileSize, 0);
         const heif_error error = heif_image_get_raw_color_profile(image, iccProfile.data());
         if (error.code != heif_error_Ok)
