@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 find_program(GETTEXT_MSGFMT_EXECUTABLE msgfmt)
 
 if (NOT GETTEXT_MSGFMT_EXECUTABLE)

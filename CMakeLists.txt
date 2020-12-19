@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.0)
 project(plasma5-wallpapers-dynamic)
 
