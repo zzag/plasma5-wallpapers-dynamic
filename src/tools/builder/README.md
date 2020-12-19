@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # kdynamicwallpaperbuilder
 
 kdynamicwallpaperbuilder is a command line tool designed for creating dynamic wallpapers from a

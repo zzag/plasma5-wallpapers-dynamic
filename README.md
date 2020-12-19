@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # Dynamic Wallpaper Engine
 
 A wallpaper plugin for KDE Plasma that continuously updates the desktop background
