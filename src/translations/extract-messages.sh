@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+# SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 cd "$(dirname $0)"
 BASEDIR="$(pwd)"
 SRCDIR="$(dirname $BASEDIR)"
