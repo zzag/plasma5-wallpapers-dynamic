@@ -30,7 +30,7 @@
 # exported library, it must be made available by the package config file.
 
 # SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: BSD-3-Clause
 
 find_package(PkgConfig)
 pkg_check_modules(PKG_libexif QUIET libexif)
