@@ -1,6 +1,6 @@
-# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
-# Federico Robin <bisio.97@gmail.com>, 2019.
+# SPDX-FileCopyrightText: 2019 Federico Robin <bisio.97@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"

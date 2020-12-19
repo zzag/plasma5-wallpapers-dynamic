@@ -1,6 +1,6 @@
-# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
-# Vlad Zahorodnii <vladzzag@gmail.com>, 2019, 2020.
+# SPDX-FileCopyrightText: 2019, 2020 Vlad Zahorodnii <vladzzag@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
