@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 <RCC>
     <qresource prefix="/kdynamicwallpaper/xmp">
         <file>metadata.xml</file>

@@ -1,5 +1,9 @@
 #compdef kdynamicwallpaperbuilder
 
+# SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 _arguments -s \
     {-v,--version}'[Show the version information and quit]' \
     {-h,--help}'[Show help message and quit]' \

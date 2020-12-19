@@ -1,5 +1,9 @@
 # kdynamicwallpaperbuilder(1) completion
 
+# SPDX-FileCopyrightText: 2020 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 complete -f -c kdynamicwallpaperbuilder
 complete -c kdynamicwallpaperbuilder -s v -l version -d "Print the version information and quit"
 complete -c kdynamicwallpaperbuilder -s h -l help -d "Show help message and quit"
