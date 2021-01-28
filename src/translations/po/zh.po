@@ -222,24 +222,24 @@ msgstr "添加壁纸..."
 #: tools/builder/main.cpp:26
 #, kde-format
 msgid "Quality of the encoded images (from 0 to 100)"
-msgstr ""
+msgstr "图像编码质量 (从 0 到 100)"
 
 #: tools/builder/main.cpp:30
 #, kde-format
 msgid "Write output to <file>"
-msgstr ""
+msgstr "输出文件为 <file>"
 
 #: tools/builder/main.cpp:34
 #, kde-format
 msgid "Discard embedded color profile"
-msgstr ""
+msgstr "不放入色彩配置文件"
 
 #: tools/builder/main.cpp:37
 #, kde-format
 msgid "Use lossless coding"
-msgstr ""
+msgstr "使用无损编码"
 
 #: tools/builder/main.cpp:42
 #, kde-format
 msgid "Description file to use"
-msgstr ""
+msgstr "要构建的描述文件"
