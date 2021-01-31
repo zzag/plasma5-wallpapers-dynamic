@@ -6,9 +6,11 @@ Name[it]=Dinamico
 Name[nl]=Dynamisch
 Name[ru]=Динамический
 Name[uk]=Динамічний
+Name[zh]=动态
 Comment=Dynamic wallpaper
 Comment[ru]=Динамические обои
 Comment[uk]=Динамічні шпалери
+Comment[zh]=动态壁纸
 Type=Service
 
 X-KDE-ServiceTypes=Plasma/Wallpaper
