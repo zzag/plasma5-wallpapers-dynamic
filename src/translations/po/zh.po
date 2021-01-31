@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# SPDX-FileCopyrightText: 2019, 2020 Vlad Zahorodnii <vladzzag@gmail.com>
-# wbs <wbs306@gmail.com>, 2021.
+# SPDX-FileCopyrightText: 2021 wbs <wbs306@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
