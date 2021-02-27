@@ -115,13 +115,20 @@ ColumnLayout {
         }
 
         QtControls.SpinBox {
+            property bool __initialized: false
             id: updateIntervalSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Update Every:")
             maximumValue: 360
             minimumValue: 1
             suffix: i18ndp("plasma_wallpaper_com.github.zzag.dynamic", " minute", " minutes", value)
-            onValueChanged: cfg_UpdateInterval = value * 60000
-            Component.onCompleted: value = wallpaper.configuration.UpdateInterval / 60000
+            onValueChanged: {
+                if (__initialized)
+                    cfg_UpdateInterval = value * 60000;
+            }
+            Component.onCompleted: {
+                value = cfg_UpdateInterval / 60000;
+                __initialized = true;
+            }
         }
     }
 
