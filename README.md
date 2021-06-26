@@ -17,13 +17,24 @@ More dynamic wallpapers can be found at https://github.com/karmanyaahm/awesome-p
 
 ## Installation
 
-Arch Linux
+#### Arch Linux
 
 ```
 yay -S plasma5-wallpapers-dynamic
 ```
 
-Ubuntu 20.10
+#### Fedora
+
+Add the [RPM Fusion Free](https://rpmfusion.org/) repository and install `plasma-wallpapers-dynamic` package
+
+```
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install plasma-wallpapers-dynamic
+```
+
+In order to use the dynamic wallpaper builder tool, install `plasma-wallpapers-dynamic-builder` package.
+
+#### Ubuntu 20.10
 
 ```
 sudo apt install plasma-wallpaper-dynamic
