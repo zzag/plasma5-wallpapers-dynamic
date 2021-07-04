@@ -7,7 +7,6 @@
 import QtQuick 2.5
 import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.0
-import QtQuick.Controls 1.0 as QtControls
 import QtQuick.Controls 2.3 as QtControls2
 import QtPositioning 5.12
 
@@ -76,41 +75,41 @@ ColumnLayout {
             text: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Automatically detect location")
         }
 
-        QtControls.SpinBox {
+        DecimalSpinBox {
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Latitude:")
             enabled: !autoDetectLocationCheckBox.checked
             visible: autoDetectLocationCheckBox.checked
             decimals: 2
-            minimumValue: -90
-            maximumValue: 90
+            from: -90
+            to: 90
             value: automaticLocationProvider.position.coordinate.latitude
         }
 
-        QtControls.SpinBox {
+        DecimalSpinBox {
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Longitude:")
             enabled: !autoDetectLocationCheckBox.checked
             visible: autoDetectLocationCheckBox.checked
             decimals: 2
-            minimumValue: -180
-            maximumValue: 180
+            from: -180
+            to: 180
             value: automaticLocationProvider.position.coordinate.longitude
         }
 
-        QtControls.SpinBox {
+        DecimalSpinBox {
             id: latitudeSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Latitude:")
             decimals: 2
-            minimumValue: -90
-            maximumValue: 90
+            from: -90
+            to: 90
             visible: !autoDetectLocationCheckBox.checked
         }
 
-        QtControls.SpinBox {
+        DecimalSpinBox {
             id: longitudeSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Longitude:")
             decimals: 2
-            minimumValue: -180
-            maximumValue: 180
+            from: -180
+            to: 180
             visible: !autoDetectLocationCheckBox.checked
         }
 
