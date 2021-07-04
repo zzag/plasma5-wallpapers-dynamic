@@ -20,7 +20,7 @@ ColumnLayout {
 
     property int cfg_FillMode
     property string cfg_Image
-    property int cfg_UpdateInterval
+    property alias cfg_UpdateInterval: updateIntervalSpinBox.value
     property alias cfg_AutoDetectLocation: autoDetectLocationCheckBox.checked
     property alias cfg_ManualLatitude: latitudeSpinBox.value
     property alias cfg_ManualLongitude: longitudeSpinBox.value
@@ -114,20 +114,27 @@ ColumnLayout {
             visible: !autoDetectLocationCheckBox.checked
         }
 
-        QtControls.SpinBox {
-            property bool __initialized: false
+        QtControls2.SpinBox {
             id: updateIntervalSpinBox
             Kirigami.FormData.label: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Update Every:")
-            maximumValue: 360
-            minimumValue: 1
-            suffix: i18ndp("plasma_wallpaper_com.github.zzag.dynamic", " minute", " minutes", value)
-            onValueChanged: {
-                if (__initialized)
-                    cfg_UpdateInterval = value * 60000;
+            to: minutesToMilliseconds(360)
+            from: minutesToMilliseconds(1)
+            stepSize: minutesToMilliseconds(1)
+
+            function millisecondsToMinutes(milliseconds) {
+                return milliseconds / 60000;
             }
-            Component.onCompleted: {
-                value = cfg_UpdateInterval / 60000;
-                __initialized = true;
+            function minutesToMilliseconds(minutes) {
+                return minutes * 60000;
+            }
+
+            valueFromText: function(text, locale) {
+                return minutesToMilliseconds(Number.fromLocaleString(locale, text));
+            }
+            textFromValue: function(value, locale) {
+                const minutes = millisecondsToMinutes(value);
+                return minutes.toLocaleString(locale, 'f', 0) +
+                        i18ndp("plasma_wallpaper_com.github.zzag.dynamic", " minute", " minutes", minutes);
             }
         }
     }
