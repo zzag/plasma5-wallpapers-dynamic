@@ -1,6 +1,7 @@
 [Desktop Entry]
 Icon=preferences-desktop-wallpaper
 Name=Dynamic
+Name[de]=Dynamisch
 Name[fr]=Dynamique
 Name[it]=Dinamico
 Name[nl]=Dynamisch
@@ -9,6 +10,7 @@ Name[ru]=Динамический
 Name[uk]=Динамічний
 Name[zh]=动态
 Comment=Dynamic wallpaper
+Comment[de]=Dynamischer Hintergrund
 Comment[pt]=Papel de parede dinâmico
 Comment[ru]=Динамические обои
 Comment[uk]=Динамічні шпалери
