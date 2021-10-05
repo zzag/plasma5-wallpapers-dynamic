@@ -1,7 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR This file is copyright:
-# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# SPDX-FileCopyrightText: 2021 Lorenz Hoffmann <hoffmann_lorenz@protonmail.com>
 #
 #, fuzzy
 msgid ""
@@ -179,7 +178,7 @@ msgstr[0] " Minute"
 msgstr[1] " Minuten"
 
 #: package/contents/ui/config.qml:144
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "<image> by <author> (<license>)"
 msgid "By %1 (%2)"
 msgstr "von %1 (%2)"
@@ -188,7 +187,7 @@ msgstr "von %1 (%2)"
 #, kde-format
 msgctxt "<image> (<license>)"
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 # Assuming this is used to open the folder where the wallpaper is located
 #: package/contents/ui/config.qml:152
