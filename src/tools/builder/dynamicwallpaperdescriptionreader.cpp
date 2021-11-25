@@ -100,7 +100,7 @@ bool DynamicWallpaperDescriptionReaderPrivate::read(int index)
 
     QString absoluteFileName = fileName.toString();
 
-    if (absoluteFileName == "") {
+    if (absoluteFileName.isEmpty()) {
         setError(i18n("FileName value was not specified for one or more of the images. Check your json file!"));
         return false;
     }
