@@ -99,6 +99,12 @@ bool DynamicWallpaperDescriptionReaderPrivate::read(int index)
     const QJsonValue fileName = descriptor[QLatin1String("FileName")];
 
     QString absoluteFileName = fileName.toString();
+    
+    if (absoluteFileName == "") {
+        setError(i18n("FileName value was not specified for one or more of the images. Check your json file!"));
+        return false;
+    }
+    
     if (!QFileInfo(fileName.toString()).isAbsolute())
         absoluteFileName = resolveFileName(fileName.toString());
 
