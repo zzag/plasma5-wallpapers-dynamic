@@ -87,7 +87,7 @@ void DynamicWallpaperCrawler::visitFolder(const QString &filePath)
 {
     QDir currentFolder(filePath);
     currentFolder.setFilter(QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Readable | QDir::AllDirs | QDir::Files);
-    currentFolder.setNameFilters({ QStringLiteral("*.heic"), QStringLiteral("*.heif") });
+    currentFolder.setNameFilters({ QStringLiteral("*.avif") });
 
     const QFileInfoList fileInfos = currentFolder.entryInfoList();
     for (const QFileInfo &fileInfo : fileInfos) {
@@ -105,13 +105,10 @@ void DynamicWallpaperCrawler::visitFolder(const QString &filePath)
 
 void DynamicWallpaperCrawler::visitFile(const QString &filePath)
 {
-    // Not every heif file is a dynamic wallpaper, we need to read the file contents to
+    // Not every avif file is a dynamic wallpaper, we need to read the file contents to
     // determine whether filePath actually points to a dynamic wallpaper file.
     KDynamicWallpaperReader reader(filePath);
-
-    // If the first image has valid metadata, assume that it's indeed a dynamic wallpaper.
-    KDynamicWallpaperMetaData metaData = reader.metaDataAt(0);
-    if (metaData.isValid())
+    if (reader.error() == KDynamicWallpaperReader::NoError)
         emit foundFile(filePath, token());
 }
 

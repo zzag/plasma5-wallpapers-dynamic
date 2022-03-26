@@ -16,13 +16,12 @@
 static DynamicWallpaperImageAsyncResult load(const QString &fileName, int index, const QSize &requestedSize)
 {
     const KDynamicWallpaperReader reader(fileName);
-    QImage image = reader.imageAt(index);
-
     if (reader.error() != KDynamicWallpaperReader::NoError)
         return DynamicWallpaperImageAsyncResult(reader.errorString());
 
     // If the requested image size is valid, scale the image without preserving the
     // aspect ratio.
+    QImage image = reader.image(index);
     if (requestedSize.isValid())
         image = image.scaled(requestedSize);
 

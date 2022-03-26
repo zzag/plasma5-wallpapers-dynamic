@@ -7,15 +7,16 @@
 #include "kdynamicwallpaperreader.h"
 #include "kdynamicwallpapermetadata.h"
 
-#include <KLocalizedString>
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-#include <QColorSpace>
-#endif
+#include <QDomDocument>
+#include <QDomNode>
 #include <QFile>
 #include <QImage>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QScopeGuard>
+#include <QThread>
 
-#include <libheif/heif.h>
+#include <avif/avif.h>
 
 /*!
  * \class KDynamicWallpaperReader
@@ -28,265 +29,170 @@
  * get a human readable description of what went wrong.
  */
 
-static QIODevice *deviceFromUserData(void *userData)
-{
-    return static_cast<QIODevice *>(userData);
-}
-
-static int64_t readerGetPositionCallback(void *userData)
-{
-    const QIODevice *device = deviceFromUserData(userData);
-    return device->pos();
-}
-
-static int readerReadCallback(void *data, size_t size, void *userData)
-{
-    QIODevice *device = deviceFromUserData(userData);
-    const qint64 readCount = device->read(static_cast<char *>(data), size);
-    if (readCount == -1)
-        return 1;
-    return size_t(readCount) != size; // 0 indicates success
-}
-
-static int readerSeekCallback(int64_t position, void *userData)
-{
-    QIODevice *device = deviceFromUserData(userData);
-    const bool ok = device->seek(position);
-    return !ok; // 0 indicates success
-}
-
-static heif_reader_grow_status readerWaitForFileSizeCallback(int64_t size, void *userData)
-{
-    const QIODevice *device = deviceFromUserData(userData);
-    if (device->size() < size)
-        return heif_reader_grow_status_size_beyond_eof;
-    return heif_reader_grow_status_size_reached;
-}
-
-static const heif_reader s_reader = {
-    /* .reader_api_version = */ 1,
-    /* .get_position = */ readerGetPositionCallback,
-    /* .read = */ readerReadCallback,
-    /* .seek = */ readerSeekCallback,
-    /* .wait_for_file_size = */ readerWaitForFileSizeCallback,
-};
-
 class KDynamicWallpaperReaderPrivate
 {
 public:
     KDynamicWallpaperReaderPrivate();
 
-    bool ensureOpen();
     bool open();
     void close();
 
-    bool checkImageIndex(int imageIndex) const;
-
-    KDynamicWallpaperMetaData metaDataAt(int imageIndex);
-    QImage imageAt(int imageIndex);
+    QImage fetch(int imageIndex);
 
     QIODevice *device;
-    heif_context *context;
+    QByteArray buffer;
+    avifDecoder *decoder;
     KDynamicWallpaperReader::WallpaperReaderError wallpaperReaderError;
     QString errorString;
-    QVector<heif_item_id> images;
+    QList<KDynamicWallpaperMetaData> metaData;
     bool isDeviceForeign;
 };
 
 KDynamicWallpaperReaderPrivate::KDynamicWallpaperReaderPrivate()
     : device(nullptr)
-    , context(nullptr)
+    , decoder(nullptr)
     , wallpaperReaderError(KDynamicWallpaperReader::NoError)
     , isDeviceForeign(false)
 {
 }
 
-bool KDynamicWallpaperReaderPrivate::ensureOpen()
+static QList<KDynamicWallpaperMetaData> parseMetaData(const QByteArray &xmp)
 {
-    if (context)
-        return true;
-    return open();
+    QDomDocument xmpDocument;
+    xmpDocument.setContent(xmp);
+    if (xmpDocument.isNull())
+        return QList<KDynamicWallpaperMetaData>();
+
+    const QString attributeName = QStringLiteral("plasma:dynamic-wallpaper-solar");
+    const QDomNodeList descriptionNodes = xmpDocument.elementsByTagName(QStringLiteral("rdf:Description"));
+    for (int i = 0; i < descriptionNodes.count(); ++i) {
+        QDomElement descriptionNode = descriptionNodes.at(i).toElement();
+        const QByteArray base64 = descriptionNode.attribute(attributeName).toUtf8();
+        if (base64.isEmpty())
+            continue;
+
+        const QJsonArray array = QJsonDocument::fromJson(QByteArray::fromBase64(base64)).array();
+        QList<KDynamicWallpaperMetaData> result;
+        for (int i = 0; i < array.size(); ++i) {
+            KDynamicWallpaperMetaData metaData = KDynamicWallpaperMetaData::fromJson(array[i].toObject());
+            if (metaData.isValid())
+                result.append(metaData);
+        }
+        return result;
+    }
+
+    return QList<KDynamicWallpaperMetaData>();
 }
 
 bool KDynamicWallpaperReaderPrivate::open()
 {
     if (!device) {
-        wallpaperReaderError = KDynamicWallpaperReader::DeviceError;
-        errorString = i18n("No assigned device");
+        wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+        errorString = QStringLiteral("No assigned device");
         return false;
     }
 
     if (device->isOpen()) {
         if (!(device->openMode() & QIODevice::ReadOnly)) {
-            wallpaperReaderError = KDynamicWallpaperReader::DeviceError;
-            errorString = i18n("The device is not open for reading");
+            wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+            errorString = QStringLiteral("The device is not open for reading");
             return false;
         }
     } else {
         if (!device->open(QIODevice::ReadOnly)) {
-            wallpaperReaderError = KDynamicWallpaperReader::DeviceError;
+            wallpaperReaderError = KDynamicWallpaperReader::OpenError;
             errorString = device->errorString();
             return false;
         }
     }
 
-    context = heif_context_alloc();
-    if (!context) {
-        wallpaperReaderError = KDynamicWallpaperReader::UnknownError;
-        errorString = i18n("Failed to allocate HEIF context");
+    decoder = avifDecoderCreate();
+    decoder->maxThreads = QThread::idealThreadCount();
+
+    auto cleanup = qScopeGuard([this]() {
+        avifDecoderDestroy(decoder);
+        decoder = nullptr;
+    });
+
+    buffer = device->readAll();
+    avifResult result = avifDecoderSetIOMemory(decoder, reinterpret_cast<const uint8_t *>(buffer.constData()), buffer.size());
+    if (result != AVIF_RESULT_OK) {
+        wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+        errorString = QString::fromUtf8(avifResultToString(result));
         return false;
     }
 
-    const heif_error error = heif_context_read_from_reader(context, &s_reader, device, nullptr);
-    if (error.code != heif_error_Ok) {
-        wallpaperReaderError = KDynamicWallpaperReader::InvalidDataError;
-        errorString = i18n("Invalid HEIF file: %1", error.message);
-        heif_context_free(context);
-        context = nullptr;
+    result = avifDecoderParse(decoder);
+    if (result != AVIF_RESULT_OK) {
+        wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+        errorString = QString::fromUtf8(avifResultToString(result));
         return false;
     }
 
-    const int imageCount = heif_context_get_number_of_top_level_images(context);
-    images.resize(imageCount);
-    heif_context_get_list_of_top_level_image_IDs(context, images.data(), imageCount);
+    if (!decoder->image->xmp.size) {
+        wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+        errorString = QStringLiteral("No metadata");
+        return false;
+    }
 
+    metaData = parseMetaData(QByteArray::fromRawData(reinterpret_cast<const char *>(decoder->image->xmp.data), decoder->image->xmp.size));
+    if (metaData.isEmpty()) {
+        wallpaperReaderError = KDynamicWallpaperReader::OpenError;
+        errorString = QStringLiteral("No metadata");
+        return false;
+    }
+
+    cleanup.dismiss();
     return true;
 }
 
 void KDynamicWallpaperReaderPrivate::close()
 {
-    if (context)
-        heif_context_free(context);
+    if (decoder)
+        avifDecoderDestroy(decoder);
     if (!isDeviceForeign)
         device->deleteLater();
 
-    context = nullptr;
+    decoder = nullptr;
     device = nullptr;
     isDeviceForeign = false;
-    images.clear();
+    buffer.clear();
 }
 
-bool KDynamicWallpaperReaderPrivate::checkImageIndex(int imageIndex) const
+QImage KDynamicWallpaperReaderPrivate::fetch(int index)
 {
-    return imageIndex >= 0 && imageIndex < images.count();
-}
-
-KDynamicWallpaperMetaData KDynamicWallpaperReaderPrivate::metaDataAt(int imageIndex)
-{
-    heif_image_handle *handle;
-
-    heif_error error = heif_context_get_image_handle(context, images[imageIndex], &handle);
-    if (error.code != heif_error_Ok) {
-        wallpaperReaderError = KDynamicWallpaperReader::UnknownError;
-        errorString = i18n("Failed to get image handle: %1", error.message);
-        return KDynamicWallpaperMetaData();
-    }
-
-    const char *filter = "mime";
-    const int blockCount = heif_image_handle_get_number_of_metadata_blocks(handle, filter);
-    if (!blockCount) {
-        heif_image_handle_release(handle);
-        return KDynamicWallpaperMetaData();
-    }
-
-    QVector<heif_item_id> blockIds(blockCount);
-    heif_image_handle_get_list_of_metadata_block_IDs(handle, filter, blockIds.data(), blockCount);
-
-    KDynamicWallpaperMetaData metaData;
-
-    for (const heif_item_id &blockId : blockIds) {
-        const char *contentType = heif_image_handle_get_metadata_content_type(handle, blockId);
-        if (contentType != QByteArrayLiteral("application/rdf+xml"))
-            continue;
-
-        const size_t blockSize = heif_image_handle_get_metadata_size(handle, blockId);
-        QByteArray block(blockSize, 0);
-
-        const heif_error error = heif_image_handle_get_metadata(handle, blockId, block.data());
-        if (error.code != heif_error_Ok)
-            continue;
-
-        metaData = KDynamicWallpaperMetaData::fromXmp(block);
-        if (metaData.isValid())
-            break;
-    }
-
-    heif_image_handle_release(handle);
-
-    return metaData;
-}
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-static QColorSpace colorProfileForImage(heif_image *image)
-{
-    QColorSpace colorSpace;
-
-    switch (heif_image_get_color_profile_type(image)) {
-    case heif_color_profile_type_not_present:
-    case heif_color_profile_type_nclx:
-        break;
-    case heif_color_profile_type_prof:
-    case heif_color_profile_type_rICC: {
-        const size_t iccProfileSize = heif_image_get_raw_color_profile_size(image);
-        QByteArray iccProfile(iccProfileSize, 0);
-        const heif_error error = heif_image_get_raw_color_profile(image, iccProfile.data());
-        if (error.code != heif_error_Ok)
-            colorSpace = QColorSpace::fromIccProfile(iccProfile);
-        break; }
-    }
-
-    return colorSpace;
-}
-#endif
-
-QImage KDynamicWallpaperReaderPrivate::imageAt(int imageIndex)
-{
-    heif_image *image;
-    heif_image_handle *handle;
-    heif_error error;
-    heif_chroma chroma;
-
-    error = heif_context_get_image_handle(context, images[imageIndex], &handle);
-    if (error.code != heif_error_Ok) {
-        wallpaperReaderError = KDynamicWallpaperReader::UnknownError;
-        errorString = i18n("Failed to get image handle: %1", error.message);
+    avifResult result = avifDecoderNthImage(decoder, index);
+    if (result != AVIF_RESULT_OK) {
+        wallpaperReaderError = KDynamicWallpaperReader::ReadError;
+        errorString = QString::fromUtf8(avifResultToString(result));
         return QImage();
     }
 
-    if (heif_image_handle_has_alpha_channel(handle))
-        chroma = heif_chroma_interleaved_RGBA;
-    else
-        chroma = heif_chroma_interleaved_RGB;
+    const QImage::Format qtFormat = QImage::Format_RGB32;
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+    const avifRGBFormat avifFormat = AVIF_RGB_FORMAT_BGRA;
+#else
+    const avifRGBFormat avifFormat = AVIF_RGB_FORMAT_ARGB;
+#endif
 
-    error = heif_decode_image(handle, &image, heif_colorspace_RGB, chroma, nullptr);
-    if (error.code != heif_error_Ok) {
-        wallpaperReaderError = KDynamicWallpaperReader::UnknownError;
-        errorString = i18n("Failed to decode image: %1", error.message);
-        heif_image_handle_release(handle);
+    QImage image(decoder->image->width, decoder->image->height, qtFormat);
+
+    avifRGBImage rgb;
+    avifRGBImageSetDefaults(&rgb, decoder->image);
+    rgb.format = avifFormat;
+    rgb.rowBytes = image.bytesPerLine();
+    rgb.pixels = image.bits();
+
+    result = avifImageYUVToRGB(decoder->image, &rgb);
+    if (result != AVIF_RESULT_OK) {
+        wallpaperReaderError = KDynamicWallpaperReader::ReadError;
+        errorString = QString::fromUtf8(avifResultToString(result));
         return QImage();
     }
 
-    int stride;
-    const uint8_t *data = heif_image_get_plane_readonly(image, heif_channel_interleaved, &stride);
-    const int width = heif_image_get_width(image, heif_channel_interleaved);
-    const int height = heif_image_get_height(image, heif_channel_interleaved);
+    // TODO: color space
 
-    QImage::Format format = QImage::Format_RGB888;
-    if (chroma == heif_chroma_interleaved_RGBA)
-        format = QImage::Format_RGBA8888;
-
-    auto cleanupFunc = [](void *data) { heif_image_release(static_cast<heif_image *>(data)); };
-    QImage decodedImage(data, width, height, stride, format, cleanupFunc, image);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-    const QColorSpace colorSpace = colorProfileForImage(image);
-    if (colorSpace.isValid())
-        decodedImage.setColorSpace(colorSpace);
-#endif
-
-    heif_image_handle_release(handle); // heif_image will be destroyed by QImage
-
-    return decodedImage;
+    return image;
 }
 
 /*!
@@ -336,6 +242,7 @@ void KDynamicWallpaperReader::setDevice(QIODevice *device)
         d->close();
     d->device = device;
     d->isDeviceForeign = true;
+    d->open();
 }
 
 /*!
@@ -357,6 +264,7 @@ void KDynamicWallpaperReader::setFileName(const QString &fileName)
         d->close();
     d->device = new QFile(fileName);
     d->isDeviceForeign = false;
+    d->open();
 }
 
 /*!
@@ -375,22 +283,15 @@ QString KDynamicWallpaperReader::fileName() const
  */
 int KDynamicWallpaperReader::imageCount() const
 {
-    if (!d->ensureOpen())
-        return 0;
-    return d->images.count();
+    return d->decoder->imageCount;
 }
 
 /*!
- * Returns the KDynamicWallpaperMetaData object associated with image \p imageIndex.
- *
- * This method will return an invalid KDynamicWallpaperMetaData object if image \p imageIndex
- * has no metadata associated with it or if \p imageIndex is outside of the valid range.
+ * Returns the KDynamicWallpaperMetaData objects for the current wallpaper.
  */
-KDynamicWallpaperMetaData KDynamicWallpaperReader::metaDataAt(int imageIndex) const
+QList<KDynamicWallpaperMetaData> KDynamicWallpaperReader::metaData() const
 {
-    if (!d->ensureOpen() || !d->checkImageIndex(imageIndex))
-        return KDynamicWallpaperMetaData();
-    return d->metaDataAt(imageIndex);
+    return d->metaData;
 }
 
 /*!
@@ -398,11 +299,11 @@ KDynamicWallpaperMetaData KDynamicWallpaperReader::metaDataAt(int imageIndex) co
  *
  * This method will return a null QImage object if \p imageIndex is outside of the valid range.
  */
-QImage KDynamicWallpaperReader::imageAt(int imageIndex) const
+QImage KDynamicWallpaperReader::image(int imageIndex) const
 {
-    if (!d->ensureOpen() || !d->checkImageIndex(imageIndex))
+    if (!d->decoder)
         return QImage();
-    return d->imageAt(imageIndex);
+    return d->fetch(imageIndex);
 }
 
 /*!
@@ -419,7 +320,7 @@ KDynamicWallpaperReader::WallpaperReaderError KDynamicWallpaperReader::error() c
 QString KDynamicWallpaperReader::errorString() const
 {
     if (d->wallpaperReaderError == NoError)
-        return i18n("No error");
+        return QStringLiteral("No error");
     return d->errorString;
 }
 
@@ -431,16 +332,15 @@ bool KDynamicWallpaperReader::canRead(QIODevice *device)
     if (device->isSequential())
         return false;
 
-    const QByteArray header = device->peek(12);
-    if (header.size() != 12)
+    QByteArray header = device->peek(144);
+    if (header.size() < 12)
         return false;
 
-    const uint8_t *data = reinterpret_cast<const uint8_t *>(header.data());
-    const char *mime = heif_get_file_mime_type(data, header.size());
-    if (qstrcmp(mime, "image/heic") && qstrcmp(mime, "image/heif"))
-        return false;
+    avifROData input;
+    input.data = reinterpret_cast<const uint8_t *>(header.constData());
+    input.size = header.size();
 
-    return true;
+    return avifPeekCompatibleFileType(&input);
 }
 
 /*!

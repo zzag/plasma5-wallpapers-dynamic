@@ -2,4 +2,4 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-install(DIRECTORY "Dynamic Numbers" DESTINATION ${WALLPAPER_INSTALL_DIR})
+install(DIRECTORY "Dynamic" DESTINATION ${WALLPAPER_INSTALL_DIR})

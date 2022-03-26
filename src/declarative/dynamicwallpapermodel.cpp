@@ -332,7 +332,7 @@ void DynamicWallpaperModelPrivate::loadGenericWallpapers()
     // Load the package structure in the main thread because it seems like the PackageLoader
     // class is not thread-safe. Notice that system wallpapers are discovered in another thread
     // since we may need to read file contents in order to determine whether a given file is
-    // actually a dynamic wallpaper and not just some random heif file.
+    // actually a dynamic wallpaper and not just some random avif file.
     KPackage::PackageStructure *packageStructure =
             KPackage::PackageLoader::self()->loadPackageStructure(QStringLiteral("Wallpaper/Dynamic"));
 

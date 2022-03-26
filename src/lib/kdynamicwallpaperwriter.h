@@ -23,36 +23,17 @@ public:
         UnknownError,
     };
 
-    enum Codec {
-        HEVC,
-        AVC,
-    };
-
-    enum WriteOption {
-        PreserveColorProfile = 1 << 0,
-        Primary              = 1 << 1,
-    };
-    Q_DECLARE_FLAGS(WriteOptions, WriteOption)
-
     KDynamicWallpaperWriter();
     ~KDynamicWallpaperWriter();
 
-    void setQuality(int quality);
-    int quality() const;
+    void setMetaData(const QList<KDynamicWallpaperMetaData> &metaData);
+    QList<KDynamicWallpaperMetaData> metaData() const;
 
-    void setLossless(bool lossless);
-    bool isLossless() const;
+    void setImages(const QList<QImage> &images);
+    QList<QImage> images() const;
 
-    void setCodec(Codec codec);
-    Codec codec() const;
-
-    bool begin(QIODevice *device);
-    bool begin(const QString &fileName);
-    void end();
-    bool isActive() const;
-
-    bool write(const QImage &image, const KDynamicWallpaperMetaData &metaData,
-               WriteOptions options = WriteOptions());
+    bool flush(QIODevice *device);
+    bool flush(const QString &fileName);
 
     WallpaperWriterError error() const;
     QString errorString() const;
@@ -63,5 +44,3 @@ public:
 private:
     QScopedPointer<KDynamicWallpaperWriterPrivate> d;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(KDynamicWallpaperWriter::WriteOptions)

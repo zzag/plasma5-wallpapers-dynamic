@@ -18,10 +18,8 @@ class KDYNAMICWALLPAPER_EXPORT KDynamicWallpaperReader
 public:
     enum WallpaperReaderError {
         NoError,
-        DeviceError,
-        InvalidDataError,
-        NoMetaDataError,
-        UnknownError,
+        OpenError,
+        ReadError,
     };
 
     KDynamicWallpaperReader();
@@ -35,10 +33,10 @@ public:
     void setFileName(const QString &fileName);
     QString fileName() const;
 
-    int imageCount() const;
+    QList<KDynamicWallpaperMetaData> metaData() const;
 
-    KDynamicWallpaperMetaData metaDataAt(int imageIndex) const;
-    QImage imageAt(int imageIndex) const;
+    int imageCount() const;
+    QImage image(int imageIndex) const;
 
     WallpaperReaderError error() const;
     QString errorString() const;

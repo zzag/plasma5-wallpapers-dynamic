@@ -4,7 +4,7 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.dynamic\")
 
-set(FALLBACK_WALLPAPER "Dynamic Numbers")
+set(FALLBACK_WALLPAPER "Dynamic")
 configure_file(config-dynamicwallpaper.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-dynamicwallpaper.h)
 
 set(dynamicwallpaperplugin_SOURCES

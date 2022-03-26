@@ -120,21 +120,15 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         if (reader.error() != KDynamicWallpaperReader::NoError)
             return DynamicWallpaperImageAsyncResult(reader.errorString());
 
-        QVector<KDynamicWallpaperMetaData> metadata;
-        for (int i = 0; i < reader.imageCount(); ++i) {
-            const KDynamicWallpaperMetaData imageMetadata = reader.metaDataAt(i);
-            if (imageMetadata.isValid())
-                metadata.append(imageMetadata);
-        }
-
+        const QList<KDynamicWallpaperMetaData> metadata = reader.metaData();
         if (metadata.isEmpty())
             return DynamicWallpaperImageAsyncResult(i18n("Not a dynamic wallpaper"));
 
         auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
         auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
 
-        const QImage darkImage = reader.imageAt(std::distance(metadata.begin(), dark));
-        const QImage lightImage = reader.imageAt(std::distance(metadata.begin(), light));
+        const QImage darkImage = reader.image(std::distance(metadata.begin(), dark));
+        const QImage lightImage = reader.image(std::distance(metadata.begin(), light));
 
         preview = blend(darkImage, lightImage, 0.5);
 

@@ -41,9 +41,7 @@ DynamicWallpaperProber::~DynamicWallpaperProber()
 void DynamicWallpaperProber::run()
 {
     const KDynamicWallpaperReader reader(m_fileUrl.toLocalFile());
-    const KDynamicWallpaperMetaData metadata = reader.metaDataAt(0);
-
-    if (metadata.isValid())
+    if (reader.error() == KDynamicWallpaperReader::NoError)
         emit finished(m_fileUrl);
     else
         emit failed(m_fileUrl);
