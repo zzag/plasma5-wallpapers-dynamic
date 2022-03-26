@@ -79,19 +79,19 @@ KDynamicWallpaperMetaData DynamicWallpaperDescription::metaDataAt(int imageIndex
 DynamicWallpaperDescription DynamicWallpaperDescription::fromFile(const QString &fileName)
 {
     KDynamicWallpaperReader reader(fileName);
-    if (!reader.imageCount())
+    if (reader.error() != KDynamicWallpaperReader::NoError)
         return DynamicWallpaperDescription();
 
     DynamicWallpaperDescription description;
 
-    for (int i = 0; i < reader.imageCount(); ++i) {
-        const KDynamicWallpaperMetaData metaData = reader.metaDataAt(i);
+    const QList<KDynamicWallpaperMetaData> metaDataList = reader.metaData();
+    for (const KDynamicWallpaperMetaData &metaData : metaDataList) {
         if (!metaData.isValid())
             return DynamicWallpaperDescription();
 
         DynamicWallpaperImageHandle handle;
         handle.setFileName(fileName);
-        handle.setImageIndex(i);
+        handle.setImageIndex(metaData.index());
 
         description.addImage(handle.toUrl(), metaData);
     }

@@ -7,10 +7,9 @@ project(plasma5-wallpapers-dynamic)
 
 set(KF5_MIN_VERSION "5.66.0")
 set(QT_MIN_VERSION "5.12.0")
-set(LIBHEIF_MIN_VERSION "1.3")
 
-set(PROJECT_VERSION "1.0.0")
-set(PROJECT_VERSION_MAJOR 1)
+set(PROJECT_VERSION "4.0.0")
+set(PROJECT_VERSION_MAJOR 4)
 
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/Modules)
@@ -38,7 +37,7 @@ ecm_find_qmlmodule(QtPositioning 5.12)
 ecm_find_qmlmodule(org.kde.kcm 1.1)
 ecm_find_qmlmodule(org.kde.kirigami 2.10)
 
-find_package(libheif ${LIBHEIF_MIN_VERSION} REQUIRED)
+find_package(libavif REQUIRED)
 find_package(libexif REQUIRED)
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS

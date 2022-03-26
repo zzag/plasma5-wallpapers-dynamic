@@ -27,7 +27,7 @@ void DynamicWallpaperPackageStructure::pathChanged(KPackage::Package *package)
 {
     package->removeDefinition(QByteArrayLiteral("dynamic"));
 
-    const QStringList fileFormats { QStringLiteral(".heic"), QStringLiteral(".heif") };
+    const QStringList fileFormats { QStringLiteral(".avif") };
 
     for (const QString &fileFormat : fileFormats) {
         const QFileInfo fileInfo(package->path() + QLatin1String("contents/images/dynamic") + fileFormat);

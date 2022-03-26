@@ -214,7 +214,7 @@ ColumnLayout {
         sourceComponent: FileDialog {
             title: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Open Wallpaper")
             folder: shortcuts.home
-            nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.dynamic", "HEIF Image Files (*.heic *.heif)")]
+            nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.dynamic", "AVIF Image Files (*.avif)")]
             onAccepted: {
                 wallpapersModel.add(fileUrl);
                 wallpaperDialogLoader.active = false;

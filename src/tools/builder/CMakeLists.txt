@@ -7,7 +7,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.dynamic\
 add_subdirectory(completions)
 
 set(builder_SOURCES
-    dynamicwallpaperdescriptionreader.cpp
+    dynamicwallpaperdescription.cpp
     dynamicwallpaperexifmetadata.cpp
     main.cpp
 )

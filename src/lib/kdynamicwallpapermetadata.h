@@ -9,6 +9,7 @@
 #include "kdynamicwallpaper_export.h"
 
 #include <QByteArray>
+#include <QJsonObject>
 #include <QSharedDataPointer>
 
 class KDynamicWallpaperMetaDataPrivate;
@@ -22,10 +23,11 @@ public:
     };
 
     enum MetaDataField {
-        CrossFadeField          = 1 << 0,
-        TimeField               = 1 << 1,
-        SolarAzimuthField       = 1 << 2,
-        SolarElevationField     = 1 << 3,
+        CrossFadeField = 1 << 0,
+        TimeField = 1 << 1,
+        SolarAzimuthField = 1 << 2,
+        SolarElevationField = 1 << 3,
+        IndexField = 1 << 4,
     };
     Q_DECLARE_FLAGS(MetaDataFields, MetaDataField)
 
@@ -50,13 +52,12 @@ public:
     void setSolarAzimuth(qreal azimuth);
     qreal solarAzimuth() const;
 
-    QByteArray toJson() const;
-    QByteArray toBase64() const;
-    QByteArray toXmp() const;
+    void setIndex(int index);
+    int index() const;
 
-    static KDynamicWallpaperMetaData fromJson(const QByteArray &json);
-    static KDynamicWallpaperMetaData fromBase64(const QByteArray &base64);
-    static KDynamicWallpaperMetaData fromXmp(const QByteArray &xmp);
+    QJsonObject toJson() const;
+
+    static KDynamicWallpaperMetaData fromJson(const QJsonObject &object);
 
 private:
     QSharedDataPointer<KDynamicWallpaperMetaDataPrivate> d;

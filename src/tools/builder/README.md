@@ -72,5 +72,5 @@ kdynamicwallpaperbuilder path/to/metadata.json
 ```
 
 It may take some time before the command completes, so be patient. If everything goes well, you
-should see a new file in the current working directory `wallpaper.heic`, which can be used as a
+should see a new file in the current working directory `wallpaper.avif`, which can be used as a
 dynamic wallpaper.

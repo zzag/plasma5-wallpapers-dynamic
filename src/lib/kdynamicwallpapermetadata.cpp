@@ -6,11 +6,6 @@
 
 #include "kdynamicwallpapermetadata.h"
 
-#include <QDomDocument>
-#include <QDomNode>
-#include <QFile>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QSharedData>
 
 /*!
@@ -50,6 +45,7 @@ public:
     qreal solarAzimuth;
     qreal solarElevation;
     qreal time;
+    int index;
 };
 
 KDynamicWallpaperMetaDataPrivate::KDynamicWallpaperMetaDataPrivate()
@@ -57,6 +53,7 @@ KDynamicWallpaperMetaDataPrivate::KDynamicWallpaperMetaDataPrivate()
     , solarAzimuth(0.0)
     , solarElevation(0.0)
     , time(0.0)
+    , index(-1)
 {
 }
 
@@ -105,7 +102,7 @@ KDynamicWallpaperMetaData::MetaDataFields KDynamicWallpaperMetaData::fields() co
  */
 bool KDynamicWallpaperMetaData::isValid() const
 {
-    const MetaDataFields requiredFields = TimeField;
+    const MetaDataFields requiredFields = TimeField | IndexField;
     if ((d->presentFields & requiredFields) != requiredFields)
         return false;
 
@@ -191,120 +188,72 @@ qreal KDynamicWallpaperMetaData::solarAzimuth() const
 }
 
 /*!
+ * Sets the index of the associated wallpaper image to \p index.
+ */
+void KDynamicWallpaperMetaData::setIndex(int index)
+{
+    d->index = index;
+    d->presentFields |= IndexField;
+}
+
+/*!
+ * Returns the index of the associated wallpaper image.
+ */
+int KDynamicWallpaperMetaData::index() const
+{
+    return d->index;
+}
+
+/*!
  * Converts the KDynamicWallpaperMetaData to a UTF-8 encoded JSON document.
  *
- * This method returns an empty QByteArray if the metadata is invalid.
+ * This method returns an empty QJsonObject if the metadata is invalid.
  */
-QByteArray KDynamicWallpaperMetaData::toJson() const
+QJsonObject KDynamicWallpaperMetaData::toJson() const
 {
     if (!isValid())
-        return QByteArray();
+        return QJsonObject();
 
-    QJsonObject rootObject;
+    QJsonObject object;
 
     if (d->presentFields & CrossFadeField)
-        rootObject[QLatin1String("CrossFade")] = crossFadeModeToJson(d->crossFadeMode);
+        object[QLatin1String("CrossFade")] = crossFadeModeToJson(d->crossFadeMode);
     if (d->presentFields & SolarElevationField)
-        rootObject[QLatin1String("Elevation")] = d->solarElevation;
+        object[QLatin1String("Elevation")] = d->solarElevation;
     if (d->presentFields & SolarAzimuthField)
-        rootObject[QLatin1String("Azimuth")] = d->solarAzimuth;
-    rootObject[QLatin1String("Time")] = d->time;
+        object[QLatin1String("Azimuth")] = d->solarAzimuth;
+    object[QLatin1String("Time")] = d->time;
+    object[QLatin1String("Index")] = d->index;
 
-    QJsonDocument document;
-    document.setObject(rootObject);
-
-    return document.toJson(QJsonDocument::Compact);
-}
-
-/*!
- * Converts the KDynamicWallpaperMetaData to a Base64 string.
- */
-QByteArray KDynamicWallpaperMetaData::toBase64() const
-{
-    return toJson().toBase64();
-}
-
-/*!
- * Converts the KDynamicWallpaperMetaData to a Base64 string, and stores it in XMP metadata.
- */
-QByteArray KDynamicWallpaperMetaData::toXmp() const
-{
-    if (!isValid())
-        return QByteArray();
-
-    QFile xmpTemplateFile(QStringLiteral(":/kdynamicwallpaper/xmp/metadata.xml"));
-    xmpTemplateFile.open(QFile::ReadOnly);
-
-    QByteArray xmpMetaData = xmpTemplateFile.readAll();
-    xmpMetaData.replace(QByteArrayLiteral("base64"), toBase64());
-
-    return xmpMetaData;
+    return object;
 }
 
 /*!
  * Decodes a JSON-encoded KDynamicWallpaperMetaData object.
  */
-KDynamicWallpaperMetaData KDynamicWallpaperMetaData::fromJson(const QByteArray &json)
+KDynamicWallpaperMetaData KDynamicWallpaperMetaData::fromJson(const QJsonObject &object)
 {
     KDynamicWallpaperMetaData metaData;
 
-    const QJsonDocument document = QJsonDocument::fromJson(json);
-    if (document.isNull())
-        return metaData;
+    const QJsonValue index = object[QLatin1String("Index")];
+    if (index.isDouble())
+        metaData.setIndex(index.toInt());
 
-    const QJsonObject rootObject = document.object();
-    if (rootObject.isEmpty())
-        return metaData;
-
-    const QJsonValue crossFadeMode = rootObject[QLatin1String("CrossFade")];
+    const QJsonValue crossFadeMode = object[QLatin1String("CrossFade")];
     if (crossFadeMode.isBool())
         metaData.setCrossFadeMode(crossFadeModeFromJson(crossFadeMode));
 
-    const QJsonValue time = rootObject[QLatin1String("Time")];
+    const QJsonValue time = object[QLatin1String("Time")];
     if (time.isDouble())
         metaData.setTime(time.toDouble());
 
-    const QJsonValue solarElevation = rootObject[QLatin1String("Elevation")];
+    const QJsonValue solarElevation = object[QLatin1String("Elevation")];
     if (solarElevation.isDouble())
         metaData.setSolarElevation(solarElevation.toDouble());
 
-    const QJsonValue solarAzimuth = rootObject[QLatin1String("Azimuth")];
+    const QJsonValue solarAzimuth = object[QLatin1String("Azimuth")];
     if (solarAzimuth.isDouble())
         metaData.setSolarAzimuth(solarAzimuth.toDouble());
 
     return metaData;
-}
-
-/*!
- * Decodes a Base64-encoded KDynamicWallpaperMetaData object.
- */
-KDynamicWallpaperMetaData KDynamicWallpaperMetaData::fromBase64(const QByteArray &base64)
-{
-    return fromJson(QByteArray::fromBase64(base64));
-}
-
-/*!
- * Creates a KDynamicWallpaperMetaData object from the specified \p xmp metadata.
- */
-KDynamicWallpaperMetaData KDynamicWallpaperMetaData::fromXmp(const QByteArray &xmp)
-{
-    QDomDocument xmpDocument;
-    xmpDocument.setContent(xmp);
-    if (xmpDocument.isNull())
-        return KDynamicWallpaperMetaData();
-
-    const QString attributeName = QStringLiteral("plasma:DynamicWallpaper");
-
-    const QDomNodeList descriptionNodes = xmpDocument.elementsByTagName(QStringLiteral("rdf:Description"));
-    for (int i = 0; i < descriptionNodes.count(); ++i) {
-        QDomElement descriptionNode = descriptionNodes.at(i).toElement();
-        const QString encodedMetaData = descriptionNode.attribute(attributeName);
-        if (encodedMetaData.isEmpty())
-            continue;
-        KDynamicWallpaperMetaData metaData = fromBase64(encodedMetaData.toUtf8());
-        if (metaData.isValid())
-            return metaData;
-    }
-
-    return KDynamicWallpaperMetaData();
 }
