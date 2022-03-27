@@ -25,10 +25,7 @@ yay -S plasma5-wallpapers-dynamic
 
 #### Fedora
 
-Add the [RPM Fusion Free](https://rpmfusion.org/) repository and install `plasma-wallpapers-dynamic` package
-
 ```
-sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install plasma-wallpapers-dynamic
 ```
 
