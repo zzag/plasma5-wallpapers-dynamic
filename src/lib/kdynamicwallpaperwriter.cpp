@@ -67,7 +67,6 @@ void KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
     avifEncoder *encoder = avifEncoderCreate();
     encoder->maxThreads = QThread::idealThreadCount();
 
-    QList<avifImage *> avifImages;
     for (const QImage &image : images) {
         avifImage *avif = avifImageCreate(image.width(), image.height(), 8, AVIF_PIXEL_FORMAT_YUV444);
         avifImageSetMetadataXMP(avif, reinterpret_cast<const uint8_t *>(xmp.constData()), xmp.size());
@@ -83,18 +82,9 @@ void KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
         // TODO: color space
 
         avifResult result = avifImageRGBToYUV(avif, &rgb);
-        if (result != AVIF_RESULT_OK) {
-            avifImageDestroy(avif);
-            continue;
-        }
-
-        result = avifEncoderAddImage(encoder, avif, 0, AVIF_ADD_IMAGE_FLAG_NONE);
-        if (result != AVIF_RESULT_OK) {
-            avifImageDestroy(avif);
-            continue;
-        }
-
-        avifImages.append(avif);
+        if (result == AVIF_RESULT_OK)
+            avifEncoderAddImage(encoder, avif, 0, AVIF_ADD_IMAGE_FLAG_NONE);
+        avifImageDestroy(avif);
     }
 
     avifRWData output = AVIF_DATA_EMPTY;
@@ -108,8 +98,6 @@ void KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 
     avifRWDataFree(&output);
     avifEncoderDestroy(encoder);
-    for (avifImage *image : avifImages)
-        avifImageDestroy(image);
 }
 
 /*!
