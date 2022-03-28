@@ -127,8 +127,8 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
         auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
 
-        const QImage darkImage = reader.image(std::distance(metadata.begin(), dark));
-        const QImage lightImage = reader.image(std::distance(metadata.begin(), light));
+        const QImage darkImage = reader.image(dark->index());
+        const QImage lightImage = reader.image(light->index());
 
         preview = blend(darkImage, lightImage, 0.5);
 
