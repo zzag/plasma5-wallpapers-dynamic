@@ -11,6 +11,8 @@
 #include <QIODevice>
 #include <QImage>
 
+#include <optional>
+
 class KDynamicWallpaperMetaData;
 class KDynamicWallpaperWriterPrivate;
 
@@ -52,6 +54,9 @@ public:
 
     bool flush(QIODevice *device);
     bool flush(const QString &fileName);
+
+    void setMaxThreadCount(int max);
+    std::optional<int> maxThreadCount() const;
 
     WallpaperWriterError error() const;
     QString errorString() const;

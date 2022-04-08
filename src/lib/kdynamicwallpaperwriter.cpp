@@ -37,6 +37,7 @@ public:
     QString errorString;
     QList<KDynamicWallpaperWriter::ImageView> images;
     QList<KDynamicWallpaperMetaData> metaData;
+    std::optional<int> maxThreadCount;
 };
 
 KDynamicWallpaperWriterPrivate::KDynamicWallpaperWriterPrivate()
@@ -78,7 +79,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 
     const QByteArray xmp = serializeMetaData(metaData);
     avifEncoder *encoder = avifEncoderCreate();
-    encoder->maxThreads = QThread::idealThreadCount();
+    encoder->maxThreads = maxThreadCount.value_or(QThread::idealThreadCount());
     auto encoderCleanup = qScopeGuard([&encoder]() {
         avifEncoderDestroy(encoder);
     });
@@ -153,6 +154,24 @@ void KDynamicWallpaperWriter::setImages(const QList<ImageView> &images)
 QList<KDynamicWallpaperWriter::ImageView> KDynamicWallpaperWriter::images() const
 {
     return d->images;
+}
+
+/*!
+ * Sets the desired maximum number of threads that can be used during the encoding step.
+ * If not set, QThread::idealThreadCount() will be used.
+ */
+void KDynamicWallpaperWriter::setMaxThreadCount(int max)
+{
+    d->maxThreadCount = max;
+}
+
+/*!
+ * Returns the maximum number of threads that can be used during encoding. If nullopt is
+ * returned, the writer is free to choose the optimal number of threads at its will.
+ */
+std::optional<int> KDynamicWallpaperWriter::maxThreadCount() const
+{
+    return d->maxThreadCount;
 }
 
 /*!
