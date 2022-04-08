@@ -9,6 +9,7 @@
 #include "kdynamicwallpaper_export.h"
 
 #include <QIODevice>
+#include <QImage>
 
 class KDynamicWallpaperMetaData;
 class KDynamicWallpaperWriterPrivate;
@@ -23,14 +24,31 @@ public:
         UnknownError,
     };
 
+    class ImageView
+    {
+    public:
+        explicit ImageView(const QString &fileName)
+            : m_fileName(fileName)
+        {
+        }
+
+        QImage data() const
+        {
+            return QImage(m_fileName);
+        }
+
+    private:
+        QImage m_fileName;
+    };
+
     KDynamicWallpaperWriter();
     ~KDynamicWallpaperWriter();
 
     void setMetaData(const QList<KDynamicWallpaperMetaData> &metaData);
     QList<KDynamicWallpaperMetaData> metaData() const;
 
-    void setImages(const QList<QImage> &images);
-    QList<QImage> images() const;
+    void setImages(const QList<ImageView> &views);
+    QList<ImageView> images() const;
 
     bool flush(QIODevice *device);
     bool flush(const QString &fileName);
