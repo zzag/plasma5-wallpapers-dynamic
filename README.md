@@ -6,9 +6,9 @@ SPDX-License-Identifier: CC0-1.0
 
 # Dynamic Wallpaper Engine
 
-**NOTE**: The master branch contains the next major version of this plugin, which doesn't
-use the HEIF file format and it's still in development. If you want to build this plugin
-from source code, checkout 3.3.9 tag!
+**NOTE**: The master branch contains the next major version of this plugin, which uses
+the AVIF file format instead of HEIF and it's still in development. If you want to build
+this plugin from source code, checkout 3.3.9 tag!
 
 A wallpaper plugin for KDE Plasma that continuously updates the desktop background
 based on the current time in your location.
