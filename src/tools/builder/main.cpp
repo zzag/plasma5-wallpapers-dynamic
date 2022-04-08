@@ -26,11 +26,16 @@ int main(int argc, char **argv)
     outputOption.setDescription(i18n("Write output to <file>"));
     outputOption.setValueName(QStringLiteral("file"));
 
+    QCommandLineOption maxThreadsOption(QStringLiteral("max-threads"));
+    maxThreadsOption.setDescription(i18n("Maximum number of threads that can be used during encoding wallpaper"));
+    maxThreadsOption.setValueName(QStringLiteral("max-threads"));
+
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("json", i18n("Description file to use"));
     parser.addOption(outputOption);
+    parser.addOption(maxThreadsOption);
     parser.process(app);
 
     if (parser.positionalArguments().count() != 1)
@@ -46,6 +51,15 @@ int main(int argc, char **argv)
     KDynamicWallpaperWriter writer;
     writer.setImages(description.images());
     writer.setMetaData(description.metaData());
+
+    if (parser.isSet(maxThreadsOption)) {
+        bool ok;
+        if (const int threadCount = parser.value(maxThreadsOption).toInt(&ok); ok) {
+            writer.setMaxThreadCount(threadCount);
+        } else {
+            parser.showHelp(-1);
+        }
+    }
 
     QString targetFileName = parser.value(outputOption);
     if (targetFileName.isEmpty())
