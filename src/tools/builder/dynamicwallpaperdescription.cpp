@@ -65,7 +65,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
 
     QMap<int, QString> uniqueFileNames;
     QList<KDynamicWallpaperMetaData> metaDataList;
-    QList<QImage> imageList;
+    QList<KDynamicWallpaperWriter::ImageView> imageList;
 
     for (int i = 0; i < descriptors.size(); ++i) {
         const QJsonObject descriptor = descriptors[i].toObject();
@@ -163,7 +163,8 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
                     setError(QStringLiteral("%1: Failed to compute the position of the Sun based on GPS "
                                             "coordinates and the time when the photo was taken. Please check "
                                             "that the specified image actually has GPS coordinates in its "
-                                            "Exif metadata. You can do that with a tool such as exiftool.").arg(absoluteFileName));
+                                            "Exif metadata. You can do that with a tool such as exiftool.")
+                                 .arg(absoluteFileName));
                     return;
                 }
             }
@@ -174,7 +175,8 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
                     setError(QStringLiteral("%1: Failed to compute the position of the Sun based on GPS "
                                             "coordinates and the time when the photo was taken. Please check "
                                             "that the specified image actually has GPS coordinates in its "
-                                            "Exif metadata. You can do that with a tool such as exiftool.").arg(absoluteFileName));
+                                            "Exif metadata. You can do that with a tool such as exiftool.")
+                                 .arg(absoluteFileName));
                     return;
                 }
             }
@@ -191,15 +193,8 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
         metaDataList.append(metaData);
     }
 
-    for (const QString &fileName : uniqueFileNames) {
-        const QImage image(fileName);
-        if (!image.isNull()) {
-            imageList.append(image);
-        } else {
-            setError(QStringLiteral("Failed to load ") + fileName);
-            return;
-        }
-    }
+    for (const QString &fileName : uniqueFileNames)
+        imageList.append(KDynamicWallpaperWriter::ImageView(fileName));
 
     m_metaDataList = metaDataList;
     m_imageList = imageList;
@@ -231,7 +226,7 @@ QList<KDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
     return m_metaDataList;
 }
 
-QList<QImage> DynamicWallpaperDescription::images() const
+QList<KDynamicWallpaperWriter::ImageView> DynamicWallpaperDescription::images() const
 {
     return m_imageList;
 }

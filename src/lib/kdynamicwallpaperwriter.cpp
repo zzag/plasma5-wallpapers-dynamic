@@ -8,9 +8,10 @@
 #include "kdynamicwallpapermetadata.h"
 
 #include <QFile>
+#include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QImage>
+#include <QScopeGuard>
 #include <QThread>
 
 #include <avif/avif.h>
@@ -30,11 +31,11 @@ class KDynamicWallpaperWriterPrivate
 public:
     KDynamicWallpaperWriterPrivate();
 
-    void flush(QIODevice *device);
+    bool flush(QIODevice *device);
 
     KDynamicWallpaperWriter::WallpaperWriterError wallpaperWriterError;
     QString errorString;
-    QList<QImage> images;
+    QList<KDynamicWallpaperWriter::ImageView> images;
     QList<KDynamicWallpaperMetaData> metaData;
 };
 
@@ -61,13 +62,32 @@ static QByteArray serializeMetaData(const QList<KDynamicWallpaperMetaData> &meta
     return xmp;
 }
 
-void KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
+bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 {
+    if (metaData.isEmpty()) {
+        wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
+        errorString = QStringLiteral("No metadata have been specified");
+        return false;
+    }
+
+    if (images.isEmpty()) {
+        wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
+        errorString = QStringLiteral("No images have been specified");
+        return false;
+    }
+
     const QByteArray xmp = serializeMetaData(metaData);
     avifEncoder *encoder = avifEncoderCreate();
     encoder->maxThreads = QThread::idealThreadCount();
+    auto encoderCleanup = qScopeGuard([&encoder]() {
+        avifEncoderDestroy(encoder);
+    });
 
-    for (const QImage &image : images) {
+    for (const auto &view : images) {
+        const QImage image = view.data().convertToFormat(QImage::Format_RGB888);
+        if (image.isNull())
+            return false;
+
         avifImage *avif = avifImageCreate(image.width(), image.height(), 8, AVIF_PIXEL_FORMAT_YUV444);
         avifImageSetMetadataXMP(avif, reinterpret_cast<const uint8_t *>(xmp.constData()), xmp.size());
 
@@ -97,7 +117,7 @@ void KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
     }
 
     avifRWDataFree(&output);
-    avifEncoderDestroy(encoder);
+    return true;
 }
 
 /*!
@@ -125,17 +145,12 @@ QList<KDynamicWallpaperMetaData> KDynamicWallpaperWriter::metaData() const
     return d->metaData;
 }
 
-void KDynamicWallpaperWriter::setImages(const QList<QImage> &images)
+void KDynamicWallpaperWriter::setImages(const QList<ImageView> &images)
 {
-    QList<QImage> tmpImages;
-    tmpImages.reserve(images.count());
-    for (const QImage &image : images)
-        tmpImages.append(image.convertToFormat(QImage::Format_RGB888));
-
-    d->images = tmpImages;
+    d->images = images;
 }
 
-QList<QImage> KDynamicWallpaperWriter::images() const
+QList<KDynamicWallpaperWriter::ImageView> KDynamicWallpaperWriter::images() const
 {
     return d->images;
 }
@@ -163,8 +178,7 @@ bool KDynamicWallpaperWriter::flush(QIODevice *device)
         }
     }
 
-    d->flush(device);
-    return true;
+    return d->flush(device);
 }
 
 /*!
@@ -183,8 +197,7 @@ bool KDynamicWallpaperWriter::flush(const QString &fileName)
         return false;
     }
 
-    d->flush(&file);
-    return true;
+    return d->flush(&file);
 }
 
 /*!
