@@ -12,7 +12,7 @@ collection of images.
 
 ## Getting Started
 
-In order to create a dynamic wallpaper, you need to provide a json file with the following structure
+In order to create a dynamic wallpaper, you need to provide a manifest json file with the following structure
 
 ```json
 [
@@ -62,13 +62,13 @@ will be computed based on GPS coordinates and the time when the picture was take
 The `CrossFade` field indicates whether the current image can be blended with the next one. The
 cross-fading is used to make transitions between images smooth. By default, the `CrossFade` field is
 set to `true`. Last, but not least, the `FileName` field specifies the file path of the image
-relative to the metadata json file.
+relative to the manifest json file.
 
-Now that you have prepared all images and a metadata file, it's time pull out big guns. Run the
+Now that you have prepared all images and a manifest file, it's time pull out big guns. Run the
 following command
 
 ```sh
-kdynamicwallpaperbuilder path/to/metadata.json
+kdynamicwallpaperbuilder path/to/manifest.json
 ```
 
 It may take some time before the command completes, so be patient. If everything goes well, you
