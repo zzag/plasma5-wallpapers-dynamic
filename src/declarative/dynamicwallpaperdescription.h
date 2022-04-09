@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <KDynamicWallpaperMetaData>
+#include <KSolarDynamicWallpaperMetaData>
 
 #include <QString>
 #include <QUrl>
@@ -29,14 +29,14 @@ public:
     int imageCount() const;
 
     QUrl imageUrlAt(int imageIndex) const;
-    KDynamicWallpaperMetaData metaDataAt(int imageIndex) const;
+    KSolarDynamicWallpaperMetaData metaDataAt(int imageIndex) const;
 
     static DynamicWallpaperDescription fromFile(const QString &fileName);
 
 private:
-    void addImage(const QUrl &url, const KDynamicWallpaperMetaData &metaData);
+    void addImage(const QUrl &url, const KSolarDynamicWallpaperMetaData &metaData);
 
-    QVector<KDynamicWallpaperMetaData> m_metaData;
+    QVector<KSolarDynamicWallpaperMetaData> m_metaData;
     QVector<QUrl> m_imageUrls;
 };
 

@@ -5,7 +5,7 @@
  */
 
 #include "kdynamicwallpaperreader.h"
-#include "kdynamicwallpapermetadata.h"
+#include "ksolardynamicwallpapermetadata.h"
 
 #include <QDomDocument>
 #include <QDomNode>
@@ -24,7 +24,7 @@
  * wallpapers.
  *
  * If any error occurs when reading an image or metadata, imageAt() or metaDataAt() will
- * return a null QImage or an invalid KDynamicWallpaperMetaData, respectively. You can
+ * return a null QImage or an invalid KSolarDynamicWallpaperMetaData, respectively. You can
  * then call error() to find out the type of the error that occurred, or errorString() to
  * get a human readable description of what went wrong.
  */
@@ -44,7 +44,7 @@ public:
     avifDecoder *decoder;
     KDynamicWallpaperReader::WallpaperReaderError wallpaperReaderError;
     QString errorString;
-    QList<KDynamicWallpaperMetaData> metaData;
+    QList<KSolarDynamicWallpaperMetaData> metaData;
     bool isDeviceForeign;
 };
 
@@ -56,12 +56,12 @@ KDynamicWallpaperReaderPrivate::KDynamicWallpaperReaderPrivate()
 {
 }
 
-static QList<KDynamicWallpaperMetaData> parseMetaData(const QByteArray &xmp)
+static QList<KSolarDynamicWallpaperMetaData> parseMetaData(const QByteArray &xmp)
 {
     QDomDocument xmpDocument;
     xmpDocument.setContent(xmp);
     if (xmpDocument.isNull())
-        return QList<KDynamicWallpaperMetaData>();
+        return QList<KSolarDynamicWallpaperMetaData>();
 
     const QString attributeName = QStringLiteral("plasma:dynamic-wallpaper-solar");
     const QDomNodeList descriptionNodes = xmpDocument.elementsByTagName(QStringLiteral("rdf:Description"));
@@ -72,16 +72,16 @@ static QList<KDynamicWallpaperMetaData> parseMetaData(const QByteArray &xmp)
             continue;
 
         const QJsonArray array = QJsonDocument::fromJson(QByteArray::fromBase64(base64)).array();
-        QList<KDynamicWallpaperMetaData> result;
+        QList<KSolarDynamicWallpaperMetaData> result;
         for (int i = 0; i < array.size(); ++i) {
-            KDynamicWallpaperMetaData metaData = KDynamicWallpaperMetaData::fromJson(array[i].toObject());
+            KSolarDynamicWallpaperMetaData metaData = KSolarDynamicWallpaperMetaData::fromJson(array[i].toObject());
             if (metaData.isValid())
                 result.append(metaData);
         }
         return result;
     }
 
-    return QList<KDynamicWallpaperMetaData>();
+    return QList<KSolarDynamicWallpaperMetaData>();
 }
 
 bool KDynamicWallpaperReaderPrivate::open()
@@ -287,9 +287,9 @@ int KDynamicWallpaperReader::imageCount() const
 }
 
 /*!
- * Returns the KDynamicWallpaperMetaData objects for the current wallpaper.
+ * Returns the KSolarDynamicWallpaperMetaData objects for the current wallpaper.
  */
-QList<KDynamicWallpaperMetaData> KDynamicWallpaperReader::metaData() const
+QList<KSolarDynamicWallpaperMetaData> KDynamicWallpaperReader::metaData() const
 {
     return d->metaData;
 }

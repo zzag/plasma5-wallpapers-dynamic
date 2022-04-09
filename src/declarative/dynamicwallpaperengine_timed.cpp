@@ -11,7 +11,7 @@ TimedDynamicWallpaperEngine *TimedDynamicWallpaperEngine::create()
     return new TimedDynamicWallpaperEngine();
 }
 
-qreal TimedDynamicWallpaperEngine::progressForMetaData(const KDynamicWallpaperMetaData &metaData) const
+qreal TimedDynamicWallpaperEngine::progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const
 {
     return metaData.time();
 }

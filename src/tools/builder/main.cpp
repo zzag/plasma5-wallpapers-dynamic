@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include <KDynamicWallpaperMetaData>
+#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperWriter>
 #include <KLocalizedString>
 

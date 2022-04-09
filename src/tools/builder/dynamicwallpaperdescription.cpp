@@ -64,7 +64,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
     }
 
     QMap<int, QString> uniqueFileNames;
-    QList<KDynamicWallpaperMetaData> metaDataList;
+    QList<KSolarDynamicWallpaperMetaData> metaDataList;
     QList<KDynamicWallpaperWriter::ImageView> imageList;
 
     for (int i = 0; i < descriptors.size(); ++i) {
@@ -95,9 +95,9 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
             uniqueFileNames.insert(index, absoluteFileName);
         }
 
-        KDynamicWallpaperMetaData::MetaDataFields placeholderFields;
+        KSolarDynamicWallpaperMetaData::MetaDataFields placeholderFields;
 
-        KDynamicWallpaperMetaData metaData;
+        KSolarDynamicWallpaperMetaData metaData;
         metaData.setIndex(index);
 
         if (solarAzimuth.isUndefined() ^ solarElevation.isUndefined()) {
@@ -110,7 +110,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
 
         if (!solarElevation.isUndefined()) {
             if (isPlaceholderValue(solarElevation)) {
-                placeholderFields |= KDynamicWallpaperMetaData::SolarElevationField;
+                placeholderFields |= KSolarDynamicWallpaperMetaData::SolarElevationField;
             } else if (solarElevation.isDouble()) {
                 metaData.setSolarElevation(solarElevation.toDouble());
             } else {
@@ -121,7 +121,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
 
         if (!solarAzimuth.isUndefined()) {
             if (isPlaceholderValue(solarAzimuth)) {
-                placeholderFields |= KDynamicWallpaperMetaData::SolarAzimuthField;
+                placeholderFields |= KSolarDynamicWallpaperMetaData::SolarAzimuthField;
             } else if (solarAzimuth.isDouble()) {
                 metaData.setSolarAzimuth(solarAzimuth.toDouble());
             } else {
@@ -132,14 +132,14 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
 
         if (!crossFadeMode.isUndefined()) {
             if (crossFadeMode.toBool())
-                metaData.setCrossFadeMode(KDynamicWallpaperMetaData::CrossFade);
+                metaData.setCrossFadeMode(KSolarDynamicWallpaperMetaData::CrossFade);
             else
-                metaData.setCrossFadeMode(KDynamicWallpaperMetaData::NoCrossFade);
+                metaData.setCrossFadeMode(KSolarDynamicWallpaperMetaData::NoCrossFade);
         }
 
         if (!time.isUndefined()) {
             if (isPlaceholderValue(time)) {
-                placeholderFields |= KDynamicWallpaperMetaData::TimeField;
+                placeholderFields |= KSolarDynamicWallpaperMetaData::TimeField;
             } else {
                 const QTime parsedTime = QTime::fromString(time.toString());
                 if (parsedTime.isValid()) {
@@ -156,7 +156,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
 
         if (placeholderFields) {
             DynamicWallpaperExifMetaData exifMetaData(absoluteFileName);
-            if (placeholderFields & KDynamicWallpaperMetaData::SolarAzimuthField) {
+            if (placeholderFields & KSolarDynamicWallpaperMetaData::SolarAzimuthField) {
                 if (exifMetaData.fields() & DynamicWallpaperExifMetaData::SolarCoordinatesField) {
                     metaData.setSolarAzimuth(exifMetaData.solarAzimuth());
                 } else {
@@ -168,7 +168,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
                     return;
                 }
             }
-            if (placeholderFields & KDynamicWallpaperMetaData::SolarElevationField) {
+            if (placeholderFields & KSolarDynamicWallpaperMetaData::SolarElevationField) {
                 if (exifMetaData.fields() & DynamicWallpaperExifMetaData::SolarCoordinatesField) {
                     metaData.setSolarElevation((exifMetaData.solarElevation()));
                 } else {
@@ -180,7 +180,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
                     return;
                 }
             }
-            if (placeholderFields & KDynamicWallpaperMetaData::TimeField) {
+            if (placeholderFields & KSolarDynamicWallpaperMetaData::TimeField) {
                 if (exifMetaData.fields() & DynamicWallpaperExifMetaData::BirthDateTimeField) {
                     metaData.setTime(timeToReal(exifMetaData.birthDateTime().time()));
                 } else {
@@ -221,7 +221,7 @@ DynamicWallpaperDescription::~DynamicWallpaperDescription()
 {
 }
 
-QList<KDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
+QList<KSolarDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
 {
     return m_metaDataList;
 }

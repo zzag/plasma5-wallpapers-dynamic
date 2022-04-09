@@ -30,9 +30,9 @@ bool DynamicWallpaperDescription::isValid() const
 DynamicWallpaperDescription::EngineTypes DynamicWallpaperDescription::supportedEngines() const
 {
     EngineTypes types = SolarEngine | TimedEngine;
-    for (const KDynamicWallpaperMetaData &metaData : m_metaData) {
+    for (const KSolarDynamicWallpaperMetaData &metaData : m_metaData) {
         // Exclude the solar engine if there's at least one image without solar metadata.
-        if (!(metaData.fields() & KDynamicWallpaperMetaData::SolarAzimuthField))
+        if (!(metaData.fields() & KSolarDynamicWallpaperMetaData::SolarAzimuthField))
             types &= ~SolarEngine;
     }
     return types;
@@ -62,10 +62,10 @@ QUrl DynamicWallpaperDescription::imageUrlAt(int imageIndex) const
 /*!
  * Returns the metadata for the image with the specified index \p imageIndex.
  *
- * This method will return an invalid KDynamicWallpaperMetaData if the DynamicWallpaperDescription
+ * This method will return an invalid KSolarDynamicWallpaperMetaData if the DynamicWallpaperDescription
  * is invalid or if the provided index is outside the valid range.
  */
-KDynamicWallpaperMetaData DynamicWallpaperDescription::metaDataAt(int imageIndex) const
+KSolarDynamicWallpaperMetaData DynamicWallpaperDescription::metaDataAt(int imageIndex) const
 {
     return m_metaData.value(imageIndex);
 }
@@ -84,8 +84,8 @@ DynamicWallpaperDescription DynamicWallpaperDescription::fromFile(const QString 
 
     DynamicWallpaperDescription description;
 
-    const QList<KDynamicWallpaperMetaData> metaDataList = reader.metaData();
-    for (const KDynamicWallpaperMetaData &metaData : metaDataList) {
+    const QList<KSolarDynamicWallpaperMetaData> metaDataList = reader.metaData();
+    for (const KSolarDynamicWallpaperMetaData &metaData : metaDataList) {
         if (!metaData.isValid())
             return DynamicWallpaperDescription();
 
@@ -102,7 +102,7 @@ DynamicWallpaperDescription DynamicWallpaperDescription::fromFile(const QString 
 /*!
  * \internal
  */
-void DynamicWallpaperDescription::addImage(const QUrl &url, const KDynamicWallpaperMetaData &metaData)
+void DynamicWallpaperDescription::addImage(const QUrl &url, const KSolarDynamicWallpaperMetaData &metaData)
 {
     m_imageUrls << url;
     m_metaData << metaData;
