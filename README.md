@@ -189,9 +189,11 @@ following command
 kdynamicwallpaperbuilder path/to/manifest.json
 ```
 
-It may take some time before the command completes, so be patient. If everything goes well, you
-should see a new file in the current working directory `wallpaper.avif`, which can be used as a
-dynamic wallpaper.
+If the command succeeds, you will see a new file in the current working directory `wallpaper.avif`,
+which can be used as a dynamic wallpaper.
+
+Note that encoding the dynamic wallpaper may take a lot of memory (AVIF encoders are very memory
+hungry) and time!
 
 #### How to Create a Day/Night Dynamic Wallpaper
 
