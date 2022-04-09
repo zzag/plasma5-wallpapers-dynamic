@@ -10,11 +10,11 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperWriter>
 #include <KLocalizedString>
+#include <KSolarDynamicWallpaperMetaData>
 
-#include "dynamicwallpaperdescription.h"
+#include "dynamicwallpapermanifest.h"
 
 int main(int argc, char **argv)
 {
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("json", i18n("Description file to use"));
+    parser.addPositionalArgument("json", i18n("Manifest file to use"));
     parser.addOption(outputOption);
     parser.addOption(maxThreadsOption);
     parser.process(app);
@@ -41,16 +41,16 @@ int main(int argc, char **argv)
     if (parser.positionalArguments().count() != 1)
         parser.showHelp(-1);
 
-    DynamicWallpaperDescription description(parser.positionalArguments().first());
-    if (description.hasError()) {
-        if (description.hasError())
-            qWarning() << qPrintable(description.errorString());
+    DynamicWallpaperManifest manifest(parser.positionalArguments().first());
+    if (manifest.hasError()) {
+        if (manifest.hasError())
+            qWarning() << qPrintable(manifest.errorString());
         return -1;
     }
 
     KDynamicWallpaperWriter writer;
-    writer.setImages(description.images());
-    writer.setMetaData(description.metaData());
+    writer.setImages(manifest.images());
+    writer.setMetaData(manifest.metaData());
 
     if (parser.isSet(maxThreadsOption)) {
         bool ok;

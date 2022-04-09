@@ -13,11 +13,11 @@
 #include <QJsonObject>
 #include <QString>
 
-class DynamicWallpaperDescription
+class DynamicWallpaperManifest
 {
 public:
-    explicit DynamicWallpaperDescription(const QString &fileName);
-    ~DynamicWallpaperDescription();
+    explicit DynamicWallpaperManifest(const QString &fileName);
+    ~DynamicWallpaperManifest();
 
     QList<KDynamicWallpaperMetaData> metaData() const;
     QList<KDynamicWallpaperWriter::ImageView> images() const;
@@ -26,9 +26,13 @@ public:
     QString errorString() const;
 
 private:
-    void init(const QString &metaDataFileName);
-    void setError(const QString &text);
+    QString resolveFileName(const QString &fileName) const;
 
+    void init();
+    void setError(const QString &text);
+    void parseSolar(const QJsonArray &entries);
+
+    QString m_manifestFileName;
     QList<KDynamicWallpaperMetaData> m_metaDataList;
     QList<KDynamicWallpaperWriter::ImageView> m_imageList;
     QString m_errorString;

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include "dynamicwallpaperdescription.h"
+#include "dynamicwallpapermanifest.h"
 #include "dynamicwallpaperexifmetadata.h"
 
 #include <QDir>
@@ -37,15 +37,16 @@ static qreal timeToReal(const QTime &time)
     return time.msecsSinceStartOfDay() / 86400000.0;
 }
 
-void DynamicWallpaperDescription::init(const QString &metaDataFileName)
+QString DynamicWallpaperManifest::resolveFileName(const QString &fileName) const
 {
-    auto resolveFileName = [&metaDataFileName](const QString &fileName) {
-        const QFileInfo descriptionFileInfo(metaDataFileName);
-        const QDir descriptionDirectory = descriptionFileInfo.dir();
-        return descriptionDirectory.absoluteFilePath(fileName);
-    };
+    const QFileInfo manifestFileInfo(m_manifestFileName);
+    const QDir descriptionDirectory = manifestFileInfo.dir();
+    return descriptionDirectory.absoluteFilePath(fileName);
+}
 
-    QFile file(metaDataFileName);
+void DynamicWallpaperManifest::init()
+{
+    QFile file(m_manifestFileName);
     if (!file.open(QFile::ReadOnly)) {
         setError(QStringLiteral("Failed to open ") + file.fileName() + QStringLiteral(": ") + file.errorString());
         return;
@@ -57,18 +58,31 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
         return;
     }
 
-    const QJsonArray descriptors = document.array();
-    if (descriptors.isEmpty()) {
-        setError(QStringLiteral("JSON document is empty"));
+    if (document.isObject()) {
+        const QJsonObject rootObject = document.object();
+        if (rootObject[QLatin1String("Type")] == QLatin1String("solar")) {
+            parseSolar(rootObject[QLatin1String("Meta")].toArray());
+        } else {
+            setError(QStringLiteral("Unknown manifest type. Available types: solar"));
+        }
+    } else {
+        parseSolar(document.array()); // Fallback to legacy v3 manifest file format.
+    }
+}
+
+void DynamicWallpaperManifest::parseSolar(const QJsonArray &entries)
+{
+    if (entries.isEmpty()) {
+        setError(QStringLiteral("No manifest image entries"));
         return;
     }
 
-    QMap<int, QString> uniqueFileNames;
+    QMap<int, QString> indexToFileName;
     QList<KDynamicWallpaperMetaData> metaDataList;
     QList<KDynamicWallpaperWriter::ImageView> imageList;
 
-    for (int i = 0; i < descriptors.size(); ++i) {
-        const QJsonObject descriptor = descriptors[i].toObject();
+    for (int i = 0; i < entries.size(); ++i) {
+        const QJsonObject descriptor = entries[i].toObject();
         const QJsonValue solarElevation = descriptor[QLatin1String("SolarElevation")];
         const QJsonValue solarAzimuth = descriptor[QLatin1String("SolarAzimuth")];
         const QJsonValue crossFadeMode = descriptor[QLatin1String("CrossFade")];
@@ -85,14 +99,14 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
             absoluteFileName = resolveFileName(fileName.toString());
         }
 
-        int index = uniqueFileNames.key(absoluteFileName, -1);
+        int index = indexToFileName.key(absoluteFileName, -1);
         if (index == -1) {
-            if (uniqueFileNames.isEmpty()) {
+            if (indexToFileName.isEmpty()) {
                 index = 0;
             } else {
-                index = uniqueFileNames.lastKey() + 1;
+                index = indexToFileName.lastKey() + 1;
             }
-            uniqueFileNames.insert(index, absoluteFileName);
+            indexToFileName.insert(index, absoluteFileName);
         }
 
         KSolarDynamicWallpaperMetaData::MetaDataFields placeholderFields;
@@ -193,14 +207,14 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
         metaDataList.append(metaData);
     }
 
-    for (const QString &fileName : uniqueFileNames)
+    for (const QString &fileName : indexToFileName)
         imageList.append(KDynamicWallpaperWriter::ImageView(fileName));
 
     m_metaDataList = metaDataList;
     m_imageList = imageList;
 }
 
-void DynamicWallpaperDescription::setError(const QString &text)
+void DynamicWallpaperManifest::setError(const QString &text)
 {
     m_errorString = text;
     m_hasError = true;
@@ -209,24 +223,25 @@ void DynamicWallpaperDescription::setError(const QString &text)
 /*!
  * Constructs the DynamicWallpaperDescriptionReader with the file name \p fileName.
  */
-DynamicWallpaperDescription::DynamicWallpaperDescription(const QString &fileName)
+DynamicWallpaperManifest::DynamicWallpaperManifest(const QString &fileName)
+    : m_manifestFileName(fileName)
 {
-    init(fileName);
+    init();
 }
 
 /*!
  * Destructs the DynamicWallpaperDescriptionReader object.
  */
-DynamicWallpaperDescription::~DynamicWallpaperDescription()
+DynamicWallpaperManifest::~DynamicWallpaperManifest()
 {
 }
 
-QList<KDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
+QList<KDynamicWallpaperMetaData> DynamicWallpaperManifest::metaData() const
 {
     return m_metaDataList;
 }
 
-QList<KDynamicWallpaperWriter::ImageView> DynamicWallpaperDescription::images() const
+QList<KDynamicWallpaperWriter::ImageView> DynamicWallpaperManifest::images() const
 {
     return m_imageList;
 }
@@ -234,7 +249,7 @@ QList<KDynamicWallpaperWriter::ImageView> DynamicWallpaperDescription::images() 
 /*!
  * Returns \c true if an error occurred; otherwise returns \c false.
  */
-bool DynamicWallpaperDescription::hasError() const
+bool DynamicWallpaperManifest::hasError() const
 {
     return m_hasError;
 }
@@ -242,7 +257,7 @@ bool DynamicWallpaperDescription::hasError() const
 /*!
  * Returns the human readable description of the last error that occurred.
  */
-QString DynamicWallpaperDescription::errorString() const
+QString DynamicWallpaperManifest::errorString() const
 {
     return m_errorString;
 }
