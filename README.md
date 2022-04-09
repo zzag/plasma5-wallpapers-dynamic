@@ -174,7 +174,8 @@ fallback to using time metadata. Note that only the `Time` field is required, th
 Sun is optional.
 
 If `SolarAzimuth` or `SolarElevation` has a special value of `"*"`, then the position of the Sun
-will be computed based on GPS coordinates and the time when the picture was taken.
+will be computed based on the time when the picture was taken and the GPS coordinates stored in
+its Exif metadata.
 
 The `CrossFade` field indicates whether the current image can be blended with the next one. The
 cross-fading is used to make transitions between images smooth. By default, the `CrossFade` field is
