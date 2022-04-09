@@ -100,15 +100,6 @@ sudo make install
 ```
 
 
-## Components
-
-This project consists of the following components:
-
-* A C++ library that provides an easy way to read and write dynamic wallpapers
-* A command line tool for creating dynamic wallpapers
-* A plugin for KDE Plasma 5 that is responsible for displaying dynamic wallpapers
-
-
 ## How to Use It
 
 Right-click a blank area of the desktop and choose "Configure Desktop...", select
@@ -117,8 +108,113 @@ Right-click a blank area of the desktop and choose "Configure Desktop...", selec
 
 ## How to Create a Dynamic Wallpaper
 
-This engine ships with a command-line tool that one could use to create a dynamic wallpaper from a
-collection of jpeg or png images. See [kdynamicwallpaperbuilder](src/tools/builder/README.md).
+The `kdynamicwallpaperbuilder` command line tool is used to create dynamic wallpapers. As input,
+it takes a manifest json file describing the wallpaper and produces the wallpaper
+
+```sh
+kdynamicwallpaperbuilder path/to/manifest.json --output wallpaper.avif
+```
+
+This engine supports several types of dynamic wallpapers - solar and day-night.
+
+#### How to Create a Solar Dynamic Wallpaper
+
+With a solar dynamic wallpaper, the engine will try to keep the images in sync with the Sun
+position at your location.
+
+<center>
+    <img src="data/solar.png"/>
+</center>
+
+The manifest file looks as follows
+
+```json
+{
+    "Type": "solar",
+    "Meta": [
+        {
+            "SolarAzimuth": "*",
+            "SolarElevation": "*",
+            "CrossFade": true,
+            "Time": "18:00",
+            "FileName": "0.png"
+        },
+        {
+            "SolarAzimuth": 0,
+            "SolarElevation": -90,
+            "CrossFade": true,
+            "Time": "00:00",
+            "FileName": "1.png"
+        },
+        {
+            "SolarAzimuth": 90,
+            "SolarElevation": 0,
+            "CrossFade": true,
+            "Time": "06:00",
+            "FileName": "2.png"
+        },
+        {
+            "SolarAzimuth": 180,
+            "SolarElevation": 90,
+            "CrossFade": true,
+            "Time": "12:00",
+            "FileName": "3.png"
+        }
+    ]
+}
+```
+
+It might look like you must provide a lot of data, but don't be scared. Let's break it down.
+
+The `SolarAzimuth` field and the `SolarElevation` field specify the position of the Sun when the
+associated picture was taken. The `Time` field specifies the time, which is in 24-hour format, when
+the picture was taken. If the user is not located near the North or the South Pole, the dynamic
+wallpaper engine will try to show images based on the current position of the Sun; otherwise it will
+fallback to using time metadata. Note that only the `Time` field is required, the position of the
+Sun is optional.
+
+If `SolarAzimuth` or `SolarElevation` has a special value of `"*"`, then the position of the Sun
+will be computed based on GPS coordinates and the time when the picture was taken.
+
+The `CrossFade` field indicates whether the current image can be blended with the next one. The
+cross-fading is used to make transitions between images smooth. By default, the `CrossFade` field is
+set to `true`. Last, but not least, the `FileName` field specifies the file path of the image
+relative to the manifest json file.
+
+Now that you have prepared all images and a manifest file, it's time pull out big guns. Run the
+following command
+
+```sh
+kdynamicwallpaperbuilder path/to/manifest.json
+```
+
+It may take some time before the command completes, so be patient. If everything goes well, you
+should see a new file in the current working directory `wallpaper.avif`, which can be used as a
+dynamic wallpaper.
+
+#### How to Create a Day/Night Dynamic Wallpaper
+
+A day/night dynamic wallpaper consists of only two images - one for the day, and one for the night.
+The engine will automagically figure out which one to use based on the current time or the Sun
+position at your location.
+
+The manifest file for a day/night wallpaper looks as follows
+
+```sh
+{
+    "Type": "day-night",
+    "Meta": [
+        {
+            "TimeOfDay": "day",
+            "FileName": "day.png"
+        },
+        {
+            "TimeOfDay": "night",
+            "FileName": "night.png"
+        }
+    ]
+}
+```
 
 
 ## How to Use Dynamic Wallpapers for macOS
