@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <KSolarDynamicWallpaperMetaData>
+#include <KDynamicWallpaperMetaData>
 #include <KDynamicWallpaperWriter>
 
 #include <QJsonArray>
@@ -19,7 +19,7 @@ public:
     explicit DynamicWallpaperDescription(const QString &fileName);
     ~DynamicWallpaperDescription();
 
-    QList<KSolarDynamicWallpaperMetaData> metaData() const;
+    QList<KDynamicWallpaperMetaData> metaData() const;
     QList<KDynamicWallpaperWriter::ImageView> images() const;
 
     bool hasError() const;
@@ -29,7 +29,7 @@ private:
     void init(const QString &metaDataFileName);
     void setError(const QString &text);
 
-    QList<KSolarDynamicWallpaperMetaData> m_metaDataList;
+    QList<KDynamicWallpaperMetaData> m_metaDataList;
     QList<KDynamicWallpaperWriter::ImageView> m_imageList;
     QString m_errorString;
     bool m_hasError = false;
