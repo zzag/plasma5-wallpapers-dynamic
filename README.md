@@ -229,7 +229,7 @@ chmod +x dynamicwallpaperconverter
 Once you've downloaded the dynamicwallpaperconverter script, you can start converting wallpapers
 
 ```sh
-./dynamicwallpaperconverter --crossfade file.heif
+./dynamicwallpaperconverter --crossfade file.heic
 ```
 
 After the command above has finished its execution, you should see a file in the current working
