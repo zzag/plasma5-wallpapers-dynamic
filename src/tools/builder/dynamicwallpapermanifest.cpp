@@ -104,6 +104,10 @@ void DynamicWallpaperManifest::parseSolar(const QJsonArray &entries)
 
         int index = indexToFileName.key(absoluteFileName, -1);
         if (index == -1) {
+            if (!QFile::exists(absoluteFileName)) {
+                setError(QStringLiteral("%1 does not exist").arg(absoluteFileName));
+                return;
+            }
             if (indexToFileName.isEmpty()) {
                 index = 0;
             } else {
@@ -248,6 +252,10 @@ void DynamicWallpaperManifest::parseDayNight(const QJsonArray &entries)
         }
         if (!QFileInfo(*fileName).isAbsolute()) {
             *fileName = resolveFileName(*fileName);
+        }
+        if (!QFile::exists(*fileName)) {
+            setError(QStringLiteral("%1 does not exist").arg(*fileName));
+            return;
         }
     }
 
