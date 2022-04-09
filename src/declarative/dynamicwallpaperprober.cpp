@@ -6,7 +6,7 @@
 
 #include "dynamicwallpaperprober.h"
 
-#include <KDynamicWallpaperMetaData>
+#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperReader>
 
 /*!

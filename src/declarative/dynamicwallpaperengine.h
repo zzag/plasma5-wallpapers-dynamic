@@ -28,7 +28,7 @@ public:
     virtual bool isExpired() const;
 
 protected:
-    virtual qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const = 0;
+    virtual qreal progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const = 0;
     virtual qreal progressForDateTime(const QDateTime &dateTime) const = 0;
 
 private:

@@ -12,9 +12,9 @@
 #include <QJsonObject>
 #include <QSharedDataPointer>
 
-class KDynamicWallpaperMetaDataPrivate;
+class KSolarDynamicWallpaperMetaDataPrivate;
 
-class KDYNAMICWALLPAPER_EXPORT KDynamicWallpaperMetaData
+class KDYNAMICWALLPAPER_EXPORT KSolarDynamicWallpaperMetaData
 {
 public:
     enum CrossFadeMode {
@@ -31,11 +31,11 @@ public:
     };
     Q_DECLARE_FLAGS(MetaDataFields, MetaDataField)
 
-    KDynamicWallpaperMetaData();
-    KDynamicWallpaperMetaData(const KDynamicWallpaperMetaData &other);
-    ~KDynamicWallpaperMetaData();
+    KSolarDynamicWallpaperMetaData();
+    KSolarDynamicWallpaperMetaData(const KSolarDynamicWallpaperMetaData &other);
+    ~KSolarDynamicWallpaperMetaData();
 
-    KDynamicWallpaperMetaData &operator=(const KDynamicWallpaperMetaData &other);
+    KSolarDynamicWallpaperMetaData &operator=(const KSolarDynamicWallpaperMetaData &other);
 
     MetaDataFields fields() const;
     bool isValid() const;
@@ -57,10 +57,10 @@ public:
 
     QJsonObject toJson() const;
 
-    static KDynamicWallpaperMetaData fromJson(const QJsonObject &object);
+    static KSolarDynamicWallpaperMetaData fromJson(const QJsonObject &object);
 
 private:
-    QSharedDataPointer<KDynamicWallpaperMetaDataPrivate> d;
+    QSharedDataPointer<KSolarDynamicWallpaperMetaDataPrivate> d;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(KDynamicWallpaperMetaData::MetaDataFields)
+Q_DECLARE_OPERATORS_FOR_FLAGS(KSolarDynamicWallpaperMetaData::MetaDataFields)

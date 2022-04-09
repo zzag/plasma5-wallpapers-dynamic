@@ -5,7 +5,7 @@
  */
 
 #include "kdynamicwallpaperwriter.h"
-#include "kdynamicwallpapermetadata.h"
+#include "ksolardynamicwallpapermetadata.h"
 
 #include <QFile>
 #include <QImage>
@@ -36,7 +36,7 @@ public:
     KDynamicWallpaperWriter::WallpaperWriterError wallpaperWriterError;
     QString errorString;
     QList<KDynamicWallpaperWriter::ImageView> images;
-    QList<KDynamicWallpaperMetaData> metaData;
+    QList<KSolarDynamicWallpaperMetaData> metaData;
     std::optional<int> maxThreadCount;
 };
 
@@ -45,10 +45,10 @@ KDynamicWallpaperWriterPrivate::KDynamicWallpaperWriterPrivate()
 {
 }
 
-static QByteArray serializeMetaData(const QList<KDynamicWallpaperMetaData> &metaData)
+static QByteArray serializeMetaData(const QList<KSolarDynamicWallpaperMetaData> &metaData)
 {
     QJsonArray array;
-    for (const KDynamicWallpaperMetaData &md : metaData)
+    for (const KSolarDynamicWallpaperMetaData &md : metaData)
         array.append(md.toJson());
 
     QJsonDocument document;
@@ -136,12 +136,12 @@ KDynamicWallpaperWriter::~KDynamicWallpaperWriter()
 {
 }
 
-void KDynamicWallpaperWriter::setMetaData(const QList<KDynamicWallpaperMetaData> &metaData)
+void KDynamicWallpaperWriter::setMetaData(const QList<KSolarDynamicWallpaperMetaData> &metaData)
 {
     d->metaData = metaData;
 }
 
-QList<KDynamicWallpaperMetaData> KDynamicWallpaperWriter::metaData() const
+QList<KSolarDynamicWallpaperMetaData> KDynamicWallpaperWriter::metaData() const
 {
     return d->metaData;
 }

@@ -10,7 +10,7 @@
 
 #include <QIODevice>
 
-class KDynamicWallpaperMetaData;
+class KSolarDynamicWallpaperMetaData;
 class KDynamicWallpaperReaderPrivate;
 
 class KDYNAMICWALLPAPER_EXPORT KDynamicWallpaperReader
@@ -33,7 +33,7 @@ public:
     void setFileName(const QString &fileName);
     QString fileName() const;
 
-    QList<KDynamicWallpaperMetaData> metaData() const;
+    QList<KSolarDynamicWallpaperMetaData> metaData() const;
 
     int imageCount() const;
     QImage image(int imageIndex) const;

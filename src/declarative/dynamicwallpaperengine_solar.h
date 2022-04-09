@@ -19,7 +19,7 @@ public:
     static SolarDynamicWallpaperEngine *create(const QGeoCoordinate &location);
 
 protected:
-    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const override;
+    qreal progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const override;
     qreal progressForDateTime(const QDateTime &dateTime) const override;
 
 private:

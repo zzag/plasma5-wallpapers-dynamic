@@ -24,7 +24,7 @@ void DynamicWallpaperEngine::setDescription(const DynamicWallpaperDescription &d
     m_description = description;
 
     for (int i = 0; i < m_description.imageCount(); ++i) {
-        const KDynamicWallpaperMetaData metaData = m_description.metaDataAt(i);
+        const KSolarDynamicWallpaperMetaData metaData = m_description.metaDataAt(i);
         m_progressToImageIndex.insert(progressForMetaData(metaData), i);
     }
 }
@@ -122,8 +122,8 @@ void DynamicWallpaperEngine::update()
     else
         currentImage = std::prev(nextImage);
 
-    const KDynamicWallpaperMetaData currentMetaData = description().metaDataAt(*currentImage);
-    if (currentMetaData.crossFadeMode() == KDynamicWallpaperMetaData::CrossFade) {
+    const KSolarDynamicWallpaperMetaData currentMetaData = description().metaDataAt(*currentImage);
+    if (currentMetaData.crossFadeMode() == KSolarDynamicWallpaperMetaData::CrossFade) {
         m_topLayer = description().imageUrlAt(*nextImage);
         m_blendFactor = computeBlendFactor(currentImage.key(), nextImage.key(), progress);
     } else {

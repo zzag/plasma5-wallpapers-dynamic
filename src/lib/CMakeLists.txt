@@ -5,9 +5,9 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.dynamic\")
 
 set(dynamicwallpaperlib_SOURCES
-    kdynamicwallpapermetadata.cpp
     kdynamicwallpaperreader.cpp
     kdynamicwallpaperwriter.cpp
+    ksolardynamicwallpapermetadata.cpp
     ksunpath.cpp
     ksunposition.cpp
     ksystemclockmonitor.cpp
@@ -23,9 +23,9 @@ endif()
 
 ecm_generate_headers(dynamicwallpaperlib_HEADERS
     HEADER_NAMES
-        KDynamicWallpaperMetaData
         KDynamicWallpaperReader
         KDynamicWallpaperWriter
+        KSolarDynamicWallpaperMetaData
         KSunPath
         KSunPosition
         KSystemClockMonitor

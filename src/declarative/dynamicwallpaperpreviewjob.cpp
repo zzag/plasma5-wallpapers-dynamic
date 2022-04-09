@@ -8,13 +8,13 @@
 #include "dynamicwallpaperglobals.h"
 #include "dynamicwallpaperpreviewcache.h"
 
-#include <KDynamicWallpaperMetaData>
+#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperReader>
 #include <KLocalizedString>
 
+#include <QFutureWatcher>
 #include <QtConcurrent>
 #include <QtMath>
-#include <QFutureWatcher>
 
 /*!
  * \class DynamicWallpaperPreviewJob
@@ -42,7 +42,7 @@ static QRgb blend(QRgb a, QRgb b, qreal blendFactor)
 {
     const int alpha = qAlpha(a) * (1 - blendFactor) + qAlpha(b) * blendFactor;
     const int red = qRed(a) * (1 - blendFactor) + qRed(b) * blendFactor;
-    const int blue = qBlue(a) * (1 - blendFactor) + qBlue(b)* blendFactor;
+    const int blue = qBlue(a) * (1 - blendFactor) + qBlue(b) * blendFactor;
     const int green = qGreen(a) * (1 - blendFactor) + qGreen(b) * blendFactor;
 
     return qRgba(red, green, blue, alpha);
@@ -91,14 +91,14 @@ static QImage blend(const QImage &dark, const QImage &light, qreal delta)
  *
  * Returns the approximate solar elevation for the specified wallpaper \a metadata.
  */
-static qreal scoreForMetaData(const KDynamicWallpaperMetaData &metadata)
+static qreal scoreForMetaData(const KSolarDynamicWallpaperMetaData &metadata)
 {
-    if (metadata.fields() & KDynamicWallpaperMetaData::SolarElevationField)
+    if (metadata.fields() & KSolarDynamicWallpaperMetaData::SolarElevationField)
         return metadata.solarElevation() / 90;
     return std::cos(M_PI * (2 * metadata.time() + 1));
 }
 
-static bool score_compare(const KDynamicWallpaperMetaData &a, const KDynamicWallpaperMetaData &b)
+static bool score_compare(const KSolarDynamicWallpaperMetaData &a, const KSolarDynamicWallpaperMetaData &b)
 {
     return scoreForMetaData(a) < scoreForMetaData(b);
 }
@@ -120,7 +120,7 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         if (reader.error() != KDynamicWallpaperReader::NoError)
             return DynamicWallpaperImageAsyncResult(reader.errorString());
 
-        const QList<KDynamicWallpaperMetaData> metadata = reader.metaData();
+        const QList<KSolarDynamicWallpaperMetaData> metadata = reader.metaData();
         if (metadata.isEmpty())
             return DynamicWallpaperImageAsyncResult(i18n("Not a dynamic wallpaper"));
 
