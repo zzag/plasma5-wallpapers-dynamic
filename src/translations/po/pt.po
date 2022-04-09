@@ -149,31 +149,3 @@ msgstr "%1 não é um papel de parede dinâmico"
 #, fuzzy, kde-format
 msgid "Not a dynamic wallpaper"
 msgstr "%1 não é um papel de parede dinâmico"
-
-#, kde-format
-#~ msgid "The device is not open for writing"
-#~ msgstr "O dispositivo não está aberto para escrita"
-
-#, kde-format
-#~ msgid "No suitable encoder"
-#~ msgstr "Nenhum codificador adequado"
-
-#, kde-format
-#~ msgid "Failed to encode image: %1"
-#~ msgstr "Falha ao codificar a imagem: %1"
-
-#, kde-format
-#~ msgid "No error"
-#~ msgstr "Sem erro"
-
-#, kde-format
-#~ msgid "No assigned device"
-#~ msgstr "Nenhum dispositivo atribuído"
-
-#, kde-format
-#~ msgid "Invalid HEIF file: %1"
-#~ msgstr "Arquivo HEIF inválido: %1"
-
-#, kde-format
-#~ msgid "Failed to decode image: %1"
-#~ msgstr "Falha ao descodificar a imagem: %1"

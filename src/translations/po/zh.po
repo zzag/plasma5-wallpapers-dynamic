@@ -153,15 +153,3 @@ msgstr "%1 不是动态壁纸"
 #, fuzzy, kde-format
 msgid "Not a dynamic wallpaper"
 msgstr "%1 不是动态壁纸"
-
-#, kde-format
-#~ msgid "Quality of the encoded images (from 0 to 100)"
-#~ msgstr "图像编码质量 (从 0 到 100)"
-
-#, kde-format
-#~ msgid "Discard embedded color profile"
-#~ msgstr "不放入色彩配置文件"
-
-#, kde-format
-#~ msgid "Use lossless coding"
-#~ msgstr "使用无损编码"
