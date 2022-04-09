@@ -7,13 +7,13 @@
 #pragma once
 
 #include "kdynamicwallpaper_export.h"
+#include "kdynamicwallpapermetadata.h"
 
 #include <QIODevice>
 #include <QImage>
 
 #include <optional>
 
-class KSolarDynamicWallpaperMetaData;
 class KDynamicWallpaperWriterPrivate;
 
 class KDYNAMICWALLPAPER_EXPORT KDynamicWallpaperWriter
@@ -46,8 +46,8 @@ public:
     KDynamicWallpaperWriter();
     ~KDynamicWallpaperWriter();
 
-    void setMetaData(const QList<KSolarDynamicWallpaperMetaData> &metaData);
-    QList<KSolarDynamicWallpaperMetaData> metaData() const;
+    void setMetaData(const QList<KDynamicWallpaperMetaData> &metaData);
+    QList<KDynamicWallpaperMetaData> metaData() const;
 
     void setImages(const QList<ImageView> &views);
     QList<ImageView> images() const;

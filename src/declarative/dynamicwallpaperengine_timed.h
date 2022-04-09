@@ -14,6 +14,6 @@ public:
     static TimedDynamicWallpaperEngine *create();
 
 protected:
-    qreal progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const override;
+    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const override;
     qreal progressForDateTime(const QDateTime &dateTime) const override;
 };

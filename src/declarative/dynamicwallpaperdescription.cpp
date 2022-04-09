@@ -30,10 +30,12 @@ bool DynamicWallpaperDescription::isValid() const
 DynamicWallpaperDescription::EngineTypes DynamicWallpaperDescription::supportedEngines() const
 {
     EngineTypes types = SolarEngine | TimedEngine;
-    for (const KSolarDynamicWallpaperMetaData &metaData : m_metaData) {
-        // Exclude the solar engine if there's at least one image without solar metadata.
-        if (!(metaData.fields() & KSolarDynamicWallpaperMetaData::SolarAzimuthField))
-            types &= ~SolarEngine;
+    for (const KDynamicWallpaperMetaData &metaData : m_metaData) {
+        if (auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&metaData)) {
+            // Exclude the solar engine if there's at least one image without solar metadata.
+            if (!(solar->fields() & KSolarDynamicWallpaperMetaData::SolarAzimuthField))
+                types &= ~SolarEngine;
+        }
     }
     return types;
 }
@@ -65,7 +67,7 @@ QUrl DynamicWallpaperDescription::imageUrlAt(int imageIndex) const
  * This method will return an invalid KSolarDynamicWallpaperMetaData if the DynamicWallpaperDescription
  * is invalid or if the provided index is outside the valid range.
  */
-KSolarDynamicWallpaperMetaData DynamicWallpaperDescription::metaDataAt(int imageIndex) const
+KDynamicWallpaperMetaData DynamicWallpaperDescription::metaDataAt(int imageIndex) const
 {
     return m_metaData.value(imageIndex);
 }
@@ -84,16 +86,18 @@ DynamicWallpaperDescription DynamicWallpaperDescription::fromFile(const QString 
 
     DynamicWallpaperDescription description;
 
-    const QList<KSolarDynamicWallpaperMetaData> metaDataList = reader.metaData();
-    for (const KSolarDynamicWallpaperMetaData &metaData : metaDataList) {
-        if (!metaData.isValid())
-            return DynamicWallpaperDescription();
+    const QList<KDynamicWallpaperMetaData> metaDataList = reader.metaData();
+    for (const KDynamicWallpaperMetaData &metaData : metaDataList) {
+        if (auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&metaData)) {
+            if (!solar->isValid())
+                return DynamicWallpaperDescription();
 
-        DynamicWallpaperImageHandle handle;
-        handle.setFileName(fileName);
-        handle.setImageIndex(metaData.index());
+            DynamicWallpaperImageHandle handle;
+            handle.setFileName(fileName);
+            handle.setImageIndex(solar->index());
 
-        description.addImage(handle.toUrl(), metaData);
+            description.addImage(handle.toUrl(), metaData);
+        }
     }
 
     return description;
@@ -102,7 +106,7 @@ DynamicWallpaperDescription DynamicWallpaperDescription::fromFile(const QString 
 /*!
  * \internal
  */
-void DynamicWallpaperDescription::addImage(const QUrl &url, const KSolarDynamicWallpaperMetaData &metaData)
+void DynamicWallpaperDescription::addImage(const QUrl &url, const KDynamicWallpaperMetaData &metaData)
 {
     m_imageUrls << url;
     m_metaData << metaData;

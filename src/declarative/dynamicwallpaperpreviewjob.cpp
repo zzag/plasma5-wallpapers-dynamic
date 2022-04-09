@@ -8,9 +8,9 @@
 #include "dynamicwallpaperglobals.h"
 #include "dynamicwallpaperpreviewcache.h"
 
-#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperReader>
 #include <KLocalizedString>
+#include <KSolarDynamicWallpaperMetaData>
 
 #include <QFutureWatcher>
 #include <QtConcurrent>
@@ -91,16 +91,24 @@ static QImage blend(const QImage &dark, const QImage &light, qreal delta)
  *
  * Returns the approximate solar elevation for the specified wallpaper \a metadata.
  */
-static qreal scoreForMetaData(const KSolarDynamicWallpaperMetaData &metadata)
+static qreal scoreForMetaData(const KDynamicWallpaperMetaData &metadata)
 {
-    if (metadata.fields() & KSolarDynamicWallpaperMetaData::SolarElevationField)
-        return metadata.solarElevation() / 90;
-    return std::cos(M_PI * (2 * metadata.time() + 1));
+    const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(metadata);
+    if (solar.fields() & KSolarDynamicWallpaperMetaData::SolarElevationField)
+        return solar.solarElevation() / 90;
+    return std::cos(M_PI * (2 * solar.time() + 1));
 }
 
-static bool score_compare(const KSolarDynamicWallpaperMetaData &a, const KSolarDynamicWallpaperMetaData &b)
+static bool score_compare(const KDynamicWallpaperMetaData &a, const KDynamicWallpaperMetaData &b)
 {
     return scoreForMetaData(a) < scoreForMetaData(b);
+}
+
+static bool isSolar(const QList<KDynamicWallpaperMetaData> &metadata)
+{
+    return std::all_of(metadata.constBegin(), metadata.constEnd(), [](auto md) {
+        return std::holds_alternative<KSolarDynamicWallpaperMetaData>(md);
+    });
 }
 
 /*!
@@ -120,17 +128,19 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         if (reader.error() != KDynamicWallpaperReader::NoError)
             return DynamicWallpaperImageAsyncResult(reader.errorString());
 
-        const QList<KSolarDynamicWallpaperMetaData> metadata = reader.metaData();
+        const QList<KDynamicWallpaperMetaData> metadata = reader.metaData();
         if (metadata.isEmpty())
             return DynamicWallpaperImageAsyncResult(i18n("Not a dynamic wallpaper"));
 
-        auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
-        auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
+        if (isSolar(metadata)) {
+            auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
+            auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
 
-        const QImage darkImage = reader.image(dark->index());
-        const QImage lightImage = reader.image(light->index());
+            const QImage darkImage = reader.image(dark->index());
+            const QImage lightImage = reader.image(light->index());
 
-        preview = blend(darkImage, lightImage, 0.5);
+            preview = blend(darkImage, lightImage, 0.5);
+        }
 
         DynamicWallpaperPreviewCache::store(preview, fileName);
     }

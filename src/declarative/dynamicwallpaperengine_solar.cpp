@@ -39,9 +39,10 @@ SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QGeoCoord
     return new SolarDynamicWallpaperEngine(path, midnight, location, dateTime);
 }
 
-qreal SolarDynamicWallpaperEngine::progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const
+qreal SolarDynamicWallpaperEngine::progressForMetaData(const KDynamicWallpaperMetaData &metaData) const
 {
-    const KSunPosition position(metaData.solarElevation(), metaData.solarAzimuth());
+    const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(metaData);
+    const KSunPosition position(solar.solarElevation(), solar.solarAzimuth());
     return progressForPosition(position);
 }
 

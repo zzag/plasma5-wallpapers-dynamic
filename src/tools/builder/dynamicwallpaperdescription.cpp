@@ -64,7 +64,7 @@ void DynamicWallpaperDescription::init(const QString &metaDataFileName)
     }
 
     QMap<int, QString> uniqueFileNames;
-    QList<KSolarDynamicWallpaperMetaData> metaDataList;
+    QList<KDynamicWallpaperMetaData> metaDataList;
     QList<KDynamicWallpaperWriter::ImageView> imageList;
 
     for (int i = 0; i < descriptors.size(); ++i) {
@@ -221,7 +221,7 @@ DynamicWallpaperDescription::~DynamicWallpaperDescription()
 {
 }
 
-QList<KSolarDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
+QList<KDynamicWallpaperMetaData> DynamicWallpaperDescription::metaData() const
 {
     return m_metaDataList;
 }

@@ -6,7 +6,6 @@
 
 #include "dynamicwallpapercrawler.h"
 
-#include <KSolarDynamicWallpaperMetaData>
 #include <KDynamicWallpaperReader>
 
 #include <QDir>
