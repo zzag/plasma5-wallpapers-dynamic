@@ -111,7 +111,7 @@ it takes a manifest json file describing the wallpaper and produces the wallpape
 kdynamicwallpaperbuilder path/to/manifest.json --output wallpaper.avif
 ```
 
-This engine supports several types of dynamic wallpapers - solar and day-night.
+This engine supports several types of dynamic wallpapers - _solar_ and _day-night_.
 
 #### How to Create a Solar Dynamic Wallpaper
 
