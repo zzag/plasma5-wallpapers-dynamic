@@ -40,7 +40,7 @@ public:
         }
 
     private:
-        QImage m_fileName;
+        QString m_fileName;
     };
 
     KDynamicWallpaperWriter();
