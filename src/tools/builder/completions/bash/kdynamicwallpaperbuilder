@@ -17,9 +17,7 @@ _kdynamicwallpaperbuilder_module()
         -*)
             OPTS="
                 --output
-                --quality
-                --discard-color-profile
-                --lossless
+                --max-threads
             "
             COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
             return

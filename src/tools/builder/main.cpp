@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     outputOption.setValueName(QStringLiteral("file"));
 
     QCommandLineOption maxThreadsOption(QStringLiteral("max-threads"));
-    maxThreadsOption.setDescription(i18n("Maximum number of threads that can be used during encoding wallpaper"));
+    maxThreadsOption.setDescription(i18n("Maximum number of threads that can be used when encoding a wallpaper"));
     maxThreadsOption.setValueName(QStringLiteral("max-threads"));
 
     QCommandLineParser parser;

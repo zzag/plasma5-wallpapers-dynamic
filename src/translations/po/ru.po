@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2022-04-09 19:48+0300\n"
+"POT-Creation-Date: 2022-04-09 19:59+0300\n"
 "PO-Revision-Date: 2020-02-16 19:45+0200\n"
 "Last-Translator: Vlad Zahorodnii <vladzzag@gmail.com>\n"
 "Language-Team: Vlad Zahorodnii <vladzzag@gmail.com>\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: tools/builder/main.cpp:30
 #, kde-format
-msgid "Maximum number of threads that can be used during encoding wallpaper"
+msgid "Maximum number of threads that can be used when encoding a wallpaper"
 msgstr ""
 
 #: tools/builder/main.cpp:36
