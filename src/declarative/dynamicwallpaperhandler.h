@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "dynamicwallpaperdescription.h"
+#include <KDynamicWallpaperMetaData>
 
 #include <QGeoCoordinate>
 #include <QTimer>
@@ -70,8 +70,8 @@ private:
     void reloadDescription();
     void reloadEngine();
 
-    DynamicWallpaperDescription m_description;
     DynamicWallpaperEngine *m_engine = nullptr;
+    QList<KDynamicWallpaperMetaData> m_metadata;
     QTimer *m_updateTimer;
     QGeoCoordinate m_location;
     QString m_errorString;

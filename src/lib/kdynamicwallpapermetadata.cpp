@@ -12,5 +12,5 @@
  * The KDynamicWallpaperMetaData type provides a generic representation of dynamic wallpaper
  * representation.
  *
- * \sa KSolarDynamicWallpaperMetaData
+ * \sa KSolarDynamicWallpaperMetaData, KDayNightDynamicWallpaperMetaData
  */

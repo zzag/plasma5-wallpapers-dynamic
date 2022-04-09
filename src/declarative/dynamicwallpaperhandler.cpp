@@ -6,12 +6,12 @@
 
 #include "config-dynamicwallpaper.h"
 
-#include "dynamicwallpaperdescription.h"
+#include "dynamicwallpaperengine_daynight.h"
 #include "dynamicwallpaperengine_solar.h"
-#include "dynamicwallpaperengine_timed.h"
 #include "dynamicwallpaperhandler.h"
 
 #include <KConfigGroup>
+#include <KDynamicWallpaperReader>
 #include <KLocalizedString>
 #include <KPackage/PackageLoader>
 #include <KSharedConfig>
@@ -202,9 +202,9 @@ void DynamicWallpaperHandler::reloadDescription()
 {
     const QString fileName = m_source.toLocalFile();
 
-    m_description = DynamicWallpaperDescription::fromFile(fileName);
+    m_metadata = KDynamicWallpaperReader(fileName).metaData();
 
-    if (m_description.isValid()) {
+    if (!m_metadata.isEmpty()) {
         setStatus(Ready);
     } else {
         setErrorString(i18n("%1 is not a dynamic wallpaper", fileName));
@@ -212,20 +212,31 @@ void DynamicWallpaperHandler::reloadDescription()
     }
 }
 
+static bool isSolar(const QList<KDynamicWallpaperMetaData> &metadata)
+{
+    return std::all_of(metadata.constBegin(), metadata.constEnd(), [](const auto md) {
+        return std::holds_alternative<KSolarDynamicWallpaperMetaData>(md);
+    });
+}
+
+static bool isDayNight(const QList<KDynamicWallpaperMetaData> &metadata)
+{
+    return std::all_of(metadata.constBegin(), metadata.constEnd(), [](const auto md) {
+        return std::holds_alternative<KDayNightDynamicWallpaperMetaData>(md);
+    });
+}
+
 void DynamicWallpaperHandler::reloadEngine()
 {
     delete m_engine;
     m_engine = nullptr;
 
-    if (!m_description.isValid())
+    if (m_metadata.isEmpty())
         return;
 
-    if (m_description.supportedEngines() & (DynamicWallpaperDescription::SolarEngine | DynamicWallpaperDescription::TimedEngine)) {
-        if (m_description.supportedEngines() & DynamicWallpaperDescription::SolarEngine)
-            m_engine = SolarDynamicWallpaperEngine::create(m_description, m_location);
-        if (!m_engine)
-            m_engine = TimedDynamicWallpaperEngine::create(m_description);
-    } else {
-        Q_UNREACHABLE();
+    if (isSolar(m_metadata)) {
+        m_engine = SolarDynamicWallpaperEngine::create(m_metadata, m_source, m_location);
+    } else if (isDayNight(m_metadata)) {
+        m_engine = DayNightDynamicWallpaperEngine::create(m_metadata, m_source, m_location);
     }
 }

@@ -47,9 +47,17 @@ KDynamicWallpaperWriterPrivate::KDynamicWallpaperWriterPrivate()
 static QByteArray serializeMetaData(const QList<KDynamicWallpaperMetaData> &metaData)
 {
     QJsonArray array;
+    QByteArray type;
+
     for (const KDynamicWallpaperMetaData &md : metaData) {
         if (auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&md)) {
+            type = QByteArrayLiteral("solar");
             array.append(solar->toJson());
+        } else if (auto dayNight = std::get_if<KDayNightDynamicWallpaperMetaData>(&md)) {
+            type = QByteArrayLiteral("day-night");
+            array.append(dayNight->toJson());
+        } else {
+            Q_UNREACHABLE();
         }
     }
 
@@ -61,7 +69,8 @@ static QByteArray serializeMetaData(const QList<KDynamicWallpaperMetaData> &meta
     templateFile.open(QFile::ReadOnly);
 
     QByteArray xmp = templateFile.readAll();
-    xmp.replace(QByteArrayLiteral("base64"), base64);
+    xmp.replace(QByteArrayLiteral("{{type}}"), type);
+    xmp.replace(QByteArrayLiteral("{{base64}}"), base64);
     return xmp;
 }
 

@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "dynamicwallpaperdescription.h"
-
 #include <QDateTime>
 #include <QMap>
+#include <QUrl>
 
 class DynamicWallpaperEngine
 {
@@ -24,8 +23,6 @@ public:
     qreal blendFactor() const;
 
 protected:
-    DynamicWallpaperDescription m_description;
-    QMap<qreal, int> m_progressToImageIndex;
     QUrl m_topLayer;
     QUrl m_bottomLayer;
     qreal m_blendFactor;

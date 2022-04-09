@@ -9,10 +9,9 @@ configure_file(config-dynamicwallpaper.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/confi
 
 set(dynamicwallpaperplugin_SOURCES
     dynamicwallpapercrawler.cpp
-    dynamicwallpaperdescription.cpp
     dynamicwallpaperengine.cpp
+    dynamicwallpaperengine_daynight.cpp
     dynamicwallpaperengine_solar.cpp
-    dynamicwallpaperengine_timed.cpp
     dynamicwallpaperextensionplugin.cpp
     dynamicwallpaperhandler.cpp
     dynamicwallpaperimagehandle.cpp
