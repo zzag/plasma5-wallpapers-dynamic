@@ -31,6 +31,7 @@ private:
     void init();
     void setError(const QString &text);
     void parseSolar(const QJsonArray &entries);
+    void parseDayNight(const QJsonArray &entries);
 
     QString m_manifestFileName;
     QList<KDynamicWallpaperMetaData> m_metaDataList;

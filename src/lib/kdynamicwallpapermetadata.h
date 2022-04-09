@@ -6,8 +6,10 @@
 
 #pragma once
 
+#include "kdaynightdynamicwallpapermetadata.h"
 #include "ksolardynamicwallpapermetadata.h"
 
 #include <variant>
 
-using KDynamicWallpaperMetaData = std::variant<KSolarDynamicWallpaperMetaData>;
+using KDynamicWallpaperMetaData = std::variant<KSolarDynamicWallpaperMetaData,
+                                               KDayNightDynamicWallpaperMetaData>;

@@ -83,6 +83,34 @@ static QList<KDynamicWallpaperMetaData> parseSolarMetaData(const QByteArray &xmp
     return QList<KDynamicWallpaperMetaData>();
 }
 
+static QList<KDynamicWallpaperMetaData> parseDayNightMetaData(const QByteArray &xmp)
+{
+    QDomDocument xmpDocument;
+    xmpDocument.setContent(xmp);
+    if (xmpDocument.isNull())
+        return QList<KDynamicWallpaperMetaData>();
+
+    const QString attributeName = QStringLiteral("plasma:dynamic-wallpaper-day-night");
+    const QDomNodeList descriptionNodes = xmpDocument.elementsByTagName(QStringLiteral("rdf:Description"));
+    for (int i = 0; i < descriptionNodes.count(); ++i) {
+        QDomElement descriptionNode = descriptionNodes.at(i).toElement();
+        const QByteArray base64 = descriptionNode.attribute(attributeName).toUtf8();
+        if (base64.isEmpty())
+            continue;
+
+        const QJsonArray array = QJsonDocument::fromJson(QByteArray::fromBase64(base64)).array();
+        QList<KDynamicWallpaperMetaData> result;
+        for (int i = 0; i < array.size(); ++i) {
+            KDayNightDynamicWallpaperMetaData metaData = KDayNightDynamicWallpaperMetaData::fromJson(array[i].toObject());
+            if (metaData.isValid())
+                result.append(metaData);
+        }
+        return result;
+    }
+
+    return QList<KDynamicWallpaperMetaData>();
+}
+
 bool KDynamicWallpaperReaderPrivate::open()
 {
     if (!device) {
@@ -135,8 +163,10 @@ bool KDynamicWallpaperReaderPrivate::open()
     }
 
     const QByteArray rawMetaData = QByteArray::fromRawData(reinterpret_cast<const char *>(decoder->image->xmp.data), decoder->image->xmp.size);
-
     metaData = parseSolarMetaData(rawMetaData);
+    if (metaData.isEmpty())
+        metaData = parseDayNightMetaData(rawMetaData);
+
     if (metaData.isEmpty()) {
         wallpaperReaderError = KDynamicWallpaperReader::OpenError;
         errorString = QStringLiteral("No metadata");

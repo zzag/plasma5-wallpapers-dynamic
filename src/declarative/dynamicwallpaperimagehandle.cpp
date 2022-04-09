@@ -17,6 +17,15 @@ DynamicWallpaperImageHandle::DynamicWallpaperImageHandle()
 }
 
 /*!
+ * Constructs a DynamicWallpaperImageHandle object with the given \p fileName and image \p index.
+ */
+DynamicWallpaperImageHandle::DynamicWallpaperImageHandle(const QString &fileName, int index)
+    : m_fileName(fileName)
+    , m_imageIndex(index)
+{
+}
+
+/*!
  * Returns \c true if the image handle is valid; otherwise returns \c false.
  */
 bool DynamicWallpaperImageHandle::isValid() const

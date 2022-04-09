@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "dynamicwallpaperdescription.h"
 #include "dynamicwallpaperengine.h"
 
+#include <KDynamicWallpaperMetaData>
 #include <KSunPath>
 #include <KSunPosition>
 
@@ -18,19 +18,30 @@ public:
     bool isExpired() const override;
     void update() override;
 
-    static SolarDynamicWallpaperEngine *create(const DynamicWallpaperDescription &description,
+    static SolarDynamicWallpaperEngine *create(const QList<KDynamicWallpaperMetaData> &metadata,
+                                               const QUrl &source,
                                                const QGeoCoordinate &location);
 
 private:
-    SolarDynamicWallpaperEngine(const DynamicWallpaperDescription &description,
+    SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
+                                const QUrl &source,
                                 const KSunPath &sunPath, const KSunPosition &midnight,
                                 const QGeoCoordinate &location, const QDateTime &dateTime);
+    SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
+                                const QUrl &source);
+
     qreal progressForPosition(const KSunPosition &position) const;
-    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const;
+    qreal progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const;
     qreal progressForDateTime(const QDateTime &dateTime) const;
 
-    DynamicWallpaperDescription m_description;
-    QMap<qreal, int> m_progressToImageIndex;
+    enum class Mode {
+        Normal,
+        Fallback,
+    };
+
+    Mode m_mode;
+    QUrl m_source;
+    QMap<qreal, KSolarDynamicWallpaperMetaData> m_progressToMetaData;
     KSunPath m_sunPath;
     KSunPosition m_midnight;
     QGeoCoordinate m_location;

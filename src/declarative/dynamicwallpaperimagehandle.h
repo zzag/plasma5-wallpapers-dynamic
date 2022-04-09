@@ -13,6 +13,7 @@ class DynamicWallpaperImageHandle
 {
 public:
     DynamicWallpaperImageHandle();
+    DynamicWallpaperImageHandle(const QString &fileName, int index);
 
     bool isValid() const;
 

@@ -111,6 +111,13 @@ static bool isSolar(const QList<KDynamicWallpaperMetaData> &metadata)
     });
 }
 
+static bool isDayNight(const QList<KDynamicWallpaperMetaData> &metadata)
+{
+    return std::all_of(metadata.constBegin(), metadata.constEnd(), [](auto md) {
+        return std::holds_alternative<KDayNightDynamicWallpaperMetaData>(md);
+    });
+}
+
 /*!
  * \internal
  *
@@ -132,15 +139,31 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         if (metadata.isEmpty())
             return DynamicWallpaperImageAsyncResult(i18n("Not a dynamic wallpaper"));
 
+        int darkIndex = 0;
+        int lightIndex = 0;
+
         if (isSolar(metadata)) {
             auto dark = std::min_element(metadata.begin(), metadata.end(), score_compare);
             auto light = std::max_element(metadata.begin(), metadata.end(), score_compare);
-
-            const QImage darkImage = reader.image(dark->index());
-            const QImage lightImage = reader.image(light->index());
-
-            preview = blend(darkImage, lightImage, 0.5);
+            darkIndex = std::get<KSolarDynamicWallpaperMetaData>(*dark).index();
+            lightIndex = std::get<KSolarDynamicWallpaperMetaData>(*light).index();
+        } else if (isDayNight(metadata)) {
+            for (const KDynamicWallpaperMetaData &md : metadata) {
+                const auto &dayNight = std::get<KDayNightDynamicWallpaperMetaData>(md);
+                switch (dayNight.timeOfDay()) {
+                case KDayNightDynamicWallpaperMetaData::TimeOfDay::Day:
+                    lightIndex = dayNight.index();
+                    break;
+                case KDayNightDynamicWallpaperMetaData::TimeOfDay::Night:
+                    darkIndex = dayNight.index();
+                    break;
+                }
+            }
         }
+
+        const QImage darkImage = reader.image(darkIndex);
+        const QImage lightImage = reader.image(lightIndex);
+        preview = blend(darkImage, lightImage, 0.5);
 
         DynamicWallpaperPreviewCache::store(preview, fileName);
     }

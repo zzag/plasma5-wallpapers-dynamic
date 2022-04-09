@@ -5,23 +5,37 @@
  */
 
 #include "dynamicwallpaperengine_solar.h"
+#include "dynamicwallpaperimagehandle.h"
 
 #include <cmath>
 
-SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const DynamicWallpaperDescription &description,
+SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
+                                                         const QUrl &source,
                                                          const KSunPath &sunPath,
                                                          const KSunPosition &midnight,
                                                          const QGeoCoordinate &location,
                                                          const QDateTime &dateTime)
-    : m_description(description)
+    : m_mode(Mode::Normal)
+    , m_source(source)
     , m_sunPath(sunPath)
     , m_midnight(midnight)
     , m_location(location)
     , m_dateTime(dateTime)
 {
-    for (int i = 0; i < m_description.imageCount(); ++i) {
-        const KDynamicWallpaperMetaData metaData = m_description.metaDataAt(i);
-        m_progressToImageIndex.insert(progressForMetaData(metaData), i);
+    for (const KDynamicWallpaperMetaData &md : metadata) {
+        const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(md);
+        m_progressToMetaData.insert(progressForMetaData(solar), solar);
+    }
+}
+
+SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
+                                                         const QUrl &source)
+    : m_mode(Mode::Fallback)
+    , m_source(source)
+{
+    for (const KDynamicWallpaperMetaData &md : metadata) {
+        const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(md);
+        m_progressToMetaData.insert(progressForMetaData(solar), solar);
     }
 }
 
@@ -30,33 +44,52 @@ bool SolarDynamicWallpaperEngine::isExpired() const
     return m_dateTime.date() != QDate::currentDate();
 }
 
-SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const DynamicWallpaperDescription &description,
+static bool checkSolarMetadata(const QList<KDynamicWallpaperMetaData> &metadata)
+{
+    return std::all_of(metadata.begin(), metadata.end(), [](auto md) {
+        const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(md);
+        return solar.fields() & (KSolarDynamicWallpaperMetaData::SolarAzimuthField | KSolarDynamicWallpaperMetaData::SolarElevationField);
+    });
+}
+
+SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QList<KDynamicWallpaperMetaData> &metadata,
+                                                                 const QUrl &source,
                                                                  const QGeoCoordinate &location)
 {
     const QDateTime dateTime = QDateTime::currentDateTime();
 
-    const KSunPosition midnight = KSunPosition::midnight(dateTime, location);
-    if (!midnight.isValid())
-        return nullptr;
+    if (checkSolarMetadata(metadata)) {
+        const KSunPosition midnight = KSunPosition::midnight(dateTime, location);
+        if (midnight.isValid()) {
+            const KSunPath path = KSunPath::create(dateTime, location);
+            if (path.isValid())
+                return new SolarDynamicWallpaperEngine(metadata, source, path, midnight, location, dateTime);
+        }
+    }
 
-    const KSunPath path = KSunPath::create(dateTime, location);
-    if (!path.isValid())
-        return nullptr;
-
-    return new SolarDynamicWallpaperEngine(description, path, midnight, location, dateTime);
+    return new SolarDynamicWallpaperEngine(metadata, source);
 }
 
-qreal SolarDynamicWallpaperEngine::progressForMetaData(const KDynamicWallpaperMetaData &metaData) const
+qreal SolarDynamicWallpaperEngine::progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const
 {
-    const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(metaData);
-    const KSunPosition position(solar.solarElevation(), solar.solarAzimuth());
-    return progressForPosition(position);
+    if (m_mode == Mode::Fallback) {
+        return metaData.time();
+    } else {
+        const KSunPosition position(metaData.solarElevation(), metaData.solarAzimuth());
+        return progressForPosition(position);
+    }
 }
 
 qreal SolarDynamicWallpaperEngine::progressForDateTime(const QDateTime &dateTime) const
 {
-    const KSunPosition position(dateTime, m_location);
-    return progressForPosition(position);
+    if (m_mode == Mode::Fallback) {
+        QDateTime midnight = dateTime;
+        midnight.setTime(QTime());
+        return midnight.secsTo(dateTime) / 86400.0;
+    } else {
+        const KSunPosition position(dateTime, m_location);
+        return progressForPosition(position);
+    }
 }
 
 qreal SolarDynamicWallpaperEngine::progressForPosition(const KSunPosition &position) const
@@ -116,26 +149,25 @@ void SolarDynamicWallpaperEngine::update()
 {
     const qreal progress = progressForDateTime(QDateTime::currentDateTime());
 
-    QMap<qreal, int>::iterator nextImage;
-    QMap<qreal, int>::iterator currentImage;
+    QMap<qreal, KSolarDynamicWallpaperMetaData>::iterator nextImage;
+    QMap<qreal, KSolarDynamicWallpaperMetaData>::iterator currentImage;
 
-    nextImage = m_progressToImageIndex.upperBound(progress);
-    if (nextImage == m_progressToImageIndex.end())
-        nextImage = m_progressToImageIndex.begin();
+    nextImage = m_progressToMetaData.upperBound(progress);
+    if (nextImage == m_progressToMetaData.end())
+        nextImage = m_progressToMetaData.begin();
 
-    if (nextImage == m_progressToImageIndex.begin())
-        currentImage = std::prev(m_progressToImageIndex.end());
+    if (nextImage == m_progressToMetaData.begin())
+        currentImage = std::prev(m_progressToMetaData.end());
     else
         currentImage = std::prev(nextImage);
 
-    const auto metadata = m_description.metaDataAt(*currentImage);
-    if (const auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&metadata); solar && solar->crossFadeMode() == KSolarDynamicWallpaperMetaData::CrossFade) {
-        m_topLayer = m_description.imageUrlAt(*nextImage);
+    if (currentImage->crossFadeMode() == KSolarDynamicWallpaperMetaData::CrossFade) {
+        m_topLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), nextImage->index()).toUrl();
         m_blendFactor = computeBlendFactor(currentImage.key(), nextImage.key(), progress);
     } else {
         m_topLayer = QUrl();
         m_blendFactor = 0;
     }
 
-    m_bottomLayer = m_description.imageUrlAt(*currentImage);
+    m_bottomLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), currentImage->index()).toUrl();
 }

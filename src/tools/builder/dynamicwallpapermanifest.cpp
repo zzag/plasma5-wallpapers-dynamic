@@ -60,8 +60,11 @@ void DynamicWallpaperManifest::init()
 
     if (document.isObject()) {
         const QJsonObject rootObject = document.object();
-        if (rootObject[QLatin1String("Type")] == QLatin1String("solar")) {
-            parseSolar(rootObject[QLatin1String("Meta")].toArray());
+        const QString type = rootObject["Type"].toString();
+        if (type == QLatin1String("solar")) {
+            parseSolar(rootObject["Meta"].toArray());
+        } else if (type == QLatin1String("day-night")) {
+            parseDayNight(rootObject["Meta"].toArray());
         } else {
             setError(QStringLiteral("Unknown manifest type. Available types: solar"));
         }
@@ -212,6 +215,60 @@ void DynamicWallpaperManifest::parseSolar(const QJsonArray &entries)
 
     m_metaDataList = metaDataList;
     m_imageList = imageList;
+}
+
+void DynamicWallpaperManifest::parseDayNight(const QJsonArray &entries)
+{
+    if (entries.isEmpty()) {
+        setError(QStringLiteral("No manifest image entries"));
+        return;
+    }
+
+    QString dayFileName;
+    QString nightFileName;
+
+    for (int i = 0; i < entries.size(); ++i) {
+        const QJsonObject descriptor = entries[i].toObject();
+        QString *fileName;
+
+        const QString timeOfDay = descriptor["TimeOfDay"].toString();
+        if (timeOfDay == QLatin1String("day")) {
+            fileName = &dayFileName;
+        } else if (timeOfDay == QLatin1String("night")) {
+            fileName = &nightFileName;
+        } else {
+            setError(QStringLiteral("Unknown TimeOfDay value. Possible values: day, night"));
+            return;
+        }
+
+        *fileName = descriptor["FileName"].toString();
+        if (fileName->isEmpty()) {
+            setError(QStringLiteral("No image file name has been specified"));
+            return;
+        }
+        if (!QFileInfo(*fileName).isAbsolute()) {
+            *fileName = resolveFileName(*fileName);
+        }
+    }
+
+    if (dayFileName.isEmpty()) {
+        setError(QStringLiteral("No day picture has been specified"));
+        return;
+    }
+    if (nightFileName.isEmpty()) {
+        setError(QStringLiteral("No night picture has been specified"));
+        return;
+    }
+
+    m_imageList = {
+        KDynamicWallpaperWriter::ImageView(dayFileName),
+        KDynamicWallpaperWriter::ImageView(nightFileName),
+    };
+
+    m_metaDataList = {
+        KDayNightDynamicWallpaperMetaData(KDayNightDynamicWallpaperMetaData::TimeOfDay::Day, 0),
+        KDayNightDynamicWallpaperMetaData(KDayNightDynamicWallpaperMetaData::TimeOfDay::Night, 1),
+    };
 }
 
 void DynamicWallpaperManifest::setError(const QString &text)
