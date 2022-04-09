@@ -233,4 +233,4 @@ Once you've downloaded the dynamicwallpaperconverter script, you can start conve
 ```
 
 After the command above has finished its execution, you should see a file in the current working
-directory named 'wallpaper.avif', which can be fed into this plugin.
+directory named `wallpaper.avif`, which can be fed into this plugin.
