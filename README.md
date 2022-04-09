@@ -226,7 +226,7 @@ Since dynamic wallpapers for macOS and this plugin are incompatible, you need to
 convert dynamic wallpapers.
 
 ```sh
-curl https://git.io/JJkjd -sL > dynamicwallpaperconverter
+curl -sLO https://raw.githubusercontent.com/zzag/plasma5-wallpapers-dynamic-extras/master/dynamicwallpaperconverter
 chmod +x dynamicwallpaperconverter
 ```
 
