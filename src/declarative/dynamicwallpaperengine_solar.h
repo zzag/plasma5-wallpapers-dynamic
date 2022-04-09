@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "dynamicwallpaperdescription.h"
 #include "dynamicwallpaperengine.h"
 
 #include <KSunPath>
@@ -15,18 +16,21 @@ class SolarDynamicWallpaperEngine : public DynamicWallpaperEngine
 {
 public:
     bool isExpired() const override;
+    void update() override;
 
-    static SolarDynamicWallpaperEngine *create(const QGeoCoordinate &location);
-
-protected:
-    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const override;
-    qreal progressForDateTime(const QDateTime &dateTime) const override;
+    static SolarDynamicWallpaperEngine *create(const DynamicWallpaperDescription &description,
+                                               const QGeoCoordinate &location);
 
 private:
-    SolarDynamicWallpaperEngine(const KSunPath &sunPath, const KSunPosition &midnight,
+    SolarDynamicWallpaperEngine(const DynamicWallpaperDescription &description,
+                                const KSunPath &sunPath, const KSunPosition &midnight,
                                 const QGeoCoordinate &location, const QDateTime &dateTime);
     qreal progressForPosition(const KSunPosition &position) const;
+    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const;
+    qreal progressForDateTime(const QDateTime &dateTime) const;
 
+    DynamicWallpaperDescription m_description;
+    QMap<qreal, int> m_progressToImageIndex;
     KSunPath m_sunPath;
     KSunPosition m_midnight;
     QGeoCoordinate m_location;

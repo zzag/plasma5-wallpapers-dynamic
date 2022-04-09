@@ -8,15 +8,21 @@
 
 #include <cmath>
 
-SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const KSunPath &sunPath,
+SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const DynamicWallpaperDescription &description,
+                                                         const KSunPath &sunPath,
                                                          const KSunPosition &midnight,
                                                          const QGeoCoordinate &location,
                                                          const QDateTime &dateTime)
-    : m_sunPath(sunPath)
+    : m_description(description)
+    , m_sunPath(sunPath)
     , m_midnight(midnight)
     , m_location(location)
     , m_dateTime(dateTime)
 {
+    for (int i = 0; i < m_description.imageCount(); ++i) {
+        const KDynamicWallpaperMetaData metaData = m_description.metaDataAt(i);
+        m_progressToImageIndex.insert(progressForMetaData(metaData), i);
+    }
 }
 
 bool SolarDynamicWallpaperEngine::isExpired() const
@@ -24,7 +30,8 @@ bool SolarDynamicWallpaperEngine::isExpired() const
     return m_dateTime.date() != QDate::currentDate();
 }
 
-SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QGeoCoordinate &location)
+SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const DynamicWallpaperDescription &description,
+                                                                 const QGeoCoordinate &location)
 {
     const QDateTime dateTime = QDateTime::currentDateTime();
 
@@ -36,7 +43,7 @@ SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QGeoCoord
     if (!path.isValid())
         return nullptr;
 
-    return new SolarDynamicWallpaperEngine(path, midnight, location, dateTime);
+    return new SolarDynamicWallpaperEngine(description, path, midnight, location, dateTime);
 }
 
 qreal SolarDynamicWallpaperEngine::progressForMetaData(const KDynamicWallpaperMetaData &metaData) const
@@ -69,4 +76,66 @@ qreal SolarDynamicWallpaperEngine::progressForPosition(const KSunPosition &posit
         angle += 2 * M_PI;
 
     return angle / (2 * M_PI);
+}
+
+static qreal computeTimeSpan(qreal from, qreal to)
+{
+    if (to < from)
+        return (1 - from) + to;
+
+    return to - from;
+}
+
+static qreal computeBlendFactor(qreal from, qreal to, qreal now)
+{
+    const qreal reflectedFrom = 1 - from;
+    const qreal reflectedTo = 1 - to;
+
+    const qreal totalDuration = computeTimeSpan(from, to);
+    const qreal totalElapsed = computeTimeSpan(from, now);
+
+    if ((reflectedFrom < from) ^ (reflectedTo < to)) {
+        if (reflectedFrom < to) {
+            const qreal threshold = computeTimeSpan(from, reflectedFrom);
+            if (totalElapsed < threshold)
+                return 0;
+            return (totalElapsed - threshold) / (totalDuration - threshold);
+        }
+        if (from < reflectedTo) {
+            const qreal threshold = computeTimeSpan(from, reflectedTo);
+            if (threshold < totalElapsed)
+                return 1;
+            return totalElapsed / threshold;
+        }
+    }
+
+    return totalElapsed / totalDuration;
+}
+
+void SolarDynamicWallpaperEngine::update()
+{
+    const qreal progress = progressForDateTime(QDateTime::currentDateTime());
+
+    QMap<qreal, int>::iterator nextImage;
+    QMap<qreal, int>::iterator currentImage;
+
+    nextImage = m_progressToImageIndex.upperBound(progress);
+    if (nextImage == m_progressToImageIndex.end())
+        nextImage = m_progressToImageIndex.begin();
+
+    if (nextImage == m_progressToImageIndex.begin())
+        currentImage = std::prev(m_progressToImageIndex.end());
+    else
+        currentImage = std::prev(nextImage);
+
+    const auto metadata = m_description.metaDataAt(*currentImage);
+    if (const auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&metadata); solar && solar->crossFadeMode() == KSolarDynamicWallpaperMetaData::CrossFade) {
+        m_topLayer = m_description.imageUrlAt(*nextImage);
+        m_blendFactor = computeBlendFactor(currentImage.key(), nextImage.key(), progress);
+    } else {
+        m_topLayer = QUrl();
+        m_blendFactor = 0;
+    }
+
+    m_bottomLayer = m_description.imageUrlAt(*currentImage);
 }

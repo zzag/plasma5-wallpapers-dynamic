@@ -6,10 +6,10 @@
 
 #include "config-dynamicwallpaper.h"
 
-#include "dynamicwallpaperhandler.h"
 #include "dynamicwallpaperdescription.h"
 #include "dynamicwallpaperengine_solar.h"
 #include "dynamicwallpaperengine_timed.h"
+#include "dynamicwallpaperhandler.h"
 
 #include <KConfigGroup>
 #include <KLocalizedString>
@@ -71,12 +71,12 @@ static QUrl defaultLookAndFeelWallpaper()
 
     KPackage::PackageLoader *packageLoader = KPackage::PackageLoader::self();
     KPackage::Package lookAndFeelPackage =
-            packageLoader->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
+        packageLoader->loadPackage(QStringLiteral("Plasma/LookAndFeel"));
     if (!lookAndFeelPackageName.isEmpty())
         lookAndFeelPackage.setPath(lookAndFeelPackageName);
 
     KSharedConfigPtr lookAndFeelConfig =
-            KSharedConfig::openConfig(lookAndFeelPackage.filePath("defaults"));
+        KSharedConfig::openConfig(lookAndFeelPackage.filePath("defaults"));
     KConfigGroup wallpaperConfigGroup = KConfigGroup(lookAndFeelConfig, "Dynamic Wallpaper");
 
     const QString wallpaperName = wallpaperConfigGroup.readEntry("Image");
@@ -220,10 +220,12 @@ void DynamicWallpaperHandler::reloadEngine()
     if (!m_description.isValid())
         return;
 
-    if (m_description.supportedEngines() & DynamicWallpaperDescription::SolarEngine)
-        m_engine = SolarDynamicWallpaperEngine::create(m_location);
-    if (!m_engine)
-        m_engine = TimedDynamicWallpaperEngine::create();
-
-    m_engine->setDescription(m_description);
+    if (m_description.supportedEngines() & (DynamicWallpaperDescription::SolarEngine | DynamicWallpaperDescription::TimedEngine)) {
+        if (m_description.supportedEngines() & DynamicWallpaperDescription::SolarEngine)
+            m_engine = SolarDynamicWallpaperEngine::create(m_description, m_location);
+        if (!m_engine)
+            m_engine = TimedDynamicWallpaperEngine::create(m_description);
+    } else {
+        Q_UNREACHABLE();
+    }
 }

@@ -6,14 +6,22 @@
 
 #pragma once
 
+#include "dynamicwallpaperdescription.h"
 #include "dynamicwallpaperengine.h"
 
 class TimedDynamicWallpaperEngine : public DynamicWallpaperEngine
 {
 public:
-    static TimedDynamicWallpaperEngine *create();
+    void update() override;
 
-protected:
-    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const override;
-    qreal progressForDateTime(const QDateTime &dateTime) const override;
+    static TimedDynamicWallpaperEngine *create(const DynamicWallpaperDescription &description);
+
+private:
+    explicit TimedDynamicWallpaperEngine(const DynamicWallpaperDescription &description);
+
+    qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const;
+    qreal progressForDateTime(const QDateTime &dateTime) const;
+
+    DynamicWallpaperDescription m_description;
+    QMap<qreal, int> m_progressToImageIndex;
 };

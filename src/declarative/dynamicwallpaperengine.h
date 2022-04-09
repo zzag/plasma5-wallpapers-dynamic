@@ -16,22 +16,14 @@ class DynamicWallpaperEngine
 public:
     virtual ~DynamicWallpaperEngine();
 
-    void setDescription(const DynamicWallpaperDescription &description);
-    DynamicWallpaperDescription description() const;
-
-    void update();
+    virtual void update() = 0;
+    virtual bool isExpired() const;
 
     QUrl bottomLayer() const;
     QUrl topLayer() const;
     qreal blendFactor() const;
 
-    virtual bool isExpired() const;
-
 protected:
-    virtual qreal progressForMetaData(const KDynamicWallpaperMetaData &metaData) const = 0;
-    virtual qreal progressForDateTime(const QDateTime &dateTime) const = 0;
-
-private:
     DynamicWallpaperDescription m_description;
     QMap<qreal, int> m_progressToImageIndex;
     QUrl m_topLayer;
