@@ -33,6 +33,7 @@ Item {
         blendFactor: handler.blendFactor
         bottomLayer: handler.bottomLayer
         fillMode: wallpaper.configuration.FillMode
+        sourceSize: Qt.size(root.width, root.height)
         topLayer: handler.topLayer
         visible: handler.status == DynamicWallpaperHandler.Ready
         onStatusChanged: if (status != Image.Loading) {

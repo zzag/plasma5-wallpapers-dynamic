@@ -35,6 +35,11 @@ StackView {
     property int fillMode
 
     /*!
+     * The scaled width and height of the full-frame image.
+     */
+    property size sourceSize
+
+    /*!
      * This property holds the wallpaper image about to be presented.
      */
     property WallpaperImage __nextItem: null
@@ -107,7 +112,8 @@ StackView {
             bottomLayer: bottomLayer,
             topLayer: topLayer,
             blendFactor: blendFactor,
-            fillMode: fillMode
+            fillMode: fillMode,
+            sourceSize: sourceSize
         });
 
         if (root.__nextItem.status == Image.Loading)

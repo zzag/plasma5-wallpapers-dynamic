@@ -10,33 +10,36 @@
 
 #include <KDynamicWallpaperReader>
 
-#include <QtConcurrent>
 #include <QFutureWatcher>
+#include <QtConcurrent>
 
-static DynamicWallpaperImageAsyncResult load(const QString &fileName, int index, const QSize &requestedSize)
+static DynamicWallpaperImageAsyncResult load(const QString &fileName,
+                                             int index,
+                                             const QSize &requestedSize,
+                                             const QQuickImageProviderOptions &options)
 {
     const KDynamicWallpaperReader reader(fileName);
     if (reader.error() != KDynamicWallpaperReader::NoError)
         return DynamicWallpaperImageAsyncResult(reader.errorString());
 
-    // If the requested image size is valid, scale the image without preserving the
-    // aspect ratio.
-    QImage image = reader.image(index);
-    if (requestedSize.isValid())
-        image = image.scaled(requestedSize);
+    const QImage image = reader.image(index);
+    const QSize effectiveSize = QQuickImageProviderWithOptions::loadSize(image.size(),
+                                                                         requestedSize,
+                                                                         QByteArrayLiteral("avif"),
+                                                                         options);
 
-    // QtQuick wants images to have the format of ARGB32_Premultiplied, so perform
-    // format conversion in the worker thread right away.
-    if (image.format() != QImage::Format_ARGB32_Premultiplied)
-        image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-
-    return DynamicWallpaperImageAsyncResult(image);
+    return DynamicWallpaperImageAsyncResult(image.scaled(effectiveSize,
+                                                         Qt::IgnoreAspectRatio,
+                                                         Qt::SmoothTransformation));
 }
 
 class DynamicWallpaperAsyncImageResponse : public QQuickImageResponse
 {
 public:
-    DynamicWallpaperAsyncImageResponse(const QString &fileName, int index, const QSize &requestedSize);
+    DynamicWallpaperAsyncImageResponse(const QString &fileName,
+                                       int index,
+                                       const QSize &requestedSize,
+                                       const QQuickImageProviderOptions &options);
 
     QQuickTextureFactory *textureFactory() const override;
     QString errorString() const override;
@@ -52,12 +55,13 @@ private:
 
 DynamicWallpaperAsyncImageResponse::DynamicWallpaperAsyncImageResponse(const QString &fileName,
                                                                        int index,
-                                                                       const QSize &requestedSize)
+                                                                       const QSize &requestedSize,
+                                                                       const QQuickImageProviderOptions &options)
 {
     m_watcher = new QFutureWatcher<DynamicWallpaperImageAsyncResult>(this);
     connect(m_watcher, &QFutureWatcher<DynamicWallpaperImageAsyncResult>::finished,
             this, &DynamicWallpaperAsyncImageResponse::handleFinished);
-    m_watcher->setFuture(QtConcurrent::run(load, fileName, index, requestedSize));
+    m_watcher->setFuture(QtConcurrent::run(load, fileName, index, requestedSize, options));
 }
 
 void DynamicWallpaperAsyncImageResponse::handleFinished()
@@ -82,8 +86,13 @@ QString DynamicWallpaperAsyncImageResponse::errorString() const
     return m_errorString;
 }
 
-QQuickImageResponse *DynamicWallpaperImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
+DynamicWallpaperImageProvider::DynamicWallpaperImageProvider()
+    : QQuickImageProviderWithOptions(ImageType::ImageResponse)
+{
+}
+
+QQuickImageResponse *DynamicWallpaperImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize, const QQuickImageProviderOptions &options)
 {
     const DynamicWallpaperImageHandle handle = DynamicWallpaperImageHandle::fromString(id);
-    return new DynamicWallpaperAsyncImageResponse(handle.fileName(), handle.imageIndex(), requestedSize);
+    return new DynamicWallpaperAsyncImageResponse(handle.fileName(), handle.imageIndex(), requestedSize, options);
 }

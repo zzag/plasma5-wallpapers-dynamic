@@ -6,10 +6,13 @@
 
 #pragma once
 
-#include <QQuickAsyncImageProvider>
+#include <QtQuick/private/qquickpixmapcache_p.h> // TODO: Use stable API in Qt 6
 
-class DynamicWallpaperImageProvider : public QQuickAsyncImageProvider
+class DynamicWallpaperImageProvider : public QQuickImageProviderWithOptions
 {
 public:
-    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize) override;
+    DynamicWallpaperImageProvider();
+
+    QQuickImageResponse *requestImageResponse(const QString &id, const QSize &requestedSize,
+                                              const QQuickImageProviderOptions &options) override;
 };

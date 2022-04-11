@@ -20,6 +20,11 @@ Item {
     property url topLayer
 
     /*!
+     * The scaled width and height of the full-frame image.
+     */
+    property size sourceSize
+
+    /*!
      * The blend factor between the bottom layer and the top layer.
      *
      * The blend factor varies between 0 and 1. 0 means that only the bottom
@@ -58,6 +63,7 @@ Item {
         cache: wallpaper.configuration.Cache
         fillMode: root.fillMode
         source: root.bottomLayer
+        sourceSize: root.sourceSize
     }
 
     Image {
@@ -69,6 +75,7 @@ Item {
         fillMode: root.fillMode
         opacity: root.blendFactor
         source: root.topLayer
+        sourceSize: root.sourceSize
     }
 
     Behavior on blendFactor {
