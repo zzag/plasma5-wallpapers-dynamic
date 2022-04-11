@@ -192,9 +192,19 @@ void DynamicWallpaperHandler::update()
         return;
     if (!m_engine || m_engine->isExpired())
         reloadEngine();
+
     m_engine->update();
-    setTopLayer(m_engine->topLayer());
-    setBottomLayer(m_engine->bottomLayer());
+
+    QUrl topLayer = m_engine->topLayer();
+    if (m_engine->blendFactor() == 0)
+        topLayer = QUrl();
+
+    QUrl bottomLayer = m_engine->bottomLayer();
+    if (m_engine->blendFactor() == 1)
+        bottomLayer = QUrl();
+
+    setTopLayer(topLayer);
+    setBottomLayer(bottomLayer);
     setBlendFactor(m_engine->blendFactor());
 }
 
