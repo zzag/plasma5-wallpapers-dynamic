@@ -162,12 +162,11 @@ void SolarDynamicWallpaperEngine::update()
         currentImage = std::prev(nextImage);
 
     if (currentImage->crossFadeMode() == KSolarDynamicWallpaperMetaData::CrossFade) {
-        m_topLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), nextImage->index()).toUrl();
         m_blendFactor = computeBlendFactor(currentImage.key(), nextImage.key(), progress);
     } else {
-        m_topLayer = QUrl();
         m_blendFactor = 0;
     }
 
+    m_topLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), nextImage->index()).toUrl();
     m_bottomLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), currentImage->index()).toUrl();
 }
