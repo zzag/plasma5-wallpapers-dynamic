@@ -55,7 +55,7 @@ Fedora:
 ```sh
 sudo dnf install cmake extra-cmake-modules git kf5-kpackage-devel kf5-plasma-devel \
     kf5-ki18n-devel qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qtlocation-devel \
-    libexif-devel libavif-devel
+    libexif-devel libavif-devel qt5-qtbase-private-devel
 ```
 
 Ubuntu:
