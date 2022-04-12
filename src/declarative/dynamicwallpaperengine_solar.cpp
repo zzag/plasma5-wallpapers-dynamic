@@ -58,7 +58,7 @@ SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QList<KDy
 {
     const QDateTime dateTime = QDateTime::currentDateTime();
 
-    if (checkSolarMetadata(metadata)) {
+    if (location.isValid() && checkSolarMetadata(metadata)) {
         const KSunPosition midnight = KSunPosition::midnight(dateTime, location);
         if (midnight.isValid()) {
             const KSunPath path = KSunPath::create(dateTime, location);
