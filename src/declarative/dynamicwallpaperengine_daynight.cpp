@@ -19,20 +19,16 @@ DayNightDynamicWallpaperEngine *DayNightDynamicWallpaperEngine::create(const QLi
 DayNightDynamicWallpaperEngine::DayNightDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
                                                                const QUrl &source,
                                                                const QGeoCoordinate &location)
-    : m_source(source)
-    , m_location(location)
+    : m_location(location)
 {
     for (const KDynamicWallpaperMetaData &md : metadata) {
         const auto &dayNight = std::get<KDayNightDynamicWallpaperMetaData>(md);
         if (dayNight.timeOfDay() == KDayNightDynamicWallpaperMetaData::TimeOfDay::Day) {
-            m_dayPicture = dayNight;
+            m_topLayer = DynamicWallpaperImageHandle(source.toLocalFile(), dayNight.index()).toUrl();
         } else if (dayNight.timeOfDay() == KDayNightDynamicWallpaperMetaData::TimeOfDay::Night) {
-            m_nightPicture = dayNight;
+            m_bottomLayer = DynamicWallpaperImageHandle(source.toLocalFile(), dayNight.index()).toUrl();
         }
     }
-
-    m_topLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), m_dayPicture.index()).toUrl();
-    m_bottomLayer = DynamicWallpaperImageHandle(m_source.toLocalFile(), m_nightPicture.index()).toUrl();
 }
 
 void DayNightDynamicWallpaperEngine::update()

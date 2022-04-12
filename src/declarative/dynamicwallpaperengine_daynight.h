@@ -26,8 +26,5 @@ private:
                                    const QUrl &source,
                                    const QGeoCoordinate &location);
 
-    QUrl m_source;
     QGeoCoordinate m_location;
-    KDayNightDynamicWallpaperMetaData m_dayPicture;
-    KDayNightDynamicWallpaperMetaData m_nightPicture;
 };
