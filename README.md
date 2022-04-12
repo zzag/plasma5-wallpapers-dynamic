@@ -134,22 +134,19 @@ The manifest file looks as follows
             "CrossFade": true,
             "Time": "18:00",
             "FileName": "0.png"
-        },
-        {
+        }, {
             "SolarAzimuth": 0,
             "SolarElevation": -90,
             "CrossFade": true,
             "Time": "00:00",
             "FileName": "1.png"
-        },
-        {
+        }, {
             "SolarAzimuth": 90,
             "SolarElevation": 0,
             "CrossFade": true,
             "Time": "06:00",
             "FileName": "2.png"
-        },
-        {
+        }, {
             "SolarAzimuth": 180,
             "SolarElevation": 90,
             "CrossFade": true,
@@ -206,8 +203,7 @@ The manifest file for a day/night wallpaper looks as follows
         {
             "TimeOfDay": "day",
             "FileName": "day.png"
-        },
-        {
+        }, {
             "TimeOfDay": "night",
             "FileName": "night.png"
         }
