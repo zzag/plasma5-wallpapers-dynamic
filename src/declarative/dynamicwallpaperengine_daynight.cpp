@@ -37,21 +37,24 @@ DayNightDynamicWallpaperEngine::DayNightDynamicWallpaperEngine(const QList<KDyna
 
 void DayNightDynamicWallpaperEngine::update()
 {
-    const KSunPosition sunPosition(QDateTime::currentDateTime(), m_location);
-    if (sunPosition.isValid()) {
-        m_blendFactor = (qBound(-6.0, sunPosition.elevation(), 6.0) + 6.0) / 12.0;
-    } else {
-        const QTime currentTime = QTime::currentTime();
-        if (currentTime < QTime(6, 0)) {
-            m_blendFactor = 0;
-        } else if (currentTime < QTime(7, 0)) {
-            m_blendFactor = QTime(6, 0).secsTo(currentTime) / 3600.0;
-        } else if (currentTime < QTime(18, 0)) {
-            m_blendFactor = 1;
-        } else if (currentTime < QTime(19, 0)) {
-            m_blendFactor = currentTime.secsTo(QTime(19, 0)) / 3600.0;
-        } else {
-            m_blendFactor = 0;
+    if (m_location.isValid()) {
+        const KSunPosition sunPosition(QDateTime::currentDateTime(), m_location);
+        if (sunPosition.isValid()) {
+            m_blendFactor = (qBound(-6.0, sunPosition.elevation(), 6.0) + 6.0) / 12.0;
+            return;
         }
+    }
+
+    const QTime currentTime = QTime::currentTime();
+    if (currentTime < QTime(6, 0)) {
+        m_blendFactor = 0;
+    } else if (currentTime < QTime(7, 0)) {
+        m_blendFactor = QTime(6, 0).secsTo(currentTime) / 3600.0;
+    } else if (currentTime < QTime(18, 0)) {
+        m_blendFactor = 1;
+    } else if (currentTime < QTime(19, 0)) {
+        m_blendFactor = currentTime.secsTo(QTime(19, 0)) / 3600.0;
+    } else {
+        m_blendFactor = 0;
     }
 }
