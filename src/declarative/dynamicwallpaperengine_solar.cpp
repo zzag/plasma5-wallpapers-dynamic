@@ -29,9 +29,11 @@ SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const QList<KDynamicWal
 }
 
 SolarDynamicWallpaperEngine::SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
-                                                         const QUrl &source)
+                                                         const QUrl &source,
+                                                         const QDateTime &dateTime)
     : m_mode(Mode::Fallback)
     , m_source(source)
+    , m_dateTime(dateTime)
 {
     for (const KDynamicWallpaperMetaData &md : metadata) {
         const auto &solar = std::get<KSolarDynamicWallpaperMetaData>(md);
@@ -67,7 +69,7 @@ SolarDynamicWallpaperEngine *SolarDynamicWallpaperEngine::create(const QList<KDy
         }
     }
 
-    return new SolarDynamicWallpaperEngine(metadata, source);
+    return new SolarDynamicWallpaperEngine(metadata, source, dateTime);
 }
 
 qreal SolarDynamicWallpaperEngine::progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const

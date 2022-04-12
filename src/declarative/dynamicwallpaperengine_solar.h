@@ -28,7 +28,7 @@ private:
                                 const KSunPath &sunPath, const KSunPosition &midnight,
                                 const QGeoCoordinate &location, const QDateTime &dateTime);
     SolarDynamicWallpaperEngine(const QList<KDynamicWallpaperMetaData> &metadata,
-                                const QUrl &source);
+                                const QUrl &source, const QDateTime &dateTime);
 
     qreal progressForPosition(const KSunPosition &position) const;
     qreal progressForMetaData(const KSolarDynamicWallpaperMetaData &metaData) const;
