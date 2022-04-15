@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: plasma5-wallpapers-dynamic\n"
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
-"POT-Creation-Date: 2022-04-09 19:59+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2022-04-15 07:20+0200\n"
+"PO-Revision-Date: 2022-04-15 07:27+0200\n"
 "Last-Translator: Piotr Lange <zpl20052020@protonmail.ch>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -21,20 +21,16 @@ msgstr ""
 "X-Language: pl_PL\n"
 "X-Source-Language: en_GB\n"
 
-#: tools/builder/main.cpp:26
-#, fuzzy, kde-format
-msgid "Write output to <file>"
-msgstr "Zapisz do <file>"
-
-#: tools/builder/main.cpp:30
+#: declarative/dynamicwallpaperhandler.cpp:220
+#: declarative/dynamicwallpapermodel.cpp:509
 #, kde-format
-msgid "Maximum number of threads that can be used when encoding a wallpaper"
-msgstr ""
+msgid "%1 is not a dynamic wallpaper"
+msgstr "%1 nie jest tapetą dynamiczną"
 
-#: tools/builder/main.cpp:36
-#, fuzzy, kde-format
-msgid "Manifest file to use"
-msgstr "Plik z opisem do użycia"
+#: declarative/dynamicwallpaperpreviewjob.cpp:140
+#, kde-format
+msgid "Not a dynamic wallpaper"
+msgstr "Nie jest tapetą dynamiczną"
 
 #: package/contents/ui/config.qml:36
 #, kde-format
@@ -107,11 +103,10 @@ msgctxt "<image> (<license>)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-# Assuming this is used to open the folder where the wallpaper is located
 #: package/contents/ui/config.qml:173
-#, fuzzy, kde-format
+#, kde-format
 msgid "Open Containing Folder"
-msgstr "Otwórz folder z tapetą"
+msgstr "Otwórz folder"
 
 #: package/contents/ui/config.qml:178
 #, kde-format
@@ -129,14 +124,29 @@ msgid "Open Wallpaper"
 msgstr "Otwórz tapetę"
 
 #: package/contents/ui/config.qml:217
-#, fuzzy, kde-format
+#, kde-format
 msgid "AVIF Image Files (*.avif)"
-msgstr "Pliki grafiki HEIF (*.heic *.heif)"
+msgstr "Pliki grafiki AVIF (*.avif)"
 
 #: package/contents/ui/config.qml:234
 #, kde-format
 msgid "Add Wallpaper..."
 msgstr "Dodaj tapetę..."
+
+#: tools/builder/main.cpp:26
+#, kde-format
+msgid "Write output to <file>"
+msgstr "Zapisz do <file>"
+
+#: tools/builder/main.cpp:30
+#, kde-format
+msgid "Maximum number of threads that can be used when encoding a wallpaper"
+msgstr "Maksymalna liczba wątków, która może zostać użyta do enkodowania tapety"
+
+#: tools/builder/main.cpp:36
+#, kde-format
+msgid "Manifest file to use"
+msgstr "Plik z opisem do użycia"
 
 #: plugins/kpackage-integration/dynamicwallpaperpackagestructure.cpp:22
 #, kde-format
@@ -147,14 +157,3 @@ msgstr "Pliki tapety dynamicznej"
 #, kde-format
 msgid "Dynamic wallpaper file"
 msgstr "Plik tapety dynamicznej"
-
-#: declarative/dynamicwallpapermodel.cpp:509
-#: declarative/dynamicwallpaperhandler.cpp:210
-#, kde-format
-msgid "%1 is not a dynamic wallpaper"
-msgstr "%1 nie jest tapetą dynamiczną"
-
-#: declarative/dynamicwallpaperpreviewjob.cpp:140
-#, fuzzy, kde-format
-msgid "Not a dynamic wallpaper"
-msgstr "%1 nie jest tapetą dynamiczną"
