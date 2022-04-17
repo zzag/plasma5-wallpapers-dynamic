@@ -41,9 +41,9 @@ void DynamicWallpaperProber::run()
 {
     const KDynamicWallpaperReader reader(m_fileUrl.toLocalFile());
     if (reader.error() == KDynamicWallpaperReader::NoError)
-        emit finished(m_fileUrl);
+        Q_EMIT finished(m_fileUrl);
     else
-        emit failed(m_fileUrl);
+        Q_EMIT failed(m_fileUrl);
 
     deleteLater();
 }

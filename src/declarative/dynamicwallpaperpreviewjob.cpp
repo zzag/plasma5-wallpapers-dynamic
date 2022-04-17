@@ -213,9 +213,9 @@ void DynamicWallpaperPreviewJob::handleFinished()
 {
     const DynamicWallpaperImageAsyncResult response = d->watcher->result();
     if (response.errorString.isNull())
-        emit finished(response.image);
+        Q_EMIT finished(response.image);
     else
-        emit failed(response.errorString);
+        Q_EMIT failed(response.errorString);
 
     deleteLater();
 }

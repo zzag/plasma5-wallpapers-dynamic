@@ -92,7 +92,7 @@ void DynamicWallpaperCrawler::visitFolder(const QString &filePath)
     for (const QFileInfo &fileInfo : fileInfos) {
         if (fileInfo.isDir()) {
             if (checkPackage(fileInfo.filePath())) {
-                emit foundPackage(fileInfo.filePath(), token());
+                Q_EMIT foundPackage(fileInfo.filePath(), token());
             } else {
                 visitFolder(fileInfo.filePath());
             }
@@ -108,7 +108,7 @@ void DynamicWallpaperCrawler::visitFile(const QString &filePath)
     // determine whether filePath actually points to a dynamic wallpaper file.
     KDynamicWallpaperReader reader(filePath);
     if (reader.error() == KDynamicWallpaperReader::NoError)
-        emit foundFile(filePath, token());
+        Q_EMIT foundFile(filePath, token());
 }
 
 bool DynamicWallpaperCrawler::checkPackage(const QString &filePath) const

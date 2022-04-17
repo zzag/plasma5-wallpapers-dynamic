@@ -51,13 +51,13 @@ QQuickTextureFactory *AsyncImageResponse::textureFactory() const
 void AsyncImageResponse::handleFinished(const QImage &image)
 {
     m_image = image;
-    emit finished();
+    Q_EMIT finished();
 }
 
 void AsyncImageResponse::handleFailed(const QString &errorString)
 {
     m_errorString = errorString;
-    emit finished();
+    Q_EMIT finished();
 }
 
 static QString fileNameFromBase64(const QString &base64)

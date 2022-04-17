@@ -73,7 +73,7 @@ void DynamicWallpaperAsyncImageResponse::handleFinished()
     else
         m_errorString = result.errorString;
 
-    emit finished();
+    Q_EMIT finished();
 }
 
 QQuickTextureFactory *DynamicWallpaperAsyncImageResponse::textureFactory() const

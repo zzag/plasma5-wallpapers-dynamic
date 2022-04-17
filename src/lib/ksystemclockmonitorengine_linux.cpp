@@ -57,5 +57,5 @@ void KLinuxSystemClockMonitorEngine::handleTimerCancelled()
         return;
     }
 
-    emit systemClockChanged();
+    Q_EMIT systemClockChanged();
 }

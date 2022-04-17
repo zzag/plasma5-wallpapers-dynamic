@@ -171,7 +171,7 @@ void DynamicWallpaperModelPrivate::internalScheduleRemove(const QModelIndex &ind
     if (wallpapers[row]->isZombie == set)
         return;
     wallpapers[row]->isZombie = set;
-    emit q->dataChanged(index, index, { DynamicWallpaperModel::WallpaperIsZombieRole });
+    Q_EMIT q->dataChanged(index, index, { DynamicWallpaperModel::WallpaperIsZombieRole });
 }
 
 void DynamicWallpaperModelPrivate::internalRemove(const QModelIndex &index)
@@ -506,7 +506,7 @@ void DynamicWallpaperModel::handleProberFinished(const QUrl &fileUrl)
 
 void DynamicWallpaperModel::handleProberFailed(const QUrl &fileUrl)
 {
-    emit errorOccurred(i18n("%1 is not a dynamic wallpaper", fileUrl.toLocalFile()));
+    Q_EMIT errorOccurred(i18n("%1 is not a dynamic wallpaper", fileUrl.toLocalFile()));
 }
 
 /*!

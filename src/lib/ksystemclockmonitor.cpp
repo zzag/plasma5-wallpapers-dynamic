@@ -95,7 +95,7 @@ void KSystemClockMonitor::setActive(bool set)
     else
         d->unloadMonitorEngine();
 
-    emit activeChanged();
+    Q_EMIT activeChanged();
 }
 
 /*!

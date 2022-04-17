@@ -37,7 +37,7 @@ void DynamicWallpaperHandler::setLocation(const QGeoCoordinate &coordinate)
     m_location = coordinate;
     reloadEngine();
     scheduleUpdate();
-    emit locationChanged();
+    Q_EMIT locationChanged();
 }
 
 QGeoCoordinate DynamicWallpaperHandler::location() const
@@ -108,7 +108,7 @@ void DynamicWallpaperHandler::setSource(const QUrl &url)
     reloadDescription();
     reloadEngine();
     scheduleUpdate();
-    emit sourceChanged();
+    Q_EMIT sourceChanged();
 }
 
 QUrl DynamicWallpaperHandler::source() const
@@ -121,7 +121,7 @@ void DynamicWallpaperHandler::setTopLayer(const QUrl &url)
     if (m_topLayer == url)
         return;
     m_topLayer = url;
-    emit topLayerChanged();
+    Q_EMIT topLayerChanged();
 }
 
 QUrl DynamicWallpaperHandler::topLayer() const
@@ -134,7 +134,7 @@ void DynamicWallpaperHandler::setBottomLayer(const QUrl &url)
     if (m_bottomLayer == url)
         return;
     m_bottomLayer = url;
-    emit bottomLayerChanged();
+    Q_EMIT bottomLayerChanged();
 }
 
 QUrl DynamicWallpaperHandler::bottomLayer() const
@@ -147,7 +147,7 @@ void DynamicWallpaperHandler::setBlendFactor(qreal blendFactor)
     if (m_blendFactor == blendFactor)
         return;
     m_blendFactor = blendFactor;
-    emit blendFactorChanged();
+    Q_EMIT blendFactorChanged();
 }
 
 qreal DynamicWallpaperHandler::blendFactor() const
@@ -160,7 +160,7 @@ void DynamicWallpaperHandler::setStatus(Status status)
     if (m_status == status)
         return;
     m_status = status;
-    emit statusChanged();
+    Q_EMIT statusChanged();
 }
 
 DynamicWallpaperHandler::Status DynamicWallpaperHandler::status() const
@@ -173,7 +173,7 @@ void DynamicWallpaperHandler::setErrorString(const QString &text)
     if (m_errorString == text)
         return;
     m_errorString = text;
-    emit errorStringChanged();
+    Q_EMIT errorStringChanged();
 }
 
 QString DynamicWallpaperHandler::errorString() const
