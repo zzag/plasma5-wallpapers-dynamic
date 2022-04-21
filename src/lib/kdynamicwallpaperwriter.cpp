@@ -114,8 +114,19 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
         // TODO: color space
 
         avifResult result = avifImageRGBToYUV(avif, &rgb);
-        if (result == AVIF_RESULT_OK)
-            avifEncoderAddImage(encoder, avif, 0, AVIF_ADD_IMAGE_FLAG_NONE);
+        if (result != AVIF_RESULT_OK) {
+            wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
+            errorString = avifResultToString(result);
+            return false;
+        }
+
+        result = avifEncoderAddImage(encoder, avif, 0, AVIF_ADD_IMAGE_FLAG_NONE);
+        if (result != AVIF_RESULT_OK) {
+            wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
+            errorString = avifResultToString(result);
+            return false;
+        }
+
         avifImageDestroy(avif);
     }
 
