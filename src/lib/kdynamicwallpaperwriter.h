@@ -39,6 +39,11 @@ public:
             return QImage(m_fileName);
         }
 
+        QString fileName() const
+        {
+            return m_fileName;
+        }
+
     private:
         QString m_fileName;
     };

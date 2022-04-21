@@ -97,8 +97,11 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 
     for (const auto &view : images) {
         const QImage image = view.data().convertToFormat(QImage::Format_RGB888);
-        if (image.isNull())
+        if (image.isNull()) {
+            wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
+            errorString = QStringLiteral("Failed to read: %1").arg(view.fileName());
             return false;
+        }
 
         avifImage *avif = avifImageCreate(image.width(), image.height(), 8, AVIF_PIXEL_FORMAT_YUV444);
         avifImageSetMetadataXMP(avif, reinterpret_cast<const uint8_t *>(xmp.constData()), xmp.size());
@@ -116,14 +119,18 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
         avifResult result = avifImageRGBToYUV(avif, &rgb);
         if (result != AVIF_RESULT_OK) {
             wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
-            errorString = avifResultToString(result);
+            errorString = QStringLiteral("Failed to encode %1: %2")
+                              .arg(view.fileName())
+                              .arg(avifResultToString(result));
             return false;
         }
 
         result = avifEncoderAddImage(encoder, avif, 0, AVIF_ADD_IMAGE_FLAG_NONE);
         if (result != AVIF_RESULT_OK) {
             wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
-            errorString = avifResultToString(result);
+            errorString = QStringLiteral("Failed to encode %1: %2")
+                              .arg(view.fileName())
+                              .arg(avifResultToString(result));
             return false;
         }
 
