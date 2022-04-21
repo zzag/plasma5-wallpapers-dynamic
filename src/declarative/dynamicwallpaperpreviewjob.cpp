@@ -162,9 +162,14 @@ static DynamicWallpaperImageAsyncResult makePreview(const QString &fileName, con
         }
 
         const QImage darkImage = reader.image(darkIndex);
-        const QImage lightImage = reader.image(lightIndex);
-        preview = blend(darkImage, lightImage, 0.5);
+        if (darkImage.isNull())
+            return DynamicWallpaperImageAsyncResult(reader.errorString());
 
+        const QImage lightImage = reader.image(lightIndex);
+        if (lightImage.isNull())
+            return DynamicWallpaperImageAsyncResult(reader.errorString());
+
+        preview = blend(darkImage, lightImage, 0.5);
         DynamicWallpaperPreviewCache::store(preview, fileName);
     }
 
