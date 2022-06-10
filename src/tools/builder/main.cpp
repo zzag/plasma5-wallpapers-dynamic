@@ -26,6 +26,10 @@ int main(int argc, char **argv)
     outputOption.setDescription(i18n("Write output to <file>"));
     outputOption.setValueName(QStringLiteral("file"));
 
+    QCommandLineOption speedOption(QStringLiteral("speed"));
+    speedOption.setDescription(i18n("Encoding speed, 0 - slowest, 10 - fastest"));
+    speedOption.setValueName(QStringLiteral("speed"));
+
     QCommandLineOption maxThreadsOption(QStringLiteral("max-threads"));
     maxThreadsOption.setDescription(i18n("Maximum number of threads that can be used when encoding a wallpaper"));
     maxThreadsOption.setValueName(QStringLiteral("max-threads"));
@@ -36,6 +40,7 @@ int main(int argc, char **argv)
     parser.addPositionalArgument("json", i18n("Manifest file to use"));
     parser.addOption(outputOption);
     parser.addOption(maxThreadsOption);
+    parser.addOption(speedOption);
     parser.process(app);
 
     if (parser.positionalArguments().count() != 1)
@@ -56,6 +61,15 @@ int main(int argc, char **argv)
         bool ok;
         if (const int threadCount = parser.value(maxThreadsOption).toInt(&ok); ok) {
             writer.setMaxThreadCount(threadCount);
+        } else {
+            parser.showHelp(-1);
+        }
+    }
+
+    if (parser.isSet(speedOption)) {
+        bool ok;
+        if (const int speed = parser.value(speedOption).toInt(&ok); ok) {
+            writer.setSpeed(speed);
         } else {
             parser.showHelp(-1);
         }

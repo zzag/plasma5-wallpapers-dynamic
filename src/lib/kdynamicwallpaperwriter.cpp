@@ -36,6 +36,7 @@ public:
     QString errorString;
     QList<KDynamicWallpaperWriter::ImageView> images;
     QList<KDynamicWallpaperMetaData> metaData;
+    std::optional<int> speed;
     std::optional<int> maxThreadCount;
 };
 
@@ -90,6 +91,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 
     const QByteArray xmp = serializeMetaData(metaData);
     avifEncoder *encoder = avifEncoderCreate();
+    encoder->speed = speed.value_or(AVIF_SPEED_DEFAULT);
     encoder->maxThreads = maxThreadCount.value_or(QThread::idealThreadCount());
     auto encoderCleanup = qScopeGuard([&encoder]() {
         avifEncoderDestroy(encoder);
@@ -163,6 +165,25 @@ KDynamicWallpaperWriter::KDynamicWallpaperWriter()
  */
 KDynamicWallpaperWriter::~KDynamicWallpaperWriter()
 {
+}
+
+/*!
+ * Sets the encoding speed to \a speed. The speed value must be between 0 and 10, where
+ * 0 is the slowest speed, and 10 is the fastest speed. Encoding speed can affect encoding
+ * quality or file size.
+ */
+void KDynamicWallpaperWriter::setSpeed(int speed)
+{
+    d->speed = qBound(0, speed, 10);
+}
+
+/*!
+ * Returns the encoding speed, between 0-10. If the encoding speed is not set, the encoder
+ * will choose the most optimal encoding speed.
+ */
+std::optional<int> KDynamicWallpaperWriter::speed() const
+{
+    return d->speed;
 }
 
 void KDynamicWallpaperWriter::setMetaData(const QList<KDynamicWallpaperMetaData> &metaData)
