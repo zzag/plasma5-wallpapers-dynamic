@@ -51,6 +51,9 @@ public:
     KDynamicWallpaperWriter();
     ~KDynamicWallpaperWriter();
 
+    void setSpeed(int speed);
+    std::optional<int> speed() const;
+
     void setMetaData(const QList<KDynamicWallpaperMetaData> &metaData);
     QList<KDynamicWallpaperMetaData> metaData() const;
 
