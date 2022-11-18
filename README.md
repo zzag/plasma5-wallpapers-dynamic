@@ -231,3 +231,12 @@ Once you've downloaded the dynamicwallpaperconverter script, you can start conve
 
 After the command above has finished its execution, you should see a file in the current working
 directory named `wallpaper.avif`, which can be fed into this plugin.
+
+If it takes too long to encode the wallpaper as an avif file, you can change the encoding
+speed. Note that the encoding speed affects the final file size!
+
+```sh
+./dynamicwallpaperconverter --speed 5 --crossfade file.heic
+```
+
+For more details, check the output of `./dynamicwallpaperconverter --help`.
