@@ -60,11 +60,11 @@ void DynamicWallpaperManifest::init()
 
     if (document.isObject()) {
         const QJsonObject rootObject = document.object();
-        const QString type = rootObject["Type"].toString();
-        if (type == QLatin1String("solar")) {
-            parseSolar(rootObject["Meta"].toArray());
-        } else if (type == QLatin1String("day-night")) {
-            parseDayNight(rootObject["Meta"].toArray());
+        const QString type = rootObject[QLatin1StringView("Type")].toString();
+        if (type == QLatin1StringView("solar")) {
+            parseSolar(rootObject[QLatin1StringView("Meta")].toArray());
+        } else if (type == QLatin1StringView("day-night")) {
+            parseDayNight(rootObject[QLatin1StringView("Meta")].toArray());
         } else {
             setError(QStringLiteral("Unknown manifest type. Available types: solar"));
         }
@@ -235,17 +235,17 @@ void DynamicWallpaperManifest::parseDayNight(const QJsonArray &entries)
         const QJsonObject descriptor = entries[i].toObject();
         QString *fileName;
 
-        const QString timeOfDay = descriptor["TimeOfDay"].toString();
-        if (timeOfDay == QLatin1String("day")) {
+        const QString timeOfDay = descriptor[QLatin1StringView("TimeOfDay")].toString();
+        if (timeOfDay == QLatin1StringView("day")) {
             fileName = &dayFileName;
-        } else if (timeOfDay == QLatin1String("night")) {
+        } else if (timeOfDay == QLatin1StringView("night")) {
             fileName = &nightFileName;
         } else {
             setError(QStringLiteral("Unknown TimeOfDay value. Possible values: day, night"));
             return;
         }
 
-        *fileName = descriptor["FileName"].toString();
+        *fileName = descriptor[QLatin1StringView("FileName")].toString();
         if (fileName->isEmpty()) {
             setError(QStringLiteral("No image file name has been specified"));
             return;

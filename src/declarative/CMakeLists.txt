@@ -26,17 +26,17 @@ set(dynamicwallpaperplugin_SOURCES
 add_library(plasma_wallpaper_dynamicplugin ${dynamicwallpaperplugin_SOURCES})
 
 target_link_libraries(plasma_wallpaper_dynamicplugin
-    Qt5::Concurrent
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Positioning
-    Qt5::Qml
-    Qt5::Quick
-    Qt5::QuickPrivate
+    Qt6::Concurrent
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Positioning
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::QuickPrivate
 
-    KF5::ConfigCore
-    KF5::I18n
-    KF5::Package
+    KF6::ConfigCore
+    KF6::I18n
+    KF6::Package
 
     KDynamicWallpaper::KDynamicWallpaper
 )

@@ -1,0 +1,33 @@
+{
+    "KPackageStructure": "Plasma/Wallpaper",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "vlad.zahorodnii@kde.org",
+                "Name": "Vlad Zahorodnii"
+            }
+        ],
+        "Category": "",
+        "Description": "Dynamic wallpaper",
+        "Description[de]": "Dynamischer Hintergrund",
+        "Description[pt]": "Papel de parede dinâmico",
+        "Description[ru]": "Динамические обои",
+        "Description[uk]": "Динамічні шпалери",
+        "Description[zh]": "动态壁纸",
+        "Icon": "preferences-desktop-wallpaper",
+        "Id": "com.github.zzag.dynamic",
+        "License": "GPLv3+",
+        "Name": "Dynamic",
+        "Name[de]": "Dynamisch",
+        "Name[fr]": "Dynamique",
+        "Name[it]": "Dinamico",
+        "Name[nl]": "Dynamisch",
+        "Name[pt]": "Dinâmico",
+        "Name[ru]": "Динамический",
+        "Name[uk]": "Динамічний",
+        "Name[zh]": "动态",
+        "Version": "",
+        "Website": "https://github.com/zzag/plasma5-wallpapers-dynamic"
+    },
+    "X-KDE-ParentApp": "org.kde.plasmashell"
+}

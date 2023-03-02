@@ -1,4 +1,5 @@
 {
+    "KPackageStructure": "KPackage/PackageStructure",
     "KPlugin": {
         "Authors": [
             {
@@ -6,11 +7,7 @@
                 "Name": "Vlad Zahorodnii"
             }
         ],
-        "Id": "Wallpaper/Dynamic",
         "Name": "Dynamic Wallpaper",
-        "ServiceTypes": [
-            "KPackage/PackageStructure"
-        ],
         "Version": "1"
     }
 }

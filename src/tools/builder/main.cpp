@@ -19,8 +19,8 @@
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName("kdynamicwallpaperbuilder");
-    QCoreApplication::setApplicationVersion("1.0");
+    QCoreApplication::setApplicationName(QStringLiteral("kdynamicwallpaperbuilder"));
+    QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
 
     QCommandLineOption outputOption(QStringLiteral("output"));
     outputOption.setDescription(i18n("Write output to <file>"));
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("json", i18n("Manifest file to use"));
+    parser.addPositionalArgument(QStringLiteral("json"), i18n("Manifest file to use"));
     parser.addOption(outputOption);
     parser.addOption(maxThreadsOption);
     parser.addOption(speedOption);

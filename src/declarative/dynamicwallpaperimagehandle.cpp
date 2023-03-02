@@ -65,17 +65,17 @@ int DynamicWallpaperImageHandle::imageIndex() const
     return m_imageIndex;
 }
 
-static QString fileNameFromBase64(const QStringRef &base64)
+static QString fileNameFromBase64(QStringView base64)
 {
-    return QByteArray::fromBase64(base64.toUtf8());
+    return QString::fromUtf8(QByteArray::fromBase64(base64.toUtf8()));
 }
 
-static QString base64FromFileName(const QString &fileName)
+static QString base64FromFileName(QStringView fileName)
 {
-    return fileName.toUtf8().toBase64();
+    return QString::fromLatin1(fileName.toUtf8().toBase64());
 }
 
-static int imageIndexFromString(const QStringRef &string)
+static int imageIndexFromString(QStringView string)
 {
     bool ok;
     const int imageIndex = string.toInt(&ok);
@@ -96,7 +96,7 @@ QString DynamicWallpaperImageHandle::toString() const
 {
     const QString fileName = base64FromFileName(m_fileName);
     const QString imageIndex = stringFromImageIndex(m_imageIndex);
-    return fileName + '#' + imageIndex;
+    return fileName + QLatin1Char('#') + imageIndex;
 }
 
 /*!
@@ -104,7 +104,7 @@ QString DynamicWallpaperImageHandle::toString() const
  */
 QUrl DynamicWallpaperImageHandle::toUrl() const
 {
-    return QLatin1String("image://dynamic/") + toString();
+    return QUrl(QLatin1String("image://dynamic/") + toString());
 }
 
 /*!
@@ -114,11 +114,7 @@ DynamicWallpaperImageHandle DynamicWallpaperImageHandle::fromString(const QStrin
 {
     DynamicWallpaperImageHandle handle;
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-    const QVector<QStringRef> parts = string.splitRef('#', Qt::SkipEmptyParts);
-#else
-    const QVector<QStringRef> parts = string.splitRef('#', QString::SkipEmptyParts);
-#endif
+    const QStringList parts = string.split(QLatin1Char('#'), Qt::SkipEmptyParts);
     if (parts.count() != 2)
         return handle;
 

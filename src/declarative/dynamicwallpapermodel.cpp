@@ -15,6 +15,7 @@
 #include <KSharedConfig>
 
 #include <QFileInfo>
+#include <QPointer>
 #include <QStandardPaths>
 
 // TODO: The model can be implemented better.
@@ -48,8 +49,8 @@ static QUrl folderUrlForImageUrl(const QUrl &url)
 static QUrl previewUrlForImageUrl(const QUrl &url)
 {
     const QString fileName = url.toLocalFile();
-    const QString base64 = fileName.toUtf8().toBase64();
-    return QLatin1String("image://dynamicpreview/") + base64;
+    const QString base64 = QString::fromLatin1(fileName.toUtf8().toBase64());
+    return QUrl(QLatin1String("image://dynamicpreview/") + base64);
 }
 
 static bool checkRemovable(const QUrl &url)

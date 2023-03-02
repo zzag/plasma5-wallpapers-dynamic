@@ -22,7 +22,7 @@ public:
     bool isActive() const;
     void setActive(bool active);
 
-signals:
+Q_SIGNALS:
     void activeChanged();
     void systemClockChanged();
 

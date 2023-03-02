@@ -15,7 +15,7 @@
 static QString cacheKey(const QString &fileName)
 {
     QCryptographicHash hash(QCryptographicHash::Sha1);
-    hash.addData(QFile::encodeName(fileName.toUtf8()));
+    hash.addData(QFile::encodeName(fileName));
     return QString::fromLatin1(hash.result().toHex()) + QStringLiteral(".png");
 }
 

@@ -123,7 +123,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
             wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
             errorString = QStringLiteral("Failed to encode %1: %2")
                               .arg(view.key())
-                              .arg(avifResultToString(result));
+                              .arg(QString::fromLatin1(avifResultToString(result)));
             return false;
         }
 
@@ -132,7 +132,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
             wallpaperWriterError = KDynamicWallpaperWriter::UnknownError;
             errorString = QStringLiteral("Failed to encode %1: %2")
                               .arg(view.key())
-                              .arg(avifResultToString(result));
+                              .arg(QString::fromLatin1(avifResultToString(result)));
             return false;
         }
 
@@ -145,7 +145,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
         device->write(reinterpret_cast<const char *>(output.data), output.size);
     } else {
         wallpaperWriterError = KDynamicWallpaperWriter::EncoderError;
-        errorString = avifResultToString(result);
+        errorString = QString::fromLatin1(avifResultToString(result));
     }
 
     avifRWDataFree(&output);

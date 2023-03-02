@@ -34,16 +34,16 @@ static ExifEntry *readEntry(ExifData *data, ExifIfd ifd, ExifTag tag)
     return exif_content_get_entry(data->ifd[ifd], tag);
 }
 
-static QByteArray readAscii(ExifData *data, ExifIfd ifd, ExifTag tag)
+static QString readAscii(ExifData *data, ExifIfd ifd, ExifTag tag)
 {
     ExifEntry *entry = readEntry(data, ifd, tag);
     if (!entry)
-        return QByteArray();
+        return QString();
 
     QByteArray buffer(1024, 0);
     exif_entry_get_value(entry, buffer.data(), buffer.size());
 
-    return buffer;
+    return QString::fromLatin1(buffer);
 }
 
 /*!
@@ -67,7 +67,7 @@ static bool readGpsLatitude(ExifData *data, qreal *result)
     if (!latitude)
         return false;
 
-    const QByteArray reference = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_LATITUDE_REF));
+    const QString reference = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_LATITUDE_REF));
     if (reference.isNull())
         return false;
 
@@ -79,7 +79,7 @@ static bool readGpsLatitude(ExifData *data, qreal *result)
     const ExifRational seconds = exif_get_rational(latitude->data + stride * 2, byteOrder);
 
     *result = degreesMinutesSecondsToDecimalDegrees(degrees, minutes, seconds);
-    if (reference[0] == 'S')
+    if (reference[0] == QLatin1Char('S'))
         *result *= -1;
 
     return true;
@@ -91,7 +91,7 @@ static bool readGpsLongitude(ExifData *data, qreal *result)
     if (!longitude)
         return false;
 
-    const QByteArray reference = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_LONGITUDE_REF));
+    const QString reference = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_LONGITUDE_REF));
     if (reference.isNull())
         return false;
 
@@ -103,7 +103,7 @@ static bool readGpsLongitude(ExifData *data, qreal *result)
     const ExifRational seconds = exif_get_rational(longitude->data + stride * 2, byteOrder);
 
     *result = degreesMinutesSecondsToDecimalDegrees(degrees, minutes, seconds);
-    if (reference[0] == 'W')
+    if (reference[0] == QLatin1Char('W'))
         *result *= -1;
 
     return true;
@@ -128,7 +128,7 @@ static bool readGpsCoordinates(ExifData *data, QGeoCoordinate *coordinates)
  */
 static bool readExifDateTime(ExifData *data, QDateTime *result)
 {
-    QByteArray dateTimeAscii = readAscii(data, EXIF_IFD_EXIF, EXIF_TAG_DATE_TIME_ORIGINAL);
+    QString dateTimeAscii = readAscii(data, EXIF_IFD_EXIF, EXIF_TAG_DATE_TIME_ORIGINAL);
     if (dateTimeAscii.isNull())
         dateTimeAscii = readAscii(data, EXIF_IFD_EXIF, EXIF_TAG_DATE_TIME);
     if (dateTimeAscii.isNull())
@@ -158,7 +158,7 @@ static bool readExifDateTime(ExifData *data, QDateTime *result)
  */
 static bool readGpsDateTime(ExifData *data, QDateTime *result)
 {
-    const QByteArray dateAscii = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_DATE_STAMP));
+    const QString dateAscii = readAscii(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_DATE_STAMP));
     if (dateAscii.isNull())
         return false;
     const ExifEntry *timeEntry = readEntry(data, EXIF_IFD_GPS, ExifTag(EXIF_TAG_GPS_TIME_STAMP));
@@ -191,7 +191,7 @@ void DynamicWallpaperExifMetaDataPrivate::initialize(const QString &fileName)
 {
     QGeoCoordinate coordinates;
 
-    ExifData *data = exif_data_new_from_file(fileName.toUtf8());
+    ExifData *data = exif_data_new_from_file(fileName.toUtf8().constData());
     if (!data)
         return;
 

@@ -26,7 +26,7 @@ else ()
                 DEPENDS ${_po})
 
             install(FILES ${_gmo}
-                DESTINATION ${LOCALE_INSTALL_DIR}/${KF5_LOCALE_PREFIX}${_langCode}/LC_MESSAGES/
+                DESTINATION ${KDE_INSTALL_DATADIR}/locale/${_langCode}/LC_MESSAGES/
                 RENAME ${catalogname}.mo)
         endif()
     endforeach()

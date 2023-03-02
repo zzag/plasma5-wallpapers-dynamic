@@ -62,7 +62,7 @@ void AsyncImageResponse::handleFailed(const QString &errorString)
 
 static QString fileNameFromBase64(const QString &base64)
 {
-    return QByteArray::fromBase64(base64.toUtf8());
+    return QString::fromUtf8(QByteArray::fromBase64(base64.toUtf8()));
 }
 
 QQuickImageResponse *DynamicWallpaperPreviewProvider::requestImageResponse(const QString &id, const QSize &requestedSize)

@@ -4,17 +4,19 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"plasma_wallpaper_com.github.zzag.dynamic\")
 
-set(packagestructure_SOURCES
+kcoreaddons_add_plugin(packagestructure_dynamicwallpaper INSTALL_NAMESPACE "kpackage/packagestructure")
+
+set_target_properties(packagestructure_dynamicwallpaper PROPERTIES
+    OUTPUT_NAME kdynamicwallpaper
+)
+
+target_sources(packagestructure_dynamicwallpaper PRIVATE
     dynamicwallpaperpackagestructure.cpp
 )
 
-add_library(packagestructure_dynamicwallpaper MODULE ${packagestructure_SOURCES})
-
 target_link_libraries(packagestructure_dynamicwallpaper
-    Qt5::Core
+    Qt6::Core
 
-    KF5::I18n
-    KF5::Package
+    KF6::I18n
+    KF6::Package
 )
-
-install(TARGETS packagestructure_dynamicwallpaper DESTINATION ${KDE_INSTALL_PLUGINDIR}/kpackage/packagestructure)

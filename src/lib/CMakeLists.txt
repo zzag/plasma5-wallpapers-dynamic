@@ -36,7 +36,7 @@ ecm_generate_headers(dynamicwallpaperlib_HEADERS
     REQUIRED_HEADERS dynamicwallpaperlib_HEADERS
 )
 
-qt5_add_resources(dynamicwallpaperlib_SOURCES resources.qrc)
+qt_add_resources(dynamicwallpaperlib_SOURCES resources.qrc)
 
 add_library(kdynamicwallpaper ${dynamicwallpaperlib_SOURCES})
 add_library(KDynamicWallpaper::KDynamicWallpaper ALIAS kdynamicwallpaper)
@@ -59,13 +59,13 @@ target_include_directories(kdynamicwallpaper PUBLIC
 
 target_link_libraries(kdynamicwallpaper
     PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Positioning
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Positioning
 
     PRIVATE
-        Qt5::Xml
-        KF5::I18n
+        Qt6::Xml
+        KF6::I18n
         avif
 )
 

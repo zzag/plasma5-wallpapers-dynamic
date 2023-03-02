@@ -41,6 +41,6 @@ void DynamicWallpaperPackageStructure::pathChanged(KPackage::Package *package)
     }
 }
 
-K_EXPORT_KPACKAGE_PACKAGE_WITH_JSON(DynamicWallpaperPackageStructure, "dynamicwallpaperpackagestructure.json")
+K_PLUGIN_CLASS_WITH_JSON(DynamicWallpaperPackageStructure, "dynamicwallpaperpackagestructure.json")
 
 #include "dynamicwallpaperpackagestructure.moc"
