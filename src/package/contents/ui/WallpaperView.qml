@@ -64,10 +64,11 @@ StackView {
     }
 
     replaceEnter: Transition {
-        OpacityAnimator {
-            duration: wallpaper.configuration.TransitionDuration
+        NumberAnimation {
+            property: "opacity"
             from: 0
             to: 1
+            duration: wallpaper.configuration.TransitionDuration
         }
     }
 
