@@ -4,15 +4,16 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.5
-import QtQuick.Dialogs 1.3
-import QtQuick.Layouts 1.0
-import QtQuick.Controls 2.3 as QtControls2
-import QtPositioning 5.12
+import QtCore
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Controls as QtControls2
+import QtPositioning
 
-import org.kde.kcm 1.1 as KCM
+import org.kde.kcm as KCM
 import org.kde.kirigami 2.10 as Kirigami
-import com.github.zzag.plasma.wallpapers.dynamic 1.0
+import com.github.zzag.plasma.wallpapers.dynamic
 
 ColumnLayout {
     id: root
@@ -213,10 +214,10 @@ ColumnLayout {
         active: false
         sourceComponent: FileDialog {
             title: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Open Wallpaper")
-            folder: shortcuts.home
+            currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
             nameFilters: [i18nd("plasma_wallpaper_com.github.zzag.dynamic", "AVIF Image Files (*.avif)")]
             onAccepted: {
-                wallpapersModel.add(fileUrl);
+                wallpapersModel.add(selectedFile);
                 wallpaperDialogLoader.active = false;
             }
             onRejected: {
