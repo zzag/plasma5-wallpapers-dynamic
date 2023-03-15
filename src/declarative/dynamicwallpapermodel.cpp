@@ -11,6 +11,7 @@
 #include <KAboutData>
 #include <KConfigGroup>
 #include <KLocalizedString>
+#include <KPackage/PackageJob>
 #include <KPackage/PackageLoader>
 #include <KSharedConfig>
 
@@ -291,10 +292,8 @@ void DynamicWallpaperModelPrivate::removePackageWallpaper(const QModelIndex &ind
 
     const QString dataLocation = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     const QString wallpaperPackageRoot = dataLocation + QStringLiteral("/wallpapers/");
-    KPackage::Package package =
-            KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Wallpaper/Dynamic"));
 
-    KJob *uninstallJob = package.uninstall(wallpaper->packageName, wallpaperPackageRoot);
+    KJob *uninstallJob = KPackage::PackageJob::uninstall(QStringLiteral("Wallpaper/Dynamic"), wallpaper->packageName, wallpaperPackageRoot);
 
     connect(uninstallJob, &KJob::finished, this, [this, imageUrl](KJob *job) {
         if (job->error() != KJob::NoError)
