@@ -1,13 +1,3 @@
 {
-    "KPackageStructure": "KPackage/PackageStructure",
-    "KPlugin": {
-        "Authors": [
-            {
-                "Email": "vlad.zahorodnii@kde.org",
-                "Name": "Vlad Zahorodnii"
-            }
-        ],
-        "Name": "Dynamic Wallpaper",
-        "Version": "1"
-    }
+    "KPackageStructure": "KPackage/PackageStructure"
 }

@@ -17,6 +17,5 @@ target_sources(packagestructure_dynamicwallpaper PRIVATE
 target_link_libraries(packagestructure_dynamicwallpaper
     Qt6::Core
 
-    KF6::I18n
     KF6::Package
 )

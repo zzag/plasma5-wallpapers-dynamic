@@ -6,8 +6,6 @@
 
 #include "dynamicwallpaperpackagestructure.h"
 
-#include <KLocalizedString>
-
 #include <QFileInfo>
 
 DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject *parent, const QVariantList &args)
@@ -18,8 +16,7 @@ DynamicWallpaperPackageStructure::DynamicWallpaperPackageStructure(QObject *pare
 void DynamicWallpaperPackageStructure::initPackage(KPackage::Package *package)
 {
     package->addDirectoryDefinition(QByteArrayLiteral("images"),
-                                    QStringLiteral("images/"),
-                                    i18n("Dynamic wallpaper files"));
+                                    QStringLiteral("images/"));
     package->setRequired(QByteArrayLiteral("images"), true);
 }
 
@@ -34,8 +31,7 @@ void DynamicWallpaperPackageStructure::pathChanged(KPackage::Package *package)
         if (!fileInfo.exists())
             continue;
         package->addFileDefinition(QByteArrayLiteral("dynamic"),
-                                   QStringLiteral("images/dynamic") + fileFormat,
-                                   i18n("Dynamic wallpaper file"));
+                                   QStringLiteral("images/dynamic") + fileFormat);
         package->setRequired(QByteArrayLiteral("dynamic"), true);
         break;
     }
