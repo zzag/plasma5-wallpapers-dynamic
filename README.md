@@ -40,6 +40,8 @@ sudo apt install plasma-wallpaper-dynamic
 
 ## Building From Git
 
+**Note**: master branch targets Plasma 6. If you use Plasma 5, check the [latest release](https://github.com/zzag/plasma5-wallpapers-dynamic/releases/latest).
+
 In order to build this wallpaper plugin from source code, you need to install a
 couple of prerequisites
 
