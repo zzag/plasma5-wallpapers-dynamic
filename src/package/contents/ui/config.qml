@@ -11,7 +11,7 @@ import QtQuick.Layouts
 import QtQuick.Controls as QtControls2
 import QtPositioning
 
-import org.kde.kcm as KCM
+import org.kde.kcmutils as KCM
 import org.kde.kirigami 2.10 as Kirigami
 import com.github.zzag.plasma.wallpapers.dynamic
 
