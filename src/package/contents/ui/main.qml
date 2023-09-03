@@ -9,9 +9,10 @@ import QtQuick.Window 2.2
 import QtPositioning 5.12
 
 import org.kde.kirigami 2.10 as Kirigami
+import org.kde.plasma.plasmoid
 import com.github.zzag.plasma.wallpapers.dynamic 1.0
 
-Item {
+WallpaperItem {
     id: root
 
     PositionSource {
