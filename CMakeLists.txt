@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.18)
 project(plasma5-wallpapers-dynamic)
 
 set(KF_MIN_VERSION "5.240.0")
@@ -29,12 +29,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(libavif REQUIRED)
 find_package(libexif REQUIRED)
+find_package(Plasma REQUIRED)
 
 find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     Config
     I18n
     Package
-    Plasma
 )
 
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
