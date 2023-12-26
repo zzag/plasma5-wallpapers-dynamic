@@ -66,7 +66,7 @@ static QUrl locateWallpaper(const QString &name)
 
 static QUrl defaultLookAndFeelWallpaper()
 {
-    KConfigGroup kdeConfigGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), "KDE");
+    KConfigGroup kdeConfigGroup(KSharedConfig::openConfig(QStringLiteral("kdeglobals")), QStringLiteral("KDE"));
     const QString lookAndFeelPackageName = kdeConfigGroup.readEntry("LookAndFeelPackage");
 
     KPackage::PackageLoader *packageLoader = KPackage::PackageLoader::self();
@@ -77,7 +77,7 @@ static QUrl defaultLookAndFeelWallpaper()
 
     KSharedConfigPtr lookAndFeelConfig =
         KSharedConfig::openConfig(lookAndFeelPackage.filePath("defaults"));
-    KConfigGroup wallpaperConfigGroup = KConfigGroup(lookAndFeelConfig, "Dynamic Wallpaper");
+    KConfigGroup wallpaperConfigGroup = KConfigGroup(lookAndFeelConfig, QStringLiteral("Dynamic Wallpaper"));
 
     const QString wallpaperName = wallpaperConfigGroup.readEntry("Image");
     if (wallpaperName.isEmpty())
