@@ -76,7 +76,7 @@ KPackage::PackageStructure *DynamicWallpaperCrawler::packageStructure() const
 
 void DynamicWallpaperCrawler::run()
 {
-    for (const QString &candidate : qAsConst(m_searchRoots))
+    for (const QString &candidate : std::as_const(m_searchRoots))
         visitFolder(candidate);
 
     deleteLater();
