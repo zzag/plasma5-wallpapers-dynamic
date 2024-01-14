@@ -38,6 +38,7 @@ public:
     QList<KDynamicWallpaperMetaData> metaData;
     std::optional<int> speed;
     std::optional<int> maxThreadCount;
+    avifCodecChoice codecChoice = AVIF_CODEC_CHOICE_AUTO;
 };
 
 KDynamicWallpaperWriterPrivate::KDynamicWallpaperWriterPrivate()
@@ -91,6 +92,7 @@ bool KDynamicWallpaperWriterPrivate::flush(QIODevice *device)
 
     const QByteArray xmp = serializeMetaData(metaData);
     avifEncoder *encoder = avifEncoderCreate();
+    encoder->codecChoice = codecChoice;
     encoder->speed = speed.value_or(AVIF_SPEED_DEFAULT);
     encoder->maxThreads = maxThreadCount.value_or(QThread::idealThreadCount());
     auto encoderCleanup = qScopeGuard([&encoder]() {
@@ -204,6 +206,38 @@ void KDynamicWallpaperWriter::setImages(const QList<ImageView> &images)
 QList<KDynamicWallpaperWriter::ImageView> KDynamicWallpaperWriter::images() const
 {
     return d->images;
+}
+
+/*!
+ * Sets the codec that will be used to encode the wallpaper images. Returns \c true if successful;
+ * otherwise returns \c false.
+ */
+bool KDynamicWallpaperWriter::setCodecName(const QString &codecName)
+{
+    if (const avifCodecChoice choice = avifCodecChoiceFromName(codecName.toLatin1().constData()); choice != AVIF_CODEC_CHOICE_AUTO) {
+        if (avifCodecName(choice, AVIF_CODEC_FLAG_CAN_ENCODE)) {
+            d->codecChoice = choice;
+            return true;
+        } else {
+            d->wallpaperWriterError = KDynamicWallpaperWriter::EncoderError;
+            d->errorString = QStringLiteral("Codec cannot encode");
+        }
+    } else {
+        d->wallpaperWriterError = KDynamicWallpaperWriter::EncoderError;
+        d->errorString = QStringLiteral("Unrecognized codec: ") + codecName;
+    }
+    return false;
+}
+
+/*!
+ * Returns the codec that will be used to encode wallpaper images.
+ */
+QString KDynamicWallpaperWriter::codecName() const
+{
+    if (d->codecChoice != AVIF_CODEC_CHOICE_AUTO) {
+        return QString::fromLatin1(avifCodecName(d->codecChoice, AVIF_CODEC_FLAG_CAN_ENCODE));
+    }
+    return QString();
 }
 
 /*!
