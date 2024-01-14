@@ -60,6 +60,9 @@ public:
     void setImages(const QList<ImageView> &views);
     QList<ImageView> images() const;
 
+    bool setCodecName(const QString &codecName);
+    QString codecName() const;
+
     bool flush(QIODevice *device);
     bool flush(const QString &fileName);
 

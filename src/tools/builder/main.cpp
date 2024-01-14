@@ -34,6 +34,10 @@ int main(int argc, char **argv)
     maxThreadsOption.setDescription(i18n("Maximum number of threads that can be used when encoding a wallpaper"));
     maxThreadsOption.setValueName(QStringLiteral("max-threads"));
 
+    QCommandLineOption codecOption(QStringLiteral("codec"));
+    codecOption.setDescription(i18n("Codec to use (aom|rav1e|svt)"));
+    codecOption.setValueName(QStringLiteral("codec"));
+
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
@@ -41,6 +45,7 @@ int main(int argc, char **argv)
     parser.addOption(outputOption);
     parser.addOption(maxThreadsOption);
     parser.addOption(speedOption);
+    parser.addOption(codecOption);
     parser.process(app);
 
     if (parser.positionalArguments().count() != 1)
@@ -72,6 +77,13 @@ int main(int argc, char **argv)
             writer.setSpeed(speed);
         } else {
             parser.showHelp(-1);
+        }
+    }
+
+    if (parser.isSet(codecOption)) {
+        if (!writer.setCodecName(parser.value(codecOption))) {
+            qWarning() << qPrintable(writer.errorString());
+            return -1;
         }
     }
 
