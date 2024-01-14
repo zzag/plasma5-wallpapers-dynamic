@@ -9,6 +9,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFileInfo>
+#include <QJsonDocument>
 
 #include <KDynamicWallpaperWriter>
 #include <KLocalizedString>
@@ -38,6 +39,9 @@ int main(int argc, char **argv)
     codecOption.setDescription(i18n("Codec to use (aom|rav1e|svt)"));
     codecOption.setValueName(QStringLiteral("codec"));
 
+    QCommandLineOption verboseOption(QStringLiteral("verbose"));
+    verboseOption.setDescription(i18n("Show debug information"));
+
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
@@ -46,6 +50,7 @@ int main(int argc, char **argv)
     parser.addOption(maxThreadsOption);
     parser.addOption(speedOption);
     parser.addOption(codecOption);
+    parser.addOption(verboseOption);
     parser.process(app);
 
     if (parser.positionalArguments().count() != 1)
@@ -56,6 +61,29 @@ int main(int argc, char **argv)
         if (manifest.hasError())
             qWarning() << qPrintable(manifest.errorString());
         return -1;
+    }
+
+    if (parser.isSet(verboseOption)) {
+        qDebug() << "Images:";
+        const QList<KDynamicWallpaperWriter::ImageView> images = manifest.images();
+        for (int i = 0; i < images.size(); ++i) {
+            qDebug("    [%d] -> %s", i, qUtf8Printable(images.at(i).key()));
+        }
+
+        const QList<KDynamicWallpaperMetaData> meta = manifest.metaData();
+        QJsonArray array;
+        for (const KDynamicWallpaperMetaData &metaData : meta) {
+            if (auto solar = std::get_if<KSolarDynamicWallpaperMetaData>(&metaData)) {
+                array.append(solar->toJson());
+            } else if (auto dayNight = std::get_if<KDayNightDynamicWallpaperMetaData>(&metaData)) {
+                array.append(dayNight->toJson());
+            }
+        }
+        qDebug() << "Meta:";
+        const QList<QByteArray> lines = QJsonDocument(array).toJson().split('\n');
+        for (const QByteArray &line : lines) {
+            qDebug("    %s", line.constData());
+        }
     }
 
     KDynamicWallpaperWriter writer;
