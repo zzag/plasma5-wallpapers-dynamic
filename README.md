@@ -135,7 +135,7 @@ The manifest file looks as follows
             "SolarAzimuth": "*",
             "SolarElevation": "*",
             "CrossFade": true,
-            "Time": "18:00",
+            "Time": "*",
             "FileName": "0.png"
         }, {
             "SolarAzimuth": 0,
@@ -160,19 +160,18 @@ The manifest file looks as follows
 }
 ```
 
-It might look like you must provide a lot of data, but don't be scared. Let's break it down.
-
 The `SolarAzimuth` field and the `SolarElevation` field specify the position of the Sun when the
 associated picture was taken. The `Time` field specifies the time, which is in 24-hour format, when
 the picture was taken. If the user is not located near the North or the South Pole, the dynamic
 wallpaper engine will try to show images based on the current position of the Sun; otherwise it will
-fallback to using time metadata. Note that only the `Time` field is required, the position of the
-Sun is optional.
+fallback to using time metadata.
 
-If `SolarAzimuth` or `SolarElevation` has a special value of `"*"`, then the position of the Sun
-will be computed based on the time when the picture was taken and the GPS coordinates stored in
-its Exif metadata. The calculated position of the Sun can be viewed by passing `--verbose` to the
-`kdynamicwallpaperbuilder` command.
+`SolarAzimuth`, `SolarElevation`, and `Time` fields can have a special value of `*`. In which case,
+`kdynamicwallpaperbuilder` will use the Exif metadata in the image to fill them. An image must
+contain a geolocation tag to compute the position of the Sun.  The calculated position of the Sun
+can be viewed by passing `--verbose` to the `kdynamicwallpaperbuilder` command.
+
+Only the `Time` field is required, the position of the Sun is optional.
 
 The `CrossFade` field indicates whether the current image can be blended with the next one. The
 cross-fading is used to make transitions between images smooth. By default, the `CrossFade` field is
