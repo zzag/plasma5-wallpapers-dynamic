@@ -116,7 +116,7 @@ kdynamicwallpaperbuilder path/to/manifest.json --output wallpaper.avif
 
 This engine supports several types of dynamic wallpapers - _solar_ and _day-night_.
 
-#### How to Create a Solar Dynamic Wallpaper
+### How to Create a Solar Dynamic Wallpaper
 
 With a solar dynamic wallpaper, the engine will try to keep the images in sync with the Sun
 position at your location.
@@ -166,11 +166,6 @@ the picture was taken. If the user is not located near the North or the South Po
 wallpaper engine will try to show images based on the current position of the Sun; otherwise it will
 fallback to using time metadata.
 
-`SolarAzimuth`, `SolarElevation`, and `Time` fields can have a special value of `*`. In which case,
-`kdynamicwallpaperbuilder` will use the Exif metadata in the image to fill them. An image must
-contain a geolocation tag to compute the position of the Sun.  The calculated position of the Sun
-can be viewed by passing `--verbose` to the `kdynamicwallpaperbuilder` command.
-
 Only the `Time` field is required, the position of the Sun is optional.
 
 The `CrossFade` field indicates whether the current image can be blended with the next one. The
@@ -191,7 +186,21 @@ which can be used as a dynamic wallpaper.
 Note that encoding the dynamic wallpaper may take a lot of memory (AVIF encoders are very memory
 hungry) and time!
 
-#### How to Create a Day/Night Dynamic Wallpaper
+
+#### Computing the position of the Sun based on GPS image metadata
+
+`SolarAzimuth`, `SolarElevation`, and `Time` fields can have a special value of `*`. In which case,
+`kdynamicwallpaperbuilder` will use the Exif metadata in the image to fill them. An image must
+contain the following GPS [EXIF tags](https://exiftool.org/TagNames/GPS.html) to compute the position
+of the Sun:
+
+- `GPSLatitude` and `GPSLatitudeRef`
+- `GPSLongitude` and `GPSLongitudeRef`
+- `GPSTimeStamp` and `GPSDateStamp`
+
+The calculated position of the Sun can be viewed by passing `--verbose` to the `kdynamicwallpaperbuilder` command.
+
+### How to Create a Day/Night Dynamic Wallpaper
 
 A day/night dynamic wallpaper consists of only two images - one for the day, and one for the night.
 The engine will automagically figure out which one to use based on the current time or the Sun
