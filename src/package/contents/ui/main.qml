@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.5
-import QtQuick.Window 2.2
-import QtPositioning 5.12
+import QtQuick
+import QtQuick.Window
+import QtPositioning
 
-import org.kde.kirigami 2.10 as Kirigami
+import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
-import com.github.zzag.plasma.wallpapers.dynamic 1.0
+import com.github.zzag.plasma.wallpapers.dynamic
 
 WallpaperItem {
     id: root

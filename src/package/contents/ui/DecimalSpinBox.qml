@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.5
-import QtQuick.Controls 2.3 as QtControls2
+import QtQuick
+import QtQuick.Controls as QtControls2
 
 Item {
     // QtControls 2 doen't provide a decimal spinbox out of the box. So we wrap the integer
