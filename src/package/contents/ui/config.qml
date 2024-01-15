@@ -147,65 +147,69 @@ ColumnLayout {
         visible: false
     }
 
-    KCM.GridView {
-        id: wallpapersGrid
+    Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        function resetCurrentIndex() {
-            view.currentIndex = wallpapersModel.find(cfg_Image);
-        }
+        KCM.GridView {
+            id: wallpapersGrid
+            anchors.fill: parent
 
-        view.model: wallpapersModel
-        view.delegate: KCM.GridDelegate {
-            hoverEnabled: true
-            opacity: model.zombie ? 0.5 : 1
-            text: model.name
-            toolTip: {
-                if (model.author && model.license)
-                    return i18ndc("plasma_wallpaper_com.github.zzag.dynamic", "<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
-                if (model.license)
-                    return i18ndc("plasma_wallpaper_com.github.zzag.dynamic", "<image> (<license>)", "%1 (%2)", model.name, model.license);
-                return model.name;
+            function resetCurrentIndex() {
+                view.currentIndex = wallpapersModel.find(cfg_Image);
             }
-            actions: [
-                Kirigami.Action {
-                    icon.name: "document-open-folder"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Open Containing Folder")
-                    onTriggered: Qt.openUrlExternally(model.folder)
-                },
-                Kirigami.Action {
-                    icon.name: "edit-undo"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Restore Wallpaper")
-                    visible: model.zombie
-                    onTriggered: wallpapersModel.unscheduleRemove(wallpapersModel.modelIndex(index))
-                },
-                Kirigami.Action {
-                    icon.name: "edit-delete"
-                    tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Remove Wallpaper")
-                    visible: !model.zombie && model.removable
-                    onTriggered: wallpapersModel.scheduleRemove(wallpapersModel.modelIndex(index))
+
+            view.model: wallpapersModel
+            view.delegate: KCM.GridDelegate {
+                hoverEnabled: true
+                opacity: model.zombie ? 0.5 : 1
+                text: model.name
+                toolTip: {
+                    if (model.author && model.license)
+                        return i18ndc("plasma_wallpaper_com.github.zzag.dynamic", "<image> by <author> (<license>)", "By %1 (%2)", model.author, model.license);
+                    if (model.license)
+                        return i18ndc("plasma_wallpaper_com.github.zzag.dynamic", "<image> (<license>)", "%1 (%2)", model.name, model.license);
+                    return model.name;
                 }
-            ]
-            thumbnail: Image {
-                anchors.fill: parent
-                fillMode: cfg_FillMode
-                source: model.preview
+                actions: [
+                    Kirigami.Action {
+                        icon.name: "document-open-folder"
+                        tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Open Containing Folder")
+                        onTriggered: Qt.openUrlExternally(model.folder)
+                    },
+                    Kirigami.Action {
+                        icon.name: "edit-undo"
+                        tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Restore Wallpaper")
+                        visible: model.zombie
+                        onTriggered: wallpapersModel.unscheduleRemove(wallpapersModel.modelIndex(index))
+                    },
+                    Kirigami.Action {
+                        icon.name: "edit-delete"
+                        tooltip: i18nd("plasma_wallpaper_com.github.zzag.dynamic", "Remove Wallpaper")
+                        visible: !model.zombie && model.removable
+                        onTriggered: wallpapersModel.scheduleRemove(wallpapersModel.modelIndex(index))
+                    }
+                ]
+                thumbnail: Image {
+                    anchors.fill: parent
+                    fillMode: cfg_FillMode
+                    source: model.preview
+                }
+                onClicked: {
+                    cfg_Image = model.image;
+                    wallpapersGrid.forceActiveFocus();
+                }
             }
-            onClicked: {
-                cfg_Image = model.image;
-                wallpapersGrid.forceActiveFocus();
-            }
-        }
 
-        Connections {
-            target: wallpapersModel
-            onRowsInserted: Qt.callLater(wallpapersGrid.resetCurrentIndex)
-            onRowsRemoved: Qt.callLater(wallpapersGrid.resetCurrentIndex)
-        }
-        Connections {
-            target: root
-            onCfg_ImageChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+            Connections {
+                target: wallpapersModel
+                onRowsInserted: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+                onRowsRemoved: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+            }
+            Connections {
+                target: root
+                onCfg_ImageChanged: Qt.callLater(wallpapersGrid.resetCurrentIndex)
+            }
         }
     }
 
