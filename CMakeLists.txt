@@ -5,11 +5,11 @@
 cmake_minimum_required(VERSION 3.18)
 project(plasma5-wallpapers-dynamic)
 
-set(KF_MIN_VERSION "5.240.0")
-set(QT_MIN_VERSION "6.4.0")
+set(KF_MIN_VERSION "6.0.0")
+set(QT_MIN_VERSION "6.6.0")
 
-set(PROJECT_VERSION "4.3.1")
-set(PROJECT_VERSION_MAJOR 4)
+set(PROJECT_VERSION "5.0.0")
+set(PROJECT_VERSION_MAJOR 5)
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/Modules)
