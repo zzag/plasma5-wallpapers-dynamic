@@ -84,7 +84,7 @@ Configure the build
   cmake .. -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=lib \
-      -DBUILD_TESTING=OFF \
+      -DBUILD_TESTING=OFF
   ```
 - **Qt 6.10 and newer**
   ```sh
