@@ -78,14 +78,25 @@ cd plasma5-wallpapers-dynamic
 
 Configure the build
 
-```sh
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
-    -DBUILD_TESTING=OFF
-```
-
+- **Qt 6.9 and lower**
+  ```sh
+  mkdir build && cd build
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_TESTING=OFF \
+  ```
+- **Qt 6.10 and newer**
+  ```sh
+  mkdir build && cd build
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_TESTING=OFF \
+      -DQT_FIND_PRIVATE_MODULES=ON
+  ```
+  (Note: We add `-DQT_FIND_PRIVATE_MODULES=ON` because starting with Qt 6.10, private modules are no longer exposed by default.)
+  
 Now trigger the build by running the following command
 
 ```sh
