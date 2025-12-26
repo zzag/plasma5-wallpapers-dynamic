@@ -48,6 +48,10 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Xml
 )
 
+if (Qt6_VERSION VERSION_GREATER_EQUAL "6.10.0")
+    find_package(Qt6QuickPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+endif()
+
 add_subdirectory(data)
 add_subdirectory(src)
 
