@@ -8,7 +8,7 @@ project(plasma5-wallpapers-dynamic)
 set(KF_MIN_VERSION "6.0.0")
 set(QT_MIN_VERSION "6.6.0")
 
-set(PROJECT_VERSION "5.0.0")
+set(PROJECT_VERSION "5.0.1")
 set(PROJECT_VERSION_MAJOR 5)
 
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
