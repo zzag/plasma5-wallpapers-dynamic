@@ -1,0 +1,161 @@
+# Georgian translation for plasma5-wallpapers-dynamic.
+# Copyright (C) 2026 plasma5-wallpapers-dynamic's authors.
+# This file is distributed under the same license as the plasma5-wallpapers-dynamic package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma5-wallpapers-dynamic\n"
+"Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
+"issues\n"
+"POT-Creation-Date: 2024-01-15 01:25+0100\n"
+"PO-Revision-Date: 2026-02-26 06:20+0100\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
+
+#: declarative/dynamicwallpaperhandler.cpp:220
+#: declarative/dynamicwallpapermodel.cpp:509
+#, kde-format
+msgid "%1 is not a dynamic wallpaper"
+msgstr "%1 დინამიკური ფონის სურათი არაა"
+
+#: declarative/dynamicwallpaperpreviewjob.cpp:140
+#, kde-format
+msgid "Not a dynamic wallpaper"
+msgstr "დინამიკური ფონის სურათი არაა"
+
+#: package/contents/ui/config.qml:37
+#, kde-format
+msgid "Fill Mode:"
+msgstr "შევსების რეჟიმი:"
+
+#: package/contents/ui/config.qml:41
+#, kde-format
+msgid "Scaled and Cropped"
+msgstr "გადიდებული და შემოჭრილი"
+
+#: package/contents/ui/config.qml:45
+#, kde-format
+msgid "Scaled"
+msgstr "გადიდებული"
+
+#: package/contents/ui/config.qml:49
+#, kde-format
+msgid "Scaled, Keep Proportions"
+msgstr "გადიდებული, პროპორციების შენარჩუნებით"
+
+#: package/contents/ui/config.qml:53
+#, kde-format
+msgid "Centered"
+msgstr "შუაზე გასწორებული"
+
+#: package/contents/ui/config.qml:57
+#, kde-format
+msgid "Tiled"
+msgstr "მოზაიკა"
+
+#: package/contents/ui/config.qml:76
+#, kde-format
+msgid "Automatically detect location"
+msgstr "ადგილმდებარეობის ავტომატური დადგენა"
+
+#: package/contents/ui/config.qml:80 package/contents/ui/config.qml:101
+#, kde-format
+msgid "Latitude:"
+msgstr "განედი:"
+
+#: package/contents/ui/config.qml:90 package/contents/ui/config.qml:110
+#, kde-format
+msgid "Longitude:"
+msgstr "გრძედი:"
+
+#: package/contents/ui/config.qml:119
+#, kde-format
+msgid "Update Every:"
+msgstr "განახლების პერიოდი:"
+
+#: package/contents/ui/config.qml:137
+#, kde-format
+msgid " minute"
+msgid_plural " minutes"
+msgstr[0] " წუთი"
+msgstr[1] " წუთი"
+
+#: package/contents/ui/config.qml:169
+#, kde-format
+msgctxt "<image> by <author> (<license>)"
+msgid "By %1 (%2)"
+msgstr "ავტორი: %1 (%2)"
+
+#: package/contents/ui/config.qml:171
+#, kde-format
+msgctxt "<image> (<license>)"
+msgid "%1 (%2)"
+msgstr "%1 (%2)"
+
+#: package/contents/ui/config.qml:177
+#, kde-format
+msgid "Open Containing Folder"
+msgstr "შემცველი საქაღალდის გახსნა"
+
+#: package/contents/ui/config.qml:182
+#, kde-format
+msgid "Restore Wallpaper"
+msgstr "ფონის სურათის აღდგენა"
+
+#: package/contents/ui/config.qml:188
+#, kde-format
+msgid "Remove Wallpaper"
+msgstr "ფონის სურათის წაშლა"
+
+#: package/contents/ui/config.qml:220
+#, kde-format
+msgid "Open Wallpaper"
+msgstr "ფონის გამოსახულების გახსნა"
+
+#: package/contents/ui/config.qml:222
+#, kde-format
+msgid "AVIF Image Files (*.avif)"
+msgstr "AVIF გამოსახულების ფაილები (*.avif)"
+
+#: package/contents/ui/config.qml:239
+#, kde-format
+msgid "Add Wallpaper..."
+msgstr "ფონური სურათის დამატება..."
+
+#: tools/builder/main.cpp:27
+#, kde-format
+msgid "Write output to <file>"
+msgstr "გამოტანის ჩაწერა <ფაილში>"
+
+#: tools/builder/main.cpp:31
+#, kde-format
+msgid "Encoding speed, 0 - slowest, 10 - fastest"
+msgstr "კოდირების სიჩქარე. 0 - ყველაზე ნელი, 10 - ყველაზე სწრაფი"
+
+#: tools/builder/main.cpp:35
+#, kde-format
+msgid "Maximum number of threads that can be used when encoding a wallpaper"
+msgstr ""
+"ფონის სურათის კოდირებისას გამოყენებული ნაკადების მაქსიმალური რაოდენობა"
+
+#: tools/builder/main.cpp:39
+#, kde-format
+msgid "Codec to use (aom|rav1e|svt)"
+msgstr "კოდეკი (aom|rav1e|svt)"
+
+#: tools/builder/main.cpp:43
+#, kde-format
+msgid "Show debug information"
+msgstr "გამართვის ინფორმაციის ჩვენება"
+
+#: tools/builder/main.cpp:48
+#, kde-format
+msgid "Manifest file to use"
+msgstr "მანიფესტი"
