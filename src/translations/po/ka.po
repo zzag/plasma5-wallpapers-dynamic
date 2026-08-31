@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/zzag/plasma5-wallpapers-dynamic/"
 "issues\n"
 "POT-Creation-Date: 2024-01-15 01:25+0100\n"
-"PO-Revision-Date: 2026-02-26 06:20+0100\n"
+"PO-Revision-Date: 2026-08-31 08:35+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: declarative/dynamicwallpaperhandler.cpp:220
 #: declarative/dynamicwallpapermodel.cpp:509
@@ -117,7 +117,7 @@ msgstr "ფონის სურათის წაშლა"
 #: package/contents/ui/config.qml:220
 #, kde-format
 msgid "Open Wallpaper"
-msgstr "ფონის გამოსახულების გახსნა"
+msgstr "ფონის სურათის გახსნა"
 
 #: package/contents/ui/config.qml:222
 #, kde-format
@@ -158,4 +158,4 @@ msgstr "გამართვის ინფორმაციის ჩვე�
 #: tools/builder/main.cpp:48
 #, kde-format
 msgid "Manifest file to use"
-msgstr "მანიფესტი"
+msgstr "მანისფესტის ფაილი გამოსაყენებლად"
